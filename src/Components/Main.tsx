@@ -6,13 +6,13 @@ import MenuItem from "./MenuItem";
 export default function Main() {
     return (
         <div>
-            <Stack direction="row" spacing={3} justifyContent="center" mt={20}>
+            <Stack direction="row" spacing={8} justifyContent="center" mt={20}>
                 <Link
                     to="/quanlyso"
                     style={{ textDecoration: "none", cursor: "pointer", color: 'black' }}
                 >
                     <MenuItem
-                        iconURL="ho-so-thanh-lap-cong-ty-tnhh-1-thanh-vien-e1534735449553.jpg"
+                        iconURL="notebook-svgrepo-com.svg"
                         title="Quản Lý Sổ"
                     ></MenuItem>
                 </Link>
@@ -21,7 +21,7 @@ export default function Main() {
                     style={{ textDecoration: "none", cursor: "pointer", color: 'black' }}
                 >
                     <MenuItem
-                        iconURL="ho-so-thanh-lap-cong-ty-tnhh-1-thanh-vien-e1534735449553.jpg"
+                        iconURL="document-svgrepo-com.svg"
                         title="Quản Lý Công Văn Đến"
                     ></MenuItem>
                 </Link>
@@ -30,7 +30,7 @@ export default function Main() {
                     style={{ textDecoration: "none", cursor: "pointer", color: 'black' }}
                 >
                     <MenuItem
-                        iconURL="ho-so-thanh-lap-cong-ty-tnhh-1-thanh-vien-e1534735449553.jpg"
+                        iconURL="exit-svgrepo-com.svg"
                         title="Quản Lý Công Văn Đi"
                     ></MenuItem>
                 </Link>
@@ -39,7 +39,7 @@ export default function Main() {
                     style={{ textDecoration: "none", cursor: "pointer", color: 'black' }}
                 >
                     <MenuItem
-                        iconURL="ho-so-thanh-lap-cong-ty-tnhh-1-thanh-vien-e1534735449553.jpg"
+                        iconURL="file-storage-svgrepo-com.svg"
                         title="Quản Lý Lưu Trữ"
                     ></MenuItem>
                 </Link>
