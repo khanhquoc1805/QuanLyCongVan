@@ -2,8 +2,9 @@ import { Stack } from "@mui/material";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import TableCV from "./TableCV";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import TableVaoSo from "./TableVaoSo";
+import TiepNhanCVDen from "./TiepNhanCVDen";
 
 export default function CVden() {
     return (
@@ -45,9 +46,14 @@ export default function CVden() {
                         spacing={1}
                         sx={{ cursor: "pointer" }}
                     >
-                        <div style={{ cursor: "pointer" }}>
-                            Tiếp nhận văn bản đến
+                       <div>
+                            <img
+                                src="/input-svgrepo-com.svg"
+                                alt=""
+                                style={{ width: "20px", height: "20px" }}
+                            />
                         </div>
+                        <p>Tiếp nhận văn bản đến</p>
                     </Stack>
                 </Link>
                 <Link
@@ -63,11 +69,16 @@ export default function CVden() {
                         spacing={1}
                         sx={{ cursor: "pointer" }}
                     >
-                        <div style={{ cursor: "pointer" }}>Văn bản đã vào sổ</div>
+                       <div>
+                            <img
+                                src="/all-application-svgrepo-com.svg"
+                                alt=""
+                                style={{ width: "20px", height: "20px" }}
+                            />
+                        </div>
+                        <p>Văn bản đã vào sổ</p>
                     </Stack>
                 </Link>
-
-               
             </Stack>
             <Stack>
                 <Routes>
@@ -75,6 +86,10 @@ export default function CVden() {
                     <Route
                         path="/vanbandavaoso"
                         element={<TableVaoSo />}
+                    ></Route>
+                    <Route
+                        path="/tiepnhanvanbanden"
+                        element={<TiepNhanCVDen />}
                     ></Route>
                 </Routes>
             </Stack>

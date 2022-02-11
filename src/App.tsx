@@ -11,7 +11,7 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Main />}></Route>
-                    <Route path="/quanlycongvandi" element={<CVdi />}></Route>
+                    <Route path="/quanlycongvandi/*" element={<CVdi />}></Route>
                     <Route path="/quanlyso" element={<QuanLiSo />}></Route>
                     <Route path="/quanlycongvanden/*" element={<CVden />}></Route>
                 </Routes>
