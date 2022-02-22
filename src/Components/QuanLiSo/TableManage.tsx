@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -7,6 +7,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
+import { useAppDispatch ,useAppSelector} from "../../App/hooks";
+import { soCVActions } from "../../features/SoCV/SoCVSlice";
+
+import {selectDsSoCV} from "../../features/SoCV/SoCVSlice";
 
 interface Props {}
 
@@ -49,6 +53,16 @@ const rows = [
 ];
 
 export default function TableManage() {
+
+    const dispatch = useAppDispatch();
+    const dssocv = useAppSelector(selectDsSoCV);
+    
+
+    useEffect(() => {
+        dispatch(soCVActions.fetchData({ page: 1, limit: 5 }));
+    }, [dispatch]);
+
+    console.log(dssocv);
     return (
         <TableContainer component={Paper} sx={{marginTop: '32px', maxWidth:"100%"}}>
             <Table aria-label="customized table">
