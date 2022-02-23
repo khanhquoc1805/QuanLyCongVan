@@ -1,35 +1,27 @@
-import React, { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { OutlinedInput, Stack } from "@mui/material";
 import Button from "@mui/material/Button";
-import TableManage from "./TableManage";
-import Pagination from "@mui/material/Pagination";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
-import TextField from "@mui/material/TextField";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { Stack } from "@mui/material";
+import InputLabel from "@mui/material/InputLabel";
+import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Control, useController } from "react-hook-form";
+import soCVApi from "../../API/SoCV";
+import { ISoCV } from "../../Model/SoCV";
 import { InputField, SelectField } from "../FormField";
-import { OutlinedInput } from "@mui/material";
+import TableManage from "./TableManage";
+import { soCVActions } from "../../features/SoCV/SoCVSlice";
+import { useAppDispatch } from "../../App/hooks";
 
-interface SoCV {
-    masocv: string;
-    tensocv: string;
-    nhomcv: string;
-    donvicv: string;
-}
-
-const initialValue: SoCV = {
+const initialValue: ISoCV = {
     masocv: "",
     tensocv: "",
-    nhomcv: "",
-    donvicv: "",
+    nhomsocv: "",
+    donvi: "",
 };
 
 const schema = yup.object().shape({
@@ -40,13 +32,25 @@ const schema = yup.object().shape({
 export default function QuanLiSo() {
     const [open, setOpen] = useState<boolean>(false);
     const searchRef = useRef<HTMLInputElement>();
-    const { control, handleSubmit } = useForm<SoCV>({
+
+    const dispatch = useAppDispatch();
+    const { control, handleSubmit } = useForm<ISoCV>({
         defaultValues: initialValue,
         resolver: yupResolver(schema),
     });
 
-    const handleSubmitForm = async (formValues: SoCV) => {
-        console.log(formValues);
+    const handleSubmitForm = async (formValues: ISoCV) => {
+        try {
+            const res = await soCVApi.addSoCV(formValues);
+            if (res.status === "success") {
+                dispatch(soCVActions.fetchData({ page: 1, limit: 5 }));
+                toast.success("Thêm sổ công văn thành công !", {
+                    position: "top-center",
+                    autoClose: 1500,
+                });
+            }
+        } catch (error) {}
+        setOpen(false);
     };
 
     return (
@@ -61,7 +65,7 @@ export default function QuanLiSo() {
                             fontSize: "36px",
                             fontWeight: "bold",
                             color: "#F73B07",
-                            fontFamily:"coiny"
+                            fontFamily: "coiny",
                         }}
                     >
                         QUẢN LÝ SỔ CÔNG VĂN
@@ -169,13 +173,7 @@ export default function QuanLiSo() {
                     </Button>
                 </Stack>
                 <TableManage></TableManage>
-                <Stack justifyContent="center" mt={5} direction="row">
-                    <Pagination
-                        count={10}
-                        variant="outlined"
-                        color="secondary"
-                    />
-                </Stack>
+
                 <Dialog open={open} fullWidth>
                     <Stack direction="row" justifyContent="space-between">
                         <DialogTitle>Thêm Sổ Công Văn</DialogTitle>
@@ -208,26 +206,26 @@ export default function QuanLiSo() {
                                 label="Mã Sổ Công Văn"
                             ></InputField>
                             <SelectField
-                                name="nhomcv"
+                                name="nhomsocv"
                                 control={control}
-                                label="City"
+                                label="Nhóm sổ công văn"
                                 options={[
-                                    { label: "Văn Bản Đi", value: "vbdi" },
-                                    { label: "Văn Bản Đến", value: "vbden" },
+                                    { label: "Văn Bản Đi", value: "Văn Bản Đi" },
+                                    { label: "Văn Bản Đến", value: "Văn Bản Đến" },
                                 ]}
                             ></SelectField>
                             <SelectField
-                                name="donvicv"
+                                name="donvi"
                                 control={control}
-                                label="City"
+                                label="Đơn vị"
                                 options={[
                                     {
-                                        label: "Phòng Kế Hoạch Đào Tạo",
-                                        value: "pkhdt",
+                                        label: "Phòng Kế Hoạch Tổng Hợp",
+                                        value: "Phòng Kế Hoạch Tổng Hợp",
                                     },
                                     {
                                         label: "Khoa Công Nghệ Thông Tin",
-                                        value: "cntt",
+                                        value: "Khoa Công Nghệ Thông Tin",
                                     },
                                 ]}
                             ></SelectField>
