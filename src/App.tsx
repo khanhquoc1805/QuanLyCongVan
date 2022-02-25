@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CVden from "./Components/CVden/CVden";
 import CVdi from "./Components/CVdi/CVdi";
+import LoginPage from "./Components/Login/LoginPage";
 import Main from "./Components/Main";
 import QuanLiSo from "./Components/QuanLiSo/QuanLiSo";
 
@@ -13,9 +14,12 @@ function App() {
                     <Route path="/" element={<Main />}></Route>
                     <Route path="/quanlycongvandi/*" element={<CVdi />}></Route>
                     <Route path="/quanlyso" element={<QuanLiSo />}></Route>
-                    <Route path="/quanlycongvanden/*" element={<CVden />}></Route>
+                    <Route
+                        path="/quanlycongvanden/*"
+                        element={<CVden />}
+                    ></Route>
+                    <Route path="login" element={<LoginPage />}></Route>
                 </Routes>
-
             </BrowserRouter>
         </div>
     );
