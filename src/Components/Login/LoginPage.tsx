@@ -7,28 +7,42 @@ import {
     Paper,
     Stack,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useAppDispatch, useAppSelector } from "../../App/hooks";
+import { authActions, selectManv } from "../../features/Auth/authSlice";
 import { InputField } from "../FormField";
+import { NavLink, useNavigate  } from "react-router-dom";
 
-interface Login {
-    taikhoan: string;
+
+export interface Login {
+    manv: string;
     matkhau: string;
 }
 
 const initialValue: Login = {
-    taikhoan: "",
+    manv: "",
     matkhau: "",
 };
 
 export default function LoginPage() {
+    const navigate = useNavigate();
+    const manv = useAppSelector(selectManv);
     const { control, handleSubmit } = useForm<Login>({
         defaultValues: initialValue,
     });
+    const dispatch = useAppDispatch();
 
     const handleSubmitForm = async (formValues: Login) => {
-        console.log(formValues);
+        dispatch(authActions.login(formValues));
     };
+
+    useEffect(() => {
+        if (manv !== undefined && manv !== "") {
+            navigate("/home");
+        }
+    }, [manv])
+
     return (
         <div
             style={{
@@ -61,7 +75,7 @@ export default function LoginPage() {
                     onSubmit={handleSubmit(handleSubmitForm)}
                 >
                     <InputField
-                        name="taikhoan"
+                        name="manv"
                         control={control}
                         label="Tài Khoản"
                     ></InputField>

@@ -14,6 +14,7 @@ function* fetchCVDen(action: PayloadAction<ListParams>) {
       pagination: {
         limit: action.payload.limit || 3,
         page: action.payload.page || 1,
+        totalRows : action.payload.totalRows
 
       },
     };

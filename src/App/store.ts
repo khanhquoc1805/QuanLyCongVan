@@ -8,10 +8,12 @@ import soCVReducer from "../features/SoCV/SoCVSlice"
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "./rootSaga";
 import { Action, ThunkAction } from "@reduxjs/toolkit";
+import authReducer from "../features/Auth/authSlice";
 
 const reducer = combineReducers({
   cvden: cvDenReducer,
   socv : soCVReducer,
+  auth: authReducer
 });
 
 const sagaMiddleware = createSagaMiddleware();
