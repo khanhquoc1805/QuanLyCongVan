@@ -77,7 +77,7 @@ export default function QuanLiSo() {
                         mt={3}
                     >
                         <Link
-                            to="/"
+                            to="/home"
                             style={{
                                 textDecoration: "none",
                                 cursor: "pointer",

@@ -130,8 +130,11 @@ export default function TableCV() {
             <StyledTableCell align="right" sx={{ maxWidth: "60px" }}>
               Ngày chuyển
             </StyledTableCell>
+            <StyledTableCell align="center">
+              Không tiếp nhận
+            </StyledTableCell>
             <StyledTableCell align="right">
-              Trạng Thái
+              xóa
             </StyledTableCell>
           </TableRow>
         </TableHead>
@@ -163,9 +166,20 @@ export default function TableCV() {
               <StyledTableCell align="right" sx={{ maxWidth: "20px" }}>
                 {row.date}
               </StyledTableCell>
+              <StyledTableCell align="center">
+                <img
+                  src="/forward-svgrepo-com.svg"
+                  alt=""
+                  style={{
+                    width: "24px",
+                    height: "24px",
+                    cursor: "pointer",
+                  }}
+                />
+              </StyledTableCell>
               <StyledTableCell align="right">
                 <img
-                  src="cancel-svgrepo-com.svg"
+                  src="/cancel-svgrepo-com.svg"
                   alt=""
                   style={{
                     width: "24px",

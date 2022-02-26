@@ -1,9 +1,11 @@
 import { Button, Grid, Stack } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { InputField, SelectField } from "../FormField";
+import { InputField, SelectField, SelectOption } from "../FormField";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { getCurrentDate } from "../../Utils/getCurrentDate";
+import linhVucApi, { ILinhVuc } from "../../API/LinhVuc";
 
 interface IDuThaoVanBanDi {
     donvicv: string;
@@ -15,6 +17,7 @@ interface IDuThaoVanBanDi {
     linhvuc: string;
     soto: string;
     thuchientheovanban: string;
+    ngayravb: string;
 }
 
 const initialValue: IDuThaoVanBanDi = {
@@ -27,6 +30,7 @@ const initialValue: IDuThaoVanBanDi = {
     linhvuc: "",
     soto: "",
     thuchientheovanban: "",
+    ngayravb: getCurrentDate(),
 };
 
 const schema = yup.object().shape({
@@ -38,6 +42,23 @@ export default function DuThaoVanBanDi() {
         defaultValues: initialValue,
         resolver: yupResolver(schema),
     });
+
+    const [linhVuc, setLinhVuc] = useState<[ILinhVuc]>([
+        { malv: 1, tenlv: "" },
+    ]);
+
+    useEffect(() => {
+        (async () => {
+            const linhvuc = await linhVucApi.getLinhVuc();
+            setLinhVuc(linhvuc);
+            console.log(linhvuc);
+        })();
+    }, []);
+
+    const linhVucOptions: SelectOption[] = linhVuc?.map((lv) => ({
+        label: lv.tenlv,
+        value: lv.malv,
+    }));
 
     const handleSubmitForm = async (formValues: IDuThaoVanBanDi) => {
         console.log(formValues);
@@ -113,9 +134,16 @@ export default function DuThaoVanBanDi() {
                         label="Trích Yếu"
                     ></InputField>
                     <InputField
+                        name="ngayravb"
+                        control={control}
+                        label="Ngày ra công văn"
+                        type="date"
+                    ></InputField>
+                    <InputField
                         name="taptindinhkem"
                         control={control}
                         label="Tập Tin Đính Kèm"
+                        type="file"
                     ></InputField>
                 </Grid>
                 <Grid item xs={6}>
@@ -156,11 +184,14 @@ export default function DuThaoVanBanDi() {
                             alignItems: "center",
                         }}
                     >
-                        <InputField
+                        <SelectField
                             name="linhvuc"
                             control={control}
-                            label="Lĩnh Vực"
-                        ></InputField>
+                            label="Lĩnh vực"
+                            //options={linhVucOption}
+                            options={linhVucOptions}
+                        ></SelectField>
+
                         <Button
                             variant="outlined"
                             color="primary"
