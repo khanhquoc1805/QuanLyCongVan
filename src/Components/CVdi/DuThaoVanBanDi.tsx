@@ -6,35 +6,49 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { getCurrentDate } from "../../Utils/getCurrentDate";
 import linhVucApi, { ILinhVuc } from "../../API/LinhVuc";
+import { styled } from "@mui/material/styles";
+import cvDiApi from "../../API/CVdi";
 
-interface IDuThaoVanBanDi {
-    donvicv: string;
-    loaivanban: string;
-    trichyeu: string;
-    taptindinhkem: string;
+export interface IDuThaoVanBanDi {
+    madv: string;
+    maloai: string;
+    tenvbdi: string;
+    dinhkem: File;
     dokhan: string;
     domat: string;
-    linhvuc: string;
-    soto: string;
+    malv: string;
+    sotrang: number;
     thuchientheovanban: string;
-    ngayravb: string;
+    ngayravbdi: string;
 }
 
 const initialValue: IDuThaoVanBanDi = {
-    donvicv: "",
-    loaivanban: "",
-    trichyeu: "",
-    taptindinhkem: "",
+    madv: "",
+    maloai: "",
+    tenvbdi: "",
+    dinhkem: new File([""], "filename"),
     dokhan: "",
     domat: "",
-    linhvuc: "",
-    soto: "",
+    malv: "",
+    sotrang: 0,
     thuchientheovanban: "",
-    ngayravb: getCurrentDate(),
+    ngayravbdi: getCurrentDate(),
 };
 
 const schema = yup.object().shape({
-    trichyeu: yup.string().required("Trích Yếu Văn Bản Không Được Để Trống"),
+    madv: yup.string().required("Vui lòng chọn đơn vị."),
+    maloai: yup.string().required("Vui lòng chọn loại văn bản."),
+    ngayravbdi: yup.date().required("Vui lòng chọn ngày ra văn bản"),
+    tenvbdi: yup.string().required("Trích Yếu Văn Bản Không Được Để Trống"),
+    sotrang: yup
+        .number()
+        .min(1, "Số trang không được bằng 0")
+        .max(100)
+        .required()
+        .typeError("Số trang là một số nguyên dương."),
+    dokhan: yup.string().required("Vui lòng chọn độ khẩn."),
+    domat: yup.string().required("Vui lòng chọn loại độ mật."),
+    malv: yup.string().required("Vui lòng chọn lĩnh vực."),
 });
 
 export default function DuThaoVanBanDi() {
@@ -47,11 +61,14 @@ export default function DuThaoVanBanDi() {
         { malv: 1, tenlv: "" },
     ]);
 
+    const [fileUpload, setFileUpload] = useState<File>(
+        new File([""], "filename")
+    );
+
     useEffect(() => {
         (async () => {
             const linhvuc = await linhVucApi.getLinhVuc();
             setLinhVuc(linhvuc);
-            console.log(linhvuc);
         })();
     }, []);
 
@@ -60,8 +77,27 @@ export default function DuThaoVanBanDi() {
         value: lv.malv,
     }));
 
+    const handleChange = (event: any) => {
+        setFileUpload(event.target.files[0]);
+    };
+
     const handleSubmitForm = async (formValues: IDuThaoVanBanDi) => {
-        console.log(formValues);
+        formValues.dinhkem = fileUpload;
+        //console.log(formValues);
+        const formData = new FormData();
+        formData.append("madv", formValues.madv);
+        formData.append("maloai", formValues.maloai);
+        formData.append("tenvbdi", formValues.tenvbdi);
+        formData.append("dinhkem", formValues.dinhkem);
+        formData.append("dokhan", formValues.dokhan);
+        formData.append("domat", formValues.domat);
+        formData.append("malv", formValues.malv);
+        formData.append("sotrang", formValues.sotrang.toString());
+        formData.append("thuchientheovanban", formValues.thuchientheovanban);
+        formData.append("ngayravbdi", formValues.ngayravbdi);
+        console.log(formData);
+
+        const response = await cvDiApi.add(formData);
     };
 
     return (
@@ -83,17 +119,17 @@ export default function DuThaoVanBanDi() {
             <Grid container spacing={2} sx={{ width: "80%", margin: "0 auto" }}>
                 <Grid item xs={6}>
                     <SelectField
-                        name="donvicv"
+                        name="madv"
                         control={control}
                         label="Đơn Vị"
                         options={[
                             {
                                 label: "Phòng Kế Hoạch Đào Tạo",
-                                value: "pkhdt",
+                                value: "1",
                             },
                             {
                                 label: "Khoa Công Nghệ Thông Tin",
-                                value: "cntt",
+                                value: "2",
                             },
                         ]}
                     ></SelectField>
@@ -105,17 +141,17 @@ export default function DuThaoVanBanDi() {
                         }}
                     >
                         <SelectField
-                            name="loaivanban"
+                            name="maloai"
                             control={control}
                             label="Loại Công Văn"
                             options={[
                                 {
                                     label: "Biên Bản",
-                                    value: "bb",
+                                    value: "1",
                                 },
                                 {
                                     label: "Quyết Định",
-                                    value: "qd",
+                                    value: "2",
                                 },
                             ]}
                         ></SelectField>
@@ -129,22 +165,37 @@ export default function DuThaoVanBanDi() {
                         </Button>
                     </div>
                     <InputField
-                        name="trichyeu"
+                        name="tenvbdi"
                         control={control}
                         label="Trích Yếu"
                     ></InputField>
                     <InputField
-                        name="ngayravb"
+                        name="ngayravbdi"
                         control={control}
                         label="Ngày ra công văn"
                         type="date"
                     ></InputField>
-                    <InputField
-                        name="taptindinhkem"
+                    {/* <InputField
+                        name="dinhkem"
                         control={control}
                         label="Tập Tin Đính Kèm"
                         type="file"
-                    ></InputField>
+                    ></InputField> */}
+                    <input
+                        type="file"
+                        style={{ display: "none" }}
+                        id="contained-button-file"
+                        onChange={handleChange}
+                    />
+                    <label htmlFor="contained-button-file">
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            component="span"
+                        >
+                            Upload
+                        </Button>
+                    </label>
                 </Grid>
                 <Grid item xs={6}>
                     <SelectField
@@ -185,7 +236,7 @@ export default function DuThaoVanBanDi() {
                         }}
                     >
                         <SelectField
-                            name="linhvuc"
+                            name="malv"
                             control={control}
                             label="Lĩnh vực"
                             //options={linhVucOption}
@@ -202,7 +253,7 @@ export default function DuThaoVanBanDi() {
                         </Button>
                     </div>
                     <InputField
-                        name="soto"
+                        name="sotrang"
                         control={control}
                         label="Số Tờ"
                     ></InputField>

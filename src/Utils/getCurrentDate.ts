@@ -4,11 +4,15 @@ export const getCurrentDate = (): string => {
         if (month < 10) return `0${month}`;
         return `${month}`;
     };
+    const formatDay = (day: number): string => {
+        if (day < 10) return `0${day}`;
+        return `${day}`;
+    };
 
     const monthRight = (month: number): number => {
         return month + 1;
     };
     return `${current.getFullYear()}-${formatMonth(
         monthRight(current.getMonth())
-    )}-${current.getDate()}`;
+    )}-${formatDay(current.getDate())}`;
 };
