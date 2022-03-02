@@ -33,6 +33,7 @@ const initCVDenState: ICVDen = {
     matt: 0,
     sotrang: 0,
     dokhan: "string",
+    dinhkem: "",
     domat: " string",
     khac: "string",
   }

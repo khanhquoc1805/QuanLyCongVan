@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import DuThaoVanBanDi from "./DuThaoVanBanDi";
 import { Routes, Route } from "react-router-dom";
+import XuLiVanBanDi from "./XuLiVanBanDi";
 
 interface Props {}
 
@@ -73,8 +74,32 @@ export default function CVdi() {
                             <p>Dự thảo văn bản đi</p>
                         </Stack>
                     </Link>
+
+                    <Link
+                        to="xulivanbandi"
+                        style={{
+                            textDecoration: "none",
+                            cursor: "pointer",
+                            color: "black",
+                        }}
+                    >
+                        <Stack
+                            direction="row"
+                            spacing={1}
+                            sx={{ cursor: "pointer" }}
+                        >
+                            <div>
+                                <img
+                                    src="/process-svgrepo-com.svg"
+                                    alt=""
+                                    style={{ width: "20px", height: "20px" }}
+                                />
+                            </div>
+                            <p>Xử lí văn bản đi</p>
+                        </Stack>
+                    </Link>
                     {/*  */}
-                    <Stack
+                    {/* <Stack
                         direction="row"
                         spacing={1}
                         sx={{ cursor: "pointer" }}
@@ -87,7 +112,7 @@ export default function CVdi() {
                             />
                         </div>
                         <p>Xử lí văn bản đi</p>
-                    </Stack>
+                    </Stack> */}
 
                     <Stack
                         direction="row"
@@ -111,6 +136,10 @@ export default function CVdi() {
                     <Route
                         path="/duthaovanbandi"
                         element={<DuThaoVanBanDi />}
+                    ></Route>
+                    <Route
+                        path="/xulivanbandi"
+                        element={<XuLiVanBanDi />}
                     ></Route>
                 </Routes>
             </Stack>

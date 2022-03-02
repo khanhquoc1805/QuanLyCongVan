@@ -26,6 +26,7 @@ export interface BaseCVden {
 export interface TTCVden {
     matt: number;
     sotrang: number;
+    dinhkem: string;
     dokhan: string;
     domat: string;
     khac: string;

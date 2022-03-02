@@ -119,7 +119,7 @@ export default function DuThaoVanBanDi() {
         formData.append("sotrang", formValues.sotrang.toString());
         formData.append("thuchientheovanban", formValues.thuchientheovanban);
         formData.append("ngayravbdi", formValues.ngayravbdi);
-        console.log(formData);
+        console.log(formValues);
 
         const response = await cvDiApi.add(formData);
     };
