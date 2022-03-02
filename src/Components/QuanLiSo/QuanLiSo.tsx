@@ -11,11 +11,11 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as yup from "yup";
 import soCVApi from "../../API/SoCV";
+import { useAppDispatch } from "../../App/hooks";
+import { soCVActions } from "../../features/SoCV/SoCVSlice";
 import { ISoCV } from "../../Model/SoCV";
 import { InputField, SelectField } from "../FormField";
 import TableManage from "./TableManage";
-import { soCVActions } from "../../features/SoCV/SoCVSlice";
-import { useAppDispatch } from "../../App/hooks";
 
 const initialValue: ISoCV = {
     masocv: "",

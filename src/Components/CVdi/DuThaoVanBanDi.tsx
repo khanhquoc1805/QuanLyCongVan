@@ -1,13 +1,16 @@
-import { Button, Grid, Stack } from "@mui/material";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Button, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { InputField, SelectField, SelectOption } from "../FormField";
 import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { getCurrentDate } from "../../Utils/getCurrentDate";
-import linhVucApi, { ILinhVuc } from "../../API/LinhVuc";
-import { styled } from "@mui/material/styles";
 import cvDiApi from "../../API/CVdi";
+import donViApi, { IDonVi } from "../../API/DonVi";
+import linhVucApi, { AddLinhVuc, ILinhVuc } from "../../API/LinhVuc";
+import loaiCVApi, { ILoaiCV } from "../../API/LoaiCV";
+import { getCurrentDate } from "../../Utils/getCurrentDate";
+import { InputField, SelectField, SelectOption } from "../FormField";
+import FormAddLinhVuc from "./FormAdd/FormAddLinhVuc";
+import FormAddLoaiCV from "./FormAdd/FormAddLoaiCV";
 
 export interface IDuThaoVanBanDi {
     madv: string;
@@ -60,6 +63,13 @@ export default function DuThaoVanBanDi() {
     const [linhVuc, setLinhVuc] = useState<[ILinhVuc]>([
         { malv: 1, tenlv: "" },
     ]);
+    const [loaiCV, setLoaiCV] = useState<[ILoaiCV]>([
+        { maloai: 1, tenloai: "" },
+    ]);
+
+    const [donVi, setDonVi] = useState<[IDonVi]>([{ madv: 1, tendv: "" }]);
+    const [openAddLV, setOpenAddLV] = useState<boolean>(false);
+    const [openAddLoaiCV, setOpenAddLoaiCV] = useState<boolean>(false);
 
     const [fileUpload, setFileUpload] = useState<File>(
         new File([""], "filename")
@@ -69,12 +79,26 @@ export default function DuThaoVanBanDi() {
         (async () => {
             const linhvuc = await linhVucApi.getLinhVuc();
             setLinhVuc(linhvuc);
+            const loaicv = await loaiCVApi.getLoaiCV();
+            setLoaiCV(loaicv);
+            const donvi = await donViApi.getDonVi();
+            setDonVi(donvi);
         })();
-    }, []);
+    }, [openAddLV, openAddLoaiCV]);
 
     const linhVucOptions: SelectOption[] = linhVuc?.map((lv) => ({
         label: lv.tenlv,
         value: lv.malv,
+    }));
+
+    const loaiCVOptions: SelectOption[] = loaiCV?.map((lcv) => ({
+        label: lcv.tenloai,
+        value: lcv.maloai,
+    }));
+
+    const donViOptions: SelectOption[] = donVi?.map((dv) => ({
+        label: dv.tendv,
+        value: dv.madv,
     }));
 
     const handleChange = (event: any) => {
@@ -100,6 +124,10 @@ export default function DuThaoVanBanDi() {
         const response = await cvDiApi.add(formData);
     };
 
+    const handleClickAddLV = () => {
+        setOpenAddLV(true);
+    };
+
     return (
         <form
             onSubmit={handleSubmit(handleSubmitForm)}
@@ -122,16 +150,7 @@ export default function DuThaoVanBanDi() {
                         name="madv"
                         control={control}
                         label="Đơn Vị"
-                        options={[
-                            {
-                                label: "Phòng Kế Hoạch Đào Tạo",
-                                value: "1",
-                            },
-                            {
-                                label: "Khoa Công Nghệ Thông Tin",
-                                value: "2",
-                            },
-                        ]}
+                        options={donViOptions}
                     ></SelectField>
                     <div
                         style={{
@@ -144,22 +163,16 @@ export default function DuThaoVanBanDi() {
                             name="maloai"
                             control={control}
                             label="Loại Công Văn"
-                            options={[
-                                {
-                                    label: "Biên Bản",
-                                    value: "1",
-                                },
-                                {
-                                    label: "Quyết Định",
-                                    value: "2",
-                                },
-                            ]}
+                            options={loaiCVOptions}
                         ></SelectField>
                         <Button
                             variant="outlined"
                             color="primary"
                             size="large"
                             sx={{ height: "56px", margin: "7px 0px 0px 12px" }}
+                            onClick={() => {
+                                setOpenAddLoaiCV(true);
+                            }}
                         >
                             Thêm
                         </Button>
@@ -248,6 +261,7 @@ export default function DuThaoVanBanDi() {
                             color="primary"
                             size="large"
                             sx={{ height: "56px", margin: "7px 0px 0px 12px" }}
+                            onClick={handleClickAddLV}
                         >
                             Thêm
                         </Button>
@@ -275,6 +289,14 @@ export default function DuThaoVanBanDi() {
                     </div>
                 </Grid>
             </Grid>
+            <FormAddLinhVuc
+                open={openAddLV}
+                setOpen={setOpenAddLV}
+            ></FormAddLinhVuc>
+            <FormAddLoaiCV
+                open={openAddLoaiCV}
+                setOpen={setOpenAddLoaiCV}
+            ></FormAddLoaiCV>
         </form>
     );
 }
