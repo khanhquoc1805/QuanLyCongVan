@@ -1,8 +1,14 @@
+import { IDonVi } from "../API/DonVi";
+import { ILinhVuc } from "../API/LinhVuc";
+import { ILoaiCV } from "../API/LoaiCV";
 import { TTCVden } from "./CVDenModel";
 
 export interface ICVDi {
     cvdi: BaseCVDi;
     ttbosung: TTCVden; // thong tin bo sung cho den va di la nhu nhau nen dung chung interface
+    donvi: IDonVi;
+    loaicv : ILoaiCV;
+    linhvuc: ILinhVuc;
 }
 
 

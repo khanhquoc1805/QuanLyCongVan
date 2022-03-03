@@ -36,6 +36,18 @@ const initCVDiState: ICVDi = {
         domat: " string",
         khac: "string",
     },
+    donvi: {
+        madv: 0,
+        tendv: "",
+    },
+    loaicv: {
+        maloai: 0,
+        tenloai: "",
+    },
+    linhvuc: {
+        malv: 0,
+        tenlv: "",
+    },
 };
 
 const initialState: CVDiState = {
@@ -48,6 +60,7 @@ const initialState: CVDiState = {
     filter: {
         page: 1,
         limit: 5,
+        status: "chuaxuly",
     },
 };
 

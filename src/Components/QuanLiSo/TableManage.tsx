@@ -154,7 +154,7 @@ export default function TableManage() {
                                         onClick={() => {
                                             setMasocv(row.masocv);
                                             setOpen(true);
-                                            console.log(masocv);
+                                            //console.log(masocv);
                                         }}
                                     />
                                 </StyledTableCell>

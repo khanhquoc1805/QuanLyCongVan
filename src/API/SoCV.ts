@@ -2,7 +2,7 @@ import axiosClient from "./axiosClient";
 import { ListParams } from "../Model/Commom";
 import { ISoCV } from "../Model/SoCV";
 
-interface ResponseStatus {
+export interface ResponseStatus {
     status: string;
 }
 
