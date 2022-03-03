@@ -61,6 +61,7 @@ const initialState: CVDiState = {
         page: 1,
         limit: 5,
         status: "chuaxuly",
+        textSearch: "",
     },
 };
 
@@ -75,6 +76,8 @@ const cvDiSlice = createSlice({
         },
         setFilter(state, action: PayloadAction<ListParams>) {
             state.filter = action.payload;
+        },
+        setFilterWithDebounce(state, action: PayloadAction<ListParams>) {
         },
     },
 });

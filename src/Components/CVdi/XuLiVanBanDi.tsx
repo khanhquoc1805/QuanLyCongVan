@@ -8,7 +8,7 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import React, { useEffect, useRef, useState,ChangeEvent } from "react";
+import React, { useEffect, useRef, useState, ChangeEvent } from "react";
 import { useAppDispatch, useAppSelector } from "../../App/hooks";
 import {
     cvDiActions,
@@ -65,7 +65,6 @@ export default function XuLiVanBanDi() {
         })();
     }, [dispatch, filter]);
 
-    //console.log(linhVuc);
     const handleChange = (e: any, page: number) => {
         dispatch(
             cvDiActions.setFilter({
@@ -76,8 +75,12 @@ export default function XuLiVanBanDi() {
     };
 
     const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-
-    }
+        const newFilter = {
+            ...filter,
+            textSearch: e.target.value,
+        };
+        dispatch(cvDiActions.setFilterWithDebounce(newFilter));
+    };
 
     const handleApproveConfirm = async (mavbdi: number) => {
         try {
@@ -89,7 +92,6 @@ export default function XuLiVanBanDi() {
                 });
                 dispatch(cvDiActions.setFilter({ ...filter }));
             }
-
             setOpenApproveDialog(false);
         } catch (error) {}
     };
@@ -109,7 +111,7 @@ export default function XuLiVanBanDi() {
                         label="Search By Name"
                         id="searchByName"
                         //   endAdornment={<SearchIcon />}
-                           onChange={handleSearchChange}
+                        onChange={handleSearchChange}
                         inputRef={searchRef}
                     />
                 </FormControl>
