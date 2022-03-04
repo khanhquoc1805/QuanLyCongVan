@@ -62,7 +62,6 @@ export default function TableManage() {
     useEffect(() => {
         dispatch(soCVActions.fetchData(filter));
     }, [dispatch, filter]);
-    console.log(pagination);
 
     const handleChange = (e: any, page: number) => {
         dispatch(
@@ -118,7 +117,7 @@ export default function TableManage() {
                         {dssocv.map((row, index) => (
                             <StyledTableRow key={index}>
                                 <StyledTableCell component="th" scope="row">
-                                    {index}
+                                    {index + 1}
                                 </StyledTableCell>
                                 <StyledTableCell align="center">
                                     {row.masocv}
@@ -130,7 +129,7 @@ export default function TableManage() {
                                     {row.nhomsocv}
                                 </StyledTableCell>
                                 <StyledTableCell align="center">
-                                    {row.donvi}
+                                    {row.donvi?.tendv}
                                 </StyledTableCell>
                                 <StyledTableCell align="right">
                                     <img
@@ -180,7 +179,9 @@ export default function TableManage() {
                 // aria-labelledby="alert-dialog-title"
                 // aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">Xóa Sổ Công Văn</DialogTitle>
+                <DialogTitle id="alert-dialog-title">
+                    Xóa Sổ Công Văn
+                </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         Bạn có chắc chắn muốn xóa sổ công văn

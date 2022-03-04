@@ -1,18 +1,16 @@
-import React, { ReactElement } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Stack } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import { Stack } from "@mui/material";
+import React from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
 import linhVucApi, {
     AddLinhVuc,
-    ResponseAddLinhVuc,
+    ResponseAddLinhVuc
 } from "../../../API/LinhVuc";
-import { useForm } from "react-hook-form";
 import { InputField } from "../../FormField";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 
 const initialValue: AddLinhVuc = {
     tenlv: "",

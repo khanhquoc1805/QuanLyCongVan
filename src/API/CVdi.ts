@@ -1,3 +1,4 @@
+import { AddCVVaoSo } from "../Components/CVdi/PhatHanhVanBanDi";
 import { ListParams } from "../Model/Commom";
 import { ICVDi } from "../Model/CVDiModel";
 import { IDuThaoVanBanDi } from "./../Components/CVdi/DuThaoVanBanDi";
@@ -13,14 +14,18 @@ const cvDiApi = {
             },
         });
     },
-    getCVDi(params : ListParams) : Promise<[ICVDi]> {
+    getCVDi(params: ListParams): Promise<[ICVDi]> {
         const url = "/cvdi";
-        return axiosClient.get(url,{params});
+        return axiosClient.get(url, { params });
     },
-    xulytt(mavbdi : number) : Promise<ResponseStatus> {
+    xulytt(mavbdi: number): Promise<ResponseStatus> {
         const url = `/cvdi/xulytrangthai/${mavbdi}`;
         return axiosClient.post(url);
-    }
+    },
+    addCVDiVaoSo(formValues: AddCVVaoSo): Promise<ResponseStatus> {
+        const url = `/cvdi/themvaoso/${formValues.mavbdi}`;
+        return axiosClient.post(url, formValues);
+    },
 };
 
 export default cvDiApi;

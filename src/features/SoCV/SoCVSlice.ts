@@ -13,7 +13,7 @@ const initSoCVState: ISoCV = {
     masocv: "",
     tensocv: "",
     nhomsocv: "",
-    donvi: "",
+    madv: "",
 };
 
 const initialState: SoCVState = {

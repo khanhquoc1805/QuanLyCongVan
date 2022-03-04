@@ -1,7 +1,15 @@
-import React, { useEffect, useRef, useState, ChangeEvent } from "react";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { Stack } from "@mui/material";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Collapse from "@mui/material/Collapse";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
+import Pagination from "@mui/material/Pagination";
+import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -9,10 +17,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
 import { useAppDispatch, useAppSelector } from "../../App/hooks";
 import {
     cvDiActions,
@@ -20,18 +27,14 @@ import {
     selectFilter,
     selectPagination,
 } from "../../features/CVDi/CVDiSlice";
-import { Stack } from "@mui/material";
-import Pagination from "@mui/material/Pagination";
+import { selectDsSoCV, soCVActions } from "../../features/SoCV/SoCVSlice";
 import { ICVDi } from "../../Model/CVDiModel";
-import { getProcessState, getColorProcess } from "../../Utils/getProcessState";
 import { getDateFromString } from "../../Utils/getDateFromString";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import { useForm } from "react-hook-form";
-import { SelectField } from "../FormField";
+import { getColorProcess, getProcessState } from "../../Utils/getProcessState";
+import { RadioGroupField, RadioOption } from "../FormField";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { ResponseStatus } from "../../API/SoCV";
+import cvDiApi from "../../API/CVdi";
 
 function createData(
     name: string,
@@ -62,10 +65,54 @@ function createData(
         ],
     };
 }
+export interface AddCVVaoSo {
+    masocv: string;
+    mavbdi: number;
+}
 
-function Row(props: { row: ICVDi }) {
-    const { row } = props;
+const initialValue: AddCVVaoSo = {
+    masocv: "",
+    mavbdi: 0,
+};
+
+const schema = yup.object().shape({
+    masocv: yup.string().required("Vui lòng chọn sổ muốn thêm."),
+});
+
+function Row(props: {
+    row: ICVDi;
+    openDialog: any;
+    setOpenDialog: any;
+    soCVOptions: RadioOption[];
+    mavbdi: any;
+    setMavbdi: any;
+}) {
+    const { row, openDialog, setOpenDialog, soCVOptions, mavbdi, setMavbdi } =
+        props;
     const [open, setOpen] = React.useState(false);
+    const filter = useAppSelector(selectFilter);
+    const dispatch = useAppDispatch();
+
+    const { control, handleSubmit } = useForm<AddCVVaoSo>({
+        defaultValues: initialValue,
+        resolver: yupResolver(schema),
+    });
+
+    const handleCLickAdd = (code: number) => {
+        setMavbdi(code);
+        setOpenDialog(true);
+    };
+
+    const handleSubmitForm = async (formValues: AddCVVaoSo) => {
+        formValues.mavbdi = mavbdi;
+        const response: ResponseStatus = await cvDiApi.addCVDiVaoSo(formValues);
+        console.log(response);
+        if (response.status === "successfully") setOpenDialog(false);
+        setOpen(false);
+        dispatch(
+            cvDiActions.fetchData({ ...filter, status: "daduyet,davaoso" })
+        );
+    };
 
     return (
         <React.Fragment>
@@ -186,6 +233,11 @@ function Row(props: { row: ICVDi }) {
                                         </TableCell>
                                         <TableCell align="center">
                                             <img
+                                                onClick={() => {
+                                                    handleCLickAdd(
+                                                        row.cvdi.mavbdi
+                                                    );
+                                                }}
                                                 src="/medical-records-svgrepo-com.svg"
                                                 alt=""
                                                 style={{
@@ -202,43 +254,79 @@ function Row(props: { row: ICVDi }) {
                     </Collapse>
                 </TableCell>
             </TableRow>
+
+            <Dialog open={openDialog} fullWidth>
+                <Stack direction="row" justifyContent="space-between">
+                    <DialogTitle>Thêm công văn vào sổ</DialogTitle>
+                    <Button
+                        onClick={() => {
+                            setOpenDialog(false);
+                        }}
+                    >
+                        <img
+                            src="/cancel-svgrepo-com.svg"
+                            alt=""
+                            style={{ width: "24px", height: "24px" }}
+                        />
+                    </Button>
+                </Stack>
+                <form onSubmit={handleSubmit(handleSubmitForm)}>
+                    <Stack
+                        direction="column"
+                        spacing={3}
+                        sx={{ width: "80%", margin: "0 auto" }}
+                    >
+                        <RadioGroupField
+                            name="masocv"
+                            control={control}
+                            label=""
+                            options={soCVOptions}
+                        ></RadioGroupField>
+                    </Stack>
+                    <Stack
+                        direction="row"
+                        justifyContent="center"
+                        mb={4}
+                        mt={2}
+                    >
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="medium"
+                            sx={{ width: "120px" }}
+                            type="submit"
+                        >
+                            Xác Nhận
+                        </Button>
+                    </Stack>
+                </form>
+            </Dialog>
         </React.Fragment>
     );
 }
-
-export interface AddCVVaoSo {
-    masocv : string
-}
-
 
 export default function PhatHanhVanBanDi() {
     const filter = useAppSelector(selectFilter);
     const dispatch = useAppDispatch();
     const dscvdi = useAppSelector(selectDsCVDi);
     const pagination = useAppSelector(selectPagination);
-    const [open,setOpen] = useState<boolean>(false);
-
-    const { control, handleSubmit } = useForm<AddCVVaoSo>({
-        // defaultValues: initialValue,
-        // resolver: yupResolver(schema),
-    });
-
-    const handleSubmitForm = async (formValues: AddCVVaoSo) => {
-        // const response: ResponseAddLoaiCV = await loaiCVApi.addLoaiCV(
-        //     formValues
-        // );
-        // console.log(response);
-        // if (response.status === "successfully") setOpen(false);
-    };
+    const [open, setOpen] = useState<boolean>(false);
+    const dssocv = useAppSelector(selectDsSoCV);
+    const [mavbdi, setMavbdi] = useState<number>(0);
 
     useEffect(() => {
         (() => {
             dispatch(
                 cvDiActions.fetchData({ ...filter, status: "daduyet,davaoso" })
             );
+            dispatch(soCVActions.fetchData({}));
         })();
     }, [dispatch, filter]);
-    console.log(dscvdi);
+
+    const soCVOptions: RadioOption[] = dssocv?.map((scv) => ({
+        label: `${scv.tensocv} - ${scv.nhomsocv} - ${scv.donvi?.tendv}`,
+        value: scv.masocv,
+    }));
 
     const handleChange = (e: any, page: number) => {
         dispatch(
@@ -296,7 +384,15 @@ export default function PhatHanhVanBanDi() {
                     </TableHead>
                     <TableBody>
                         {dscvdi.map((row, index) => (
-                            <Row key={index} row={row} />
+                            <Row
+                                key={index}
+                                row={row}
+                                openDialog={open}
+                                setOpenDialog={setOpen}
+                                soCVOptions={soCVOptions}
+                                mavbdi={mavbdi}
+                                setMavbdi={setMavbdi}
+                            />
                         ))}
                     </TableBody>
                 </Table>
@@ -310,57 +406,6 @@ export default function PhatHanhVanBanDi() {
                     shape="rounded"
                 />
             </Stack>
-
-            <Dialog open={open} fullWidth>
-                <Stack direction="row" justifyContent="space-between">
-                    <DialogTitle>Thêm Loại Công Văn</DialogTitle>
-                    <Button
-                        onClick={() => {
-                            setOpen(false);
-                        }}
-                    >
-                        <img
-                            src="/cancel-svgrepo-com.svg"
-                            alt=""
-                            style={{ width: "24px", height: "24px" }}
-                        />
-                    </Button>
-                </Stack>
-                <form onSubmit={handleSubmit(handleSubmitForm)}>
-                    <Stack
-                        direction="column"
-                        spacing={3}
-                        sx={{ width: "80%", margin: "0 auto" }}
-                    >
-                        {/* <SelectField
-                            name="tenloai"
-                            control={control}
-                            label="Tên loại công văn"
-                            options =
-                                {
-                                    []
-                                }
-                            
-                        ></SelectField> */}
-                    </Stack>
-                    <Stack
-                        direction="row"
-                        justifyContent="center"
-                        mb={4}
-                        mt={2}
-                    >
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            size="medium"
-                            sx={{ width: "120px" }}
-                            type="submit"
-                        >
-                            Xác Nhận
-                        </Button>
-                    </Stack>
-                </form>
-            </Dialog>
         </div>
     );
 }

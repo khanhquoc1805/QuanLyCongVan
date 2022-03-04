@@ -5,23 +5,24 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as yup from "yup";
+import donViApi, { IDonVi } from "../../API/DonVi";
 import soCVApi from "../../API/SoCV";
 import { useAppDispatch } from "../../App/hooks";
 import { soCVActions } from "../../features/SoCV/SoCVSlice";
 import { ISoCV } from "../../Model/SoCV";
-import { InputField, SelectField } from "../FormField";
+import { InputField, SelectField, SelectOption } from "../FormField";
 import TableManage from "./TableManage";
 
 const initialValue: ISoCV = {
     masocv: "",
     tensocv: "",
     nhomsocv: "",
-    donvi: "",
+    madv: "",
 };
 
 const schema = yup.object().shape({
@@ -31,6 +32,7 @@ const schema = yup.object().shape({
 
 export default function QuanLiSo() {
     const [open, setOpen] = useState<boolean>(false);
+    const [donVi, setDonVi] = useState<[IDonVi]>([{ madv: 1, tendv: "" }]);
     const searchRef = useRef<HTMLInputElement>();
 
     const dispatch = useAppDispatch();
@@ -38,6 +40,16 @@ export default function QuanLiSo() {
         defaultValues: initialValue,
         resolver: yupResolver(schema),
     });
+    useEffect(() => {
+        (async () => {
+            const donvi = await donViApi.getDonVi();
+            setDonVi(donvi);
+        })();
+    }, []);
+    const donViOptions: SelectOption[] = donVi?.map((dv) => ({
+        label: dv.tendv,
+        value: dv.madv,
+    }));
 
     const handleSubmitForm = async (formValues: ISoCV) => {
         try {
@@ -203,31 +215,28 @@ export default function QuanLiSo() {
                             <InputField
                                 name="tensocv"
                                 control={control}
-                                label="Mã Sổ Công Văn"
+                                label="Tên Sổ Công Văn"
                             ></InputField>
                             <SelectField
                                 name="nhomsocv"
                                 control={control}
                                 label="Nhóm sổ công văn"
                                 options={[
-                                    { label: "Văn Bản Đi", value: "Văn Bản Đi" },
-                                    { label: "Văn Bản Đến", value: "Văn Bản Đến" },
+                                    {
+                                        label: "Văn Bản Đi",
+                                        value: "Văn Bản Đi",
+                                    },
+                                    {
+                                        label: "Văn Bản Đến",
+                                        value: "Văn Bản Đến",
+                                    },
                                 ]}
                             ></SelectField>
                             <SelectField
-                                name="donvi"
+                                name="madv"
                                 control={control}
                                 label="Đơn vị"
-                                options={[
-                                    {
-                                        label: "Phòng Kế Hoạch Tổng Hợp",
-                                        value: "Phòng Kế Hoạch Tổng Hợp",
-                                    },
-                                    {
-                                        label: "Khoa Công Nghệ Thông Tin",
-                                        value: "Khoa Công Nghệ Thông Tin",
-                                    },
-                                ]}
+                                options={donViOptions}
                             ></SelectField>
                         </Stack>
                         <Stack
