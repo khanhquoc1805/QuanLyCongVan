@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import DuThaoVanBanDi from "./DuThaoVanBanDi";
 import { Routes, Route } from "react-router-dom";
 import XuLiVanBanDi from "./XuLiVanBanDi";
+import PhatHanhVanBanDi from "./PhatHanhVanBanDi";
 
 interface Props {}
 
@@ -114,20 +115,29 @@ export default function CVdi() {
                         <p>Xử lí văn bản đi</p>
                     </Stack> */}
 
-                    <Stack
-                        direction="row"
-                        spacing={1}
-                        sx={{ cursor: "pointer" }}
+                    <Link
+                        to="phathanhvanbandi"
+                        style={{
+                            textDecoration: "none",
+                            cursor: "pointer",
+                            color: "black",
+                        }}
                     >
-                        <div>
-                            <img
-                                src="/send-svgrepo-com.svg"
-                                alt=""
-                                style={{ width: "20px", height: "20px" }}
-                            />
-                        </div>
-                        <p>Phát hành văn bản đi</p>
-                    </Stack>
+                        <Stack
+                            direction="row"
+                            spacing={1}
+                            sx={{ cursor: "pointer" }}
+                        >
+                            <div>
+                                <img
+                                    src="/send-svgrepo-com.svg"
+                                    alt=""
+                                    style={{ width: "20px", height: "20px" }}
+                                />
+                            </div>
+                            <p>Phát hành văn bản đi</p>
+                        </Stack>
+                    </Link>
                 </Stack>
             </div>
 
@@ -140,6 +150,10 @@ export default function CVdi() {
                     <Route
                         path="/xulivanbandi"
                         element={<XuLiVanBanDi />}
+                    ></Route>
+                    <Route
+                        path="/phathanhvanbandi"
+                        element={<PhatHanhVanBanDi />}
                     ></Route>
                 </Routes>
             </Stack>

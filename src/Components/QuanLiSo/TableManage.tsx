@@ -62,6 +62,7 @@ export default function TableManage() {
     useEffect(() => {
         dispatch(soCVActions.fetchData(filter));
     }, [dispatch, filter]);
+    console.log(pagination);
 
     const handleChange = (e: any, page: number) => {
         dispatch(
