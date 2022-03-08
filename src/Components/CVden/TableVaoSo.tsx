@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -15,6 +15,14 @@ import {
     Stack,
 } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
+import { useAppDispatch, useAppSelector } from "../../App/hooks";
+import {
+    cvDenActions,
+    selectDsCVden,
+    selectFilter,
+    selectPagination,
+} from "../../features/CVDen/CVDenSlice";
+import { getDateFromString } from "../../Utils/getDateFromString";
 
 interface Props {}
 
@@ -49,60 +57,86 @@ function createData(
     return { one, two, three, four, five, six };
 }
 
-const rows = [
-    createData(
-        "4/7/2021",
-        11,
-        "Chính Phủ",
-        "6/4/2019",
-        "Nghị định Quy định về xử lí kỷ luật viên chức và trách nhiệm bồi thường, hoàn trả của viên chức.",
-        "Nhân sự"
-    ),
-    createData(
-        "4/7/2021",
-        11,
-        "Chính Phủ",
-        "6/4/2019",
-        "Nghị định Quy định về xử lí kỷ luật viên chức và trách nhiệm bồi thường, hoàn trả của viên chức.",
-        "Nhân sự"
-    ),
-    createData(
-        "4/7/2021",
-        11,
-        "Chính Phủ",
-        "6/4/2019",
-        "Nghị định Quy định về xử lí kỷ luật viên chức và trách nhiệm bồi thường, hoàn trả của viên chức.",
-        "Nhân sự"
-    ),
-    createData(
-        "4/7/2021",
-        11,
-        "Chính Phủ",
-        "6/4/2019",
-        "Nghị định Quy định về xử lí kỷ luật viên chức và trách nhiệm bồi thường, hoàn trả của viên chức.",
-        "Nhân sự"
-    ),
-    createData(
-        "4/7/2021",
-        11,
-        "Chính Phủ",
-        "6/4/2019",
-        "Nghị định Quy định về xử lí kỷ luật viên chức và trách nhiệm bồi thường, hoàn trả của viên chức.",
-        "Nhân sự"
-    ),
-];
+// const rows = [
+//     createData(
+//         "4/7/2021",
+//         11,
+//         "Chính Phủ",
+//         "6/4/2019",
+//         "Nghị định Quy định về xử lí kỷ luật viên chức và trách nhiệm bồi thường, hoàn trả của viên chức.",
+//         "Nhân sự"
+//     ),
+//     createData(
+//         "4/7/2021",
+//         11,
+//         "Chính Phủ",
+//         "6/4/2019",
+//         "Nghị định Quy định về xử lí kỷ luật viên chức và trách nhiệm bồi thường, hoàn trả của viên chức.",
+//         "Nhân sự"
+//     ),
+//     createData(
+//         "4/7/2021",
+//         11,
+//         "Chính Phủ",
+//         "6/4/2019",
+//         "Nghị định Quy định về xử lí kỷ luật viên chức và trách nhiệm bồi thường, hoàn trả của viên chức.",
+//         "Nhân sự"
+//     ),
+//     createData(
+//         "4/7/2021",
+//         11,
+//         "Chính Phủ",
+//         "6/4/2019",
+//         "Nghị định Quy định về xử lí kỷ luật viên chức và trách nhiệm bồi thường, hoàn trả của viên chức.",
+//         "Nhân sự"
+//     ),
+//     createData(
+//         "4/7/2021",
+//         11,
+//         "Chính Phủ",
+//         "6/4/2019",
+//         "Nghị định Quy định về xử lí kỷ luật viên chức và trách nhiệm bồi thường, hoàn trả của viên chức.",
+//         "Nhân sự"
+//     ),
+// ];
 
 export default function TableVaoSo() {
     const searchRef = useRef<HTMLInputElement>();
+
+    const dispatch = useAppDispatch();
+    const pagination = useAppSelector(selectPagination);
+    const filter = useAppSelector(selectFilter);
+    const dscvden = useAppSelector(selectDsCVden);
+
+    useEffect(() => {
+        (() => {
+            dispatch(cvDenActions.fetchData(filter));
+        })();
+    }, [dispatch, filter]);
+
+    const handleChange = (e: any, page: number) => {
+        dispatch(
+            cvDenActions.setFilter({
+                ...filter,
+                page: page,
+            })
+        );
+    };
+
+    console.log(dscvden);
     return (
         <div>
             <Stack mt={4} mb={3} direction="row" spacing={2}>
-                <FormControl fullWidth variant="outlined" size="small" sx={{ width: "500px" }}>
+                <FormControl
+                    fullWidth
+                    variant="outlined"
+                    size="small"
+                    sx={{ width: "500px" }}
+                >
                     <InputLabel htmlFor="searchByName">
                         Search By Name
                     </InputLabel>
                     <OutlinedInput
-                        
                         label="Search By Name"
                         id="searchByName"
                         //   endAdornment={<SearchIcon />}
@@ -110,7 +144,13 @@ export default function TableVaoSo() {
                         inputRef={searchRef}
                     />
                 </FormControl>
-                <Button variant="outlined" color="secondary" sx={{width: "140px"}}>Tìm Kiếm</Button>
+                <Button
+                    variant="outlined"
+                    color="secondary"
+                    sx={{ width: "140px" }}
+                >
+                    Tìm Kiếm
+                </Button>
             </Stack>
             <TableContainer
                 component={Paper}
@@ -170,7 +210,7 @@ export default function TableVaoSo() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row, index) => (
+                        {dscvden?.map((row, index) => (
                             <StyledTableRow key={index}>
                                 <StyledTableCell
                                     component="th"
@@ -178,30 +218,37 @@ export default function TableVaoSo() {
                                     sx={{ maxWidth: "20px" }}
                                 ></StyledTableCell>
                                 <StyledTableCell align="center">
-                                    {row.one}
+                                    {getDateFromString(
+                                        row.cvden.ngaycvden as Date
+                                    )}
                                 </StyledTableCell>
                                 <StyledTableCell align="center">
-                                    {row.two}
+                                    {row.cvden.soden}
                                 </StyledTableCell>
                                 <StyledTableCell align="left">
-                                    {row.three}
+                                    {row.cvden.coquanbanhanh}
                                 </StyledTableCell>
                                 <StyledTableCell
                                     align="center"
                                     sx={{ maxWidth: "120px" }}
                                 >
-                                    {row.four}
+                                    {" "}
+                                    {getDateFromString(
+                                        row.cvden.ngaybanhanh as Date
+                                    )}
                                 </StyledTableCell>
                                 <StyledTableCell
                                     align="left"
                                     sx={{ maxWidth: "20px" }}
                                 >
-                                    {row.five}
+                                    {row.cvden.tencvden}
                                 </StyledTableCell>
                                 <StyledTableCell align="right">
-                                    {row.six}
+                                    {row.linhvuc.tenlv}
                                 </StyledTableCell>
-                                <StyledTableCell align="right"></StyledTableCell>
+                                <StyledTableCell align="right">
+                                    {row.cvden.nguoiky}
+                                </StyledTableCell>
                                 <StyledTableCell align="center">
                                     <Stack
                                         direction="row"
@@ -274,7 +321,13 @@ export default function TableVaoSo() {
                 </Table>
             </TableContainer>
             <Stack direction="row" justifyContent="center" mt={3}>
-                <Pagination count={10} variant="outlined" shape="rounded" />
+                <Pagination
+                    variant="outlined"
+                    shape="rounded"
+                    count={Math.ceil(pagination.totalRows / pagination.limit)}
+                    page={pagination.page}
+                    onChange={handleChange}
+                />
             </Stack>
         </div>
     );

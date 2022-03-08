@@ -99,7 +99,6 @@ export default function TableCV() {
     dispatch(cvDenActions.fetchData({ page: 1, limit: 5 }));
   }, [dispatch]);
 
-  console.log(dsCVDen);
 
   return (
     <TableContainer

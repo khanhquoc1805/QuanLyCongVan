@@ -322,6 +322,7 @@ export default function PhatHanhVanBanDi() {
             dispatch(soCVActions.fetchData({}));
         })();
     }, [dispatch, filter]);
+    console.log(dscvdi);
 
     const soCVOptions: RadioOption[] = dssocv?.map((scv) => ({
         label: `${scv.tensocv} - ${scv.nhomsocv} - ${scv.donvi?.tendv}`,

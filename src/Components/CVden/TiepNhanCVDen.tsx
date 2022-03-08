@@ -1,13 +1,20 @@
 import { Button, Grid, Stack } from "@mui/material";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { InputField, SelectField } from "../FormField";
+import { InputField, SelectField, SelectOption } from "../FormField";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import donViApi, { IDonVi } from "../../API/DonVi";
+import loaiCVApi, { ILoaiCV } from "../../API/LoaiCV";
+import { selectDsSoCV, soCVActions } from "../../features/SoCV/SoCVSlice";
+import { useAppDispatch, useAppSelector } from "../../App/hooks";
+import linhVucApi, { ILinhVuc } from "../../API/LinhVuc";
+import { getCurrentDate } from "../../Utils/getCurrentDate";
+import cvDenApi from "../../API/CVDen";
+import Alert from "@mui/material/Alert";
 interface TiepNhanCVDen {
-    donvicv: string;
-    loaivanban: string;
+    madv: string;
+    maloai: string;
     sohieugoc: string;
     coquanbanhanh: string;
     ngaybanhanh: string;
@@ -15,52 +22,135 @@ interface TiepNhanCVDen {
     ngaycohieuluc: string;
     ngayhethieuluc: string;
     nguoiky: string;
-    soto: string;
-    taptindinhkem: string;
-    socongvan: string;
+    sotrang: string;
+    dinhkem: File;
+    masocv: string;
     soden: string;
     ngayden: string;
     dokhan: string;
     domat: string;
-    linhvuc: string;
+    malv: string;
     hanxuli: string;
     noinhan: string;
+    [index: string]: any;
 }
 
 const initialValue: TiepNhanCVDen = {
-    donvicv: "",
-    loaivanban: "",
+    madv: "",
+    maloai: "",
     sohieugoc: "",
     coquanbanhanh: "",
-    ngaybanhanh: "2021-02-12",
+    ngaybanhanh: getCurrentDate(),
     trichyeu: "",
-    ngaycohieuluc: "2021-02-12",
-    ngayhethieuluc: "2021-02-12",
+    ngaycohieuluc: getCurrentDate(),
+    ngayhethieuluc: getCurrentDate(),
     nguoiky: "",
-    soto: "",
-    taptindinhkem: "",
-    socongvan: "",
+    sotrang: "",
+    dinhkem: new File([""], ""),
+    masocv: "",
     soden: "",
-    ngayden: "2021-02-12",
+    ngayden: getCurrentDate(),
     dokhan: "",
     domat: "",
-    linhvuc: "",
-    hanxuli: "",
+    malv: "",
+    hanxuli: getCurrentDate(),
     noinhan: "",
 };
 
 const schema = yup.object().shape({
+    madv: yup.string().required("Vui lòng chọn đơn vị."),
+    maloai: yup.string().required("Vui lòng chọn loại văn bản."),
+    coquanbanhanh: yup.string().required("Cơ quan ban hành không được trống."),
     trichyeu: yup.string().required("Trích Yếu Văn Bản Không Được Để Trống"),
+    malv: yup.string().required("Vui lòng chọn lĩnh vực."),
+    masocv: yup.string().required("Vui lòng chọn sổ công văn."),
+    dokhan: yup.string().required("Vui lòng chọn độ khẩn."),
+    domat: yup.string().required("Vui lòng chọn độ mật."),
+    hanxuli: yup
+        .date()
+        .min(getCurrentDate(), "Hạn xử lí phải sau ngày hiện tại"),
 });
 
 export default function TiepNhanCVDen() {
+    const dispatch = useAppDispatch();
+    const dssocv = useAppSelector(selectDsSoCV);
     const { control, handleSubmit } = useForm<TiepNhanCVDen>({
         defaultValues: initialValue,
         resolver: yupResolver(schema),
     });
+    const [alert, setAlert] = useState<boolean>(false);
+
+    const [linhVuc, setLinhVuc] = useState<[ILinhVuc]>([
+        { malv: 1, tenlv: "" },
+    ]);
+    const [donVi, setDonVi] = useState<[IDonVi]>([{ madv: 1, tendv: "" }]);
+    const [loaiCV, setLoaiCV] = useState<[ILoaiCV]>([
+        { maloai: 1, tenloai: "" },
+    ]);
+    const [fileUpload, setFileUpload] = useState<File>(new File([""], ""));
+
+    useEffect(() => {
+        (async () => {
+            const linhvuc = await linhVucApi.getLinhVuc();
+            setLinhVuc(linhvuc);
+            const loaicv = await loaiCVApi.getLoaiCV();
+            setLoaiCV(loaicv);
+            const donvi = await donViApi.getDonVi();
+            setDonVi(donvi);
+            dispatch(soCVActions.fetchData({}));
+        })();
+    }, []);
+
+    const linhVucOptions: SelectOption[] = linhVuc?.map((lv) => ({
+        label: lv.tenlv,
+        value: lv.malv,
+    }));
+    const donViOptions: SelectOption[] = donVi?.map((dv) => ({
+        label: dv.tendv,
+        value: dv.madv,
+    }));
+    const loaiCVOptions: SelectOption[] = loaiCV?.map((lcv) => ({
+        label: lcv.tenloai,
+        value: lcv.maloai,
+    }));
+    const soCVOptions: SelectOption[] = dssocv?.map((scv) => ({
+        label: `${scv.tensocv} - ${scv.nhomsocv} - ${scv.donvi?.tendv}`,
+        value: scv.masocv,
+    }));
+
+    const handleChange = (event: any) => {
+        setFileUpload(event.target.files[0]);
+    };
 
     const handleSubmitForm = async (formValues: TiepNhanCVDen) => {
-        console.log(formValues);
+        formValues.dinhkem = fileUpload;
+        const formData = new FormData();
+        const keys = [
+            "madv",
+            "maloai",
+            "sohieugoc",
+            "coquanbanhanh",
+            "ngaybanhanh",
+            "trichyeu",
+            "ngaycohieuluc",
+            "ngayhethieuluc",
+            "nguoiky",
+            "sotrang",
+            "dinhkem",
+            "masocv",
+            "soden",
+            "ngayden",
+            "dokhan",
+            "domat",
+            "malv",
+            "hanxuli",
+            "noinhan",
+        ];
+
+        keys.forEach((key) => formData.append(key, formValues[key]));
+        const response = await cvDenApi.add(formData);
+        console.log(response);
+        if (response.status === "successfully") setAlert(true);
     };
 
     return (
@@ -69,42 +159,40 @@ export default function TiepNhanCVDen() {
             style={{ marginTop: "24px" }}
         >
             <div
-                style={{ fontSize: "28px", textAlign: "center", color: "blue", fontFamily:"coiny" }}
+                style={{
+                    fontSize: "28px",
+                    textAlign: "center",
+                    color: "blue",
+                    fontFamily: "coiny",
+                }}
             >
                 Tiếp Nhận Văn Bản
             </div>
+            {alert && (
+                <Alert
+                    severity="success"
+                    role="alert"
+                    onClose={() => {
+                        setAlert(false);
+                    }}
+                >
+                    Tiếp nhận văn bản thành công!
+                </Alert>
+            )}
             <Grid container spacing={2} sx={{ width: "80%", margin: "0 auto" }}>
                 <Grid item xs={6}>
                     <Stack>
                         <SelectField
-                            name="donvicv"
+                            name="madv"
                             control={control}
                             label="Đơn Vị"
-                            options={[
-                                {
-                                    label: "Phòng Kế Hoạch Đào Tạo",
-                                    value: "pkhdt",
-                                },
-                                {
-                                    label: "Khoa Công Nghệ Thông Tin",
-                                    value: "cntt",
-                                },
-                            ]}
+                            options={donViOptions}
                         ></SelectField>
                         <SelectField
-                            name="loaivanban"
+                            name="maloai"
                             control={control}
                             label="Loại Văn Bản"
-                            options={[
-                                {
-                                    label: "Biên Bản",
-                                    value: "bb",
-                                },
-                                {
-                                    label: "Nghị Quyết",
-                                    value: "nq",
-                                },
-                            ]}
+                            options={loaiCVOptions}
                         ></SelectField>
 
                         <InputField
@@ -152,33 +240,34 @@ export default function TiepNhanCVDen() {
                                 label="Người Ký"
                             ></InputField>
                             <InputField
-                                name="soto"
+                                name="sotrang"
                                 control={control}
                                 label="Số Tờ"
                             ></InputField>
                         </Stack>
-                        <InputField
-                            name="taptindinhkem"
-                            control={control}
-                            label="Tập Tin Đính Kèm"
-                        ></InputField>
+                        <input
+                            type="file"
+                            style={{ display: "none" }}
+                            id="contained-button-file"
+                            onChange={handleChange}
+                        />
+                        <label htmlFor="contained-button-file">
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                component="span"
+                            >
+                                Upload
+                            </Button>
+                        </label>
                     </Stack>
                 </Grid>
                 <Grid item xs={6}>
                     <SelectField
-                        name="socongvan"
+                        name="masocv"
                         control={control}
                         label="Sổ Công Văn"
-                        options={[
-                            {
-                                label: "SCV2021",
-                                value: "scv2021",
-                            },
-                            {
-                                label: "Sổ Quyết Định",
-                                value: "quyetdinh",
-                            },
-                        ]}
+                        options={soCVOptions}
                     ></SelectField>
                     <InputField
                         name="soden"
@@ -230,11 +319,12 @@ export default function TiepNhanCVDen() {
                             alignItems: "center",
                         }}
                     >
-                        <InputField
-                            name="linhvuc"
+                        <SelectField
+                            name="malv"
                             control={control}
-                            label="Lĩnh Vực"
-                        ></InputField>
+                            label="Lĩnh vực"
+                            options={linhVucOptions}
+                        ></SelectField>
                         <Button
                             variant="outlined"
                             color="primary"
@@ -248,6 +338,7 @@ export default function TiepNhanCVDen() {
                         name="hanxuli"
                         control={control}
                         label="Hạn Xử Lí"
+                        type="date"
                     ></InputField>
                     <InputField
                         name="noinhan"
@@ -265,7 +356,6 @@ export default function TiepNhanCVDen() {
                             Tiếp Tục
                         </Button>
                     </div>
-                    
                 </Grid>
             </Grid>
         </form>
