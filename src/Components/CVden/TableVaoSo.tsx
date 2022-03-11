@@ -57,48 +57,6 @@ function createData(
     return { one, two, three, four, five, six };
 }
 
-// const rows = [
-//     createData(
-//         "4/7/2021",
-//         11,
-//         "Chính Phủ",
-//         "6/4/2019",
-//         "Nghị định Quy định về xử lí kỷ luật viên chức và trách nhiệm bồi thường, hoàn trả của viên chức.",
-//         "Nhân sự"
-//     ),
-//     createData(
-//         "4/7/2021",
-//         11,
-//         "Chính Phủ",
-//         "6/4/2019",
-//         "Nghị định Quy định về xử lí kỷ luật viên chức và trách nhiệm bồi thường, hoàn trả của viên chức.",
-//         "Nhân sự"
-//     ),
-//     createData(
-//         "4/7/2021",
-//         11,
-//         "Chính Phủ",
-//         "6/4/2019",
-//         "Nghị định Quy định về xử lí kỷ luật viên chức và trách nhiệm bồi thường, hoàn trả của viên chức.",
-//         "Nhân sự"
-//     ),
-//     createData(
-//         "4/7/2021",
-//         11,
-//         "Chính Phủ",
-//         "6/4/2019",
-//         "Nghị định Quy định về xử lí kỷ luật viên chức và trách nhiệm bồi thường, hoàn trả của viên chức.",
-//         "Nhân sự"
-//     ),
-//     createData(
-//         "4/7/2021",
-//         11,
-//         "Chính Phủ",
-//         "6/4/2019",
-//         "Nghị định Quy định về xử lí kỷ luật viên chức và trách nhiệm bồi thường, hoàn trả của viên chức.",
-//         "Nhân sự"
-//     ),
-// ];
 
 export default function TableVaoSo() {
     const searchRef = useRef<HTMLInputElement>();

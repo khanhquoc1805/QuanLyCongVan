@@ -19,6 +19,7 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import PreviewDialog from "../../Components/PreviewDialog/PreviewDialog";
 import * as yup from "yup";
 import { useAppDispatch, useAppSelector } from "../../App/hooks";
 import {
@@ -92,6 +93,8 @@ function Row(props: {
     const [open, setOpen] = React.useState(false);
     const filter = useAppSelector(selectFilter);
     const dispatch = useAppDispatch();
+    const [openPreview, setOpenPreview] = useState<boolean>(false);
+    const [url, setUrl] = useState<string>("");
 
     const { control, handleSubmit } = useForm<AddCVVaoSo>({
         defaultValues: initialValue,
@@ -101,6 +104,7 @@ function Row(props: {
     const handleCLickAdd = (code: number) => {
         setMavbdi(code);
         setOpenDialog(true);
+        console.log("asass")
     };
 
     const handleSubmitForm = async (formValues: AddCVVaoSo) => {
@@ -228,6 +232,12 @@ function Row(props: {
                                                         height: "24px",
                                                         cursor: "pointer",
                                                     }}
+                                                    onClick={() => {
+                                                        setOpenPreview(true);
+                                                        setUrl(
+                                                            row.ttbosung.dinhkem
+                                                        );
+                                                    }}
                                                 />
                                             </Stack>
                                         </TableCell>
@@ -301,6 +311,11 @@ function Row(props: {
                     </Stack>
                 </form>
             </Dialog>
+            <PreviewDialog
+                open={openPreview}
+                url={url}
+                setOpen={setOpenPreview}
+            />
         </React.Fragment>
     );
 }
