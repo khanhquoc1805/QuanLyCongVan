@@ -30,6 +30,7 @@ import {
 } from "@mui/material";
 import cvDiApi from "../../API/CVdi";
 import { toast } from "react-toastify";
+import PreviewDialog from "../PreviewDialog/PreviewDialog";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -59,6 +60,8 @@ export default function XuLiVanBanDi() {
     const dscvdi = useAppSelector(selectDsCVDi);
     const [openApproveDialog, setOpenApproveDialog] = useState<boolean>(false);
     const [mavbdi, setMavbdi] = useState<number>(0);
+    const [openPreview, setOpenPreview] = useState<boolean>(false);
+    const [url, setUrl] = useState<string>("");
 
     useEffect(() => {
         (() => {
@@ -253,6 +256,12 @@ export default function XuLiVanBanDi() {
                                                         height: "24px",
                                                         cursor: "pointer",
                                                     }}
+                                                    onClick={() => {
+                                                        setOpenPreview(true);
+                                                        setUrl(
+                                                            row.ttbosung.dinhkem
+                                                        );
+                                                    }}
                                                 />
                                             </Stack>
                                         </StyledTableCell>
@@ -368,6 +377,11 @@ export default function XuLiVanBanDi() {
                     </Button>
                 </DialogActions>
             </Dialog>
+            <PreviewDialog
+                open={openPreview}
+                url={url}
+                setOpen={setOpenPreview}
+            />
         </div>
     );
 }

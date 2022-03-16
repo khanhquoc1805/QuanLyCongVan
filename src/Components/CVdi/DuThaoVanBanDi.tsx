@@ -11,6 +11,7 @@ import { getCurrentDate } from "../../Utils/getCurrentDate";
 import { InputField, SelectField, SelectOption } from "../FormField";
 import FormAddLinhVuc from "./FormAdd/FormAddLinhVuc";
 import FormAddLoaiCV from "./FormAdd/FormAddLoaiCV";
+import Alert from "@mui/material/Alert";
 
 export interface IDuThaoVanBanDi {
     madv: string;
@@ -66,7 +67,7 @@ export default function DuThaoVanBanDi() {
     const [loaiCV, setLoaiCV] = useState<[ILoaiCV]>([
         { maloai: 1, tenloai: "" },
     ]);
-
+    const [alert, setAlert] = useState<boolean>(false);
     const [donVi, setDonVi] = useState<[IDonVi]>([{ madv: 1, tendv: "" }]);
     const [openAddLV, setOpenAddLV] = useState<boolean>(false);
     const [openAddLoaiCV, setOpenAddLoaiCV] = useState<boolean>(false);
@@ -122,6 +123,10 @@ export default function DuThaoVanBanDi() {
         //console.log(formValues);
 
         const response = await cvDiApi.add(formData);
+
+        if(response.status === "successfully") {
+            setAlert(true);
+        }
     };
 
     const handleClickAddLV = () => {
@@ -144,6 +149,17 @@ export default function DuThaoVanBanDi() {
             >
                 Dự Thảo Văn Bản Đi
             </div>
+            {alert && (
+                <Alert
+                    severity="success"
+                    role="alert"
+                    onClose={() => {
+                        setAlert(false);
+                    }}
+                >
+                   Văn bản đã được dự thảo!
+                </Alert>
+            )}
             <Grid container spacing={2} sx={{ width: "80%", margin: "0 auto" }}>
                 <Grid item xs={6}>
                     <SelectField

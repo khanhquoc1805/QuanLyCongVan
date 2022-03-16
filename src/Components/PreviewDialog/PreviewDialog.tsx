@@ -21,7 +21,7 @@ export default function PreviewDialog(props: PreviewDialogProps) {
         >
             <iframe
                 src={
-                    "https://docs.google.com/viewer?url=https://github.com/khanhquoc1805/Server_QLCV/blob/main/" +
+                    "https://docs.google.com/viewer?url=" +
                     url +
                     "&embedded=true"
                 }

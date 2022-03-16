@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -23,6 +23,7 @@ import {
     selectPagination,
 } from "../../features/CVDen/CVDenSlice";
 import { getDateFromString } from "../../Utils/getDateFromString";
+import PreviewDialog from "../PreviewDialog/PreviewDialog";
 
 interface Props {}
 
@@ -57,9 +58,10 @@ function createData(
     return { one, two, three, four, five, six };
 }
 
-
 export default function TableVaoSo() {
     const searchRef = useRef<HTMLInputElement>();
+    const [openPreview, setOpenPreview] = useState<boolean>(false);
+    const [url, setUrl] = useState<string>("");
 
     const dispatch = useAppDispatch();
     const pagination = useAppSelector(selectPagination);
@@ -229,6 +231,10 @@ export default function TableVaoSo() {
                                                 height: "24px",
                                                 cursor: "pointer",
                                             }}
+                                            onClick={() => {
+                                                setOpenPreview(true);
+                                                setUrl(row.ttbosung.dinhkem);
+                                            }}
                                         />
                                     </Stack>
                                 </StyledTableCell>
@@ -287,6 +293,11 @@ export default function TableVaoSo() {
                     onChange={handleChange}
                 />
             </Stack>
+            <PreviewDialog
+                open={openPreview}
+                url={url}
+                setOpen={setOpenPreview}
+            />
         </div>
     );
 }

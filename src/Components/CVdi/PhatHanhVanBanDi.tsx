@@ -104,7 +104,7 @@ function Row(props: {
     const handleCLickAdd = (code: number) => {
         setMavbdi(code);
         setOpenDialog(true);
-        console.log("asass")
+        //console.log("asass");
     };
 
     const handleSubmitForm = async (formValues: AddCVVaoSo) => {
@@ -265,7 +265,13 @@ function Row(props: {
                 </TableCell>
             </TableRow>
 
-            <Dialog open={openDialog} fullWidth>
+            <Dialog
+                open={openDialog}
+                fullWidth
+                onClose={() => {
+                    setOpenDialog(false);
+                }}
+            >
                 <Stack direction="row" justifyContent="space-between">
                     <DialogTitle>Thêm công văn vào sổ</DialogTitle>
                     <Button
