@@ -36,6 +36,7 @@ import { RadioGroupField, RadioOption } from "../FormField";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ResponseStatus } from "../../API/SoCV";
 import cvDiApi from "../../API/CVdi";
+import NhanVienAPI, { NhanVien } from "../../API/NhanVien";
 
 function createData(
     name: string,
@@ -95,11 +96,21 @@ function Row(props: {
     const dispatch = useAppDispatch();
     const [openPreview, setOpenPreview] = useState<boolean>(false);
     const [url, setUrl] = useState<string>("");
+    const [nhanVien, setNhanVien] = useState<[NhanVien]>([
+        { manv: "", tennv: "" },
+    ]);
 
     const { control, handleSubmit } = useForm<AddCVVaoSo>({
         defaultValues: initialValue,
         resolver: yupResolver(schema),
     });
+
+    useEffect(() => {
+        (async () => {
+            const nv: [NhanVien] = await NhanVienAPI.getNhanVien();
+            setNhanVien(nv);
+        })();
+    }, []);
 
     const handleCLickAdd = (code: number) => {
         setMavbdi(code);
@@ -206,7 +217,11 @@ function Row(props: {
                                                 row.cvdi?.ngayvbdi as Date
                                             )}
                                         </TableCell>
-                                        <TableCell align="right"></TableCell>
+                                        <TableCell align="right">
+                                            {nhanVien?.filter(
+                                                (x) => x.manv === row.cvdi.manv
+                                            )[0]?.tennv}
+                                        </TableCell>
                                         <TableCell align="right">
                                             {row.loaicv.tenloai}
                                         </TableCell>
@@ -336,7 +351,7 @@ export default function PhatHanhVanBanDi() {
     const [mavbdi, setMavbdi] = useState<number>(0);
 
     useEffect(() => {
-        (() => {
+        (async () => {
             dispatch(
                 cvDiActions.fetchData({ ...filter, status: "daduyet,davaoso" })
             );

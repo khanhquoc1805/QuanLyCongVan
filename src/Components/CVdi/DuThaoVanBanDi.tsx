@@ -12,6 +12,8 @@ import { InputField, SelectField, SelectOption } from "../FormField";
 import FormAddLinhVuc from "./FormAdd/FormAddLinhVuc";
 import FormAddLoaiCV from "./FormAdd/FormAddLoaiCV";
 import Alert from "@mui/material/Alert";
+import { useAppSelector } from "../../App/hooks";
+import { selectManv } from "../../features/Auth/authSlice";
 
 export interface IDuThaoVanBanDi {
     madv: string;
@@ -24,6 +26,7 @@ export interface IDuThaoVanBanDi {
     sotrang: number;
     thuchientheovanban: string;
     ngayravbdi: string;
+    manv: string;
 }
 
 const initialValue: IDuThaoVanBanDi = {
@@ -37,6 +40,7 @@ const initialValue: IDuThaoVanBanDi = {
     sotrang: 0,
     thuchientheovanban: "",
     ngayravbdi: getCurrentDate(),
+    manv: "",
 };
 
 const schema = yup.object().shape({
@@ -60,6 +64,8 @@ export default function DuThaoVanBanDi() {
         defaultValues: initialValue,
         resolver: yupResolver(schema),
     });
+
+    const manv = localStorage.getItem("manv");
 
     const [linhVuc, setLinhVuc] = useState<[ILinhVuc]>([
         { malv: 1, tenlv: "" },
@@ -120,11 +126,12 @@ export default function DuThaoVanBanDi() {
         formData.append("sotrang", formValues.sotrang.toString());
         formData.append("thuchientheovanban", formValues.thuchientheovanban);
         formData.append("ngayravbdi", formValues.ngayravbdi);
-        //console.log(formValues);
+        formData.append("manv", manv || "");
+        console.log(manv);
 
         const response = await cvDiApi.add(formData);
 
-        if(response.status === "successfully") {
+        if (response.status === "successfully") {
             setAlert(true);
         }
     };
@@ -157,7 +164,7 @@ export default function DuThaoVanBanDi() {
                         setAlert(false);
                     }}
                 >
-                   Văn bản đã được dự thảo!
+                    Văn bản đã được dự thảo!
                 </Alert>
             )}
             <Grid container spacing={2} sx={{ width: "80%", margin: "0 auto" }}>

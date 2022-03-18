@@ -10,10 +10,14 @@ import {
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../../App/hooks";
-import { authActions, selectManv } from "../../features/Auth/authSlice";
+import {
+    authActions,
+    selectBoPhanAuth,
+    selectDonViAuth,
+    selectManv,
+} from "../../features/Auth/authSlice";
 import { InputField } from "../FormField";
-import { NavLink, useNavigate  } from "react-router-dom";
-
+import { NavLink, useNavigate } from "react-router-dom";
 
 export interface Login {
     manv: string;
@@ -28,6 +32,8 @@ const initialValue: Login = {
 export default function LoginPage() {
     const navigate = useNavigate();
     const manv = useAppSelector(selectManv);
+    const bophan = useAppSelector(selectBoPhanAuth);
+    const donvi = useAppSelector(selectDonViAuth);
     const { control, handleSubmit } = useForm<Login>({
         defaultValues: initialValue,
     });
@@ -36,12 +42,12 @@ export default function LoginPage() {
     const handleSubmitForm = async (formValues: Login) => {
         dispatch(authActions.login(formValues));
     };
-
+    console.log(donvi);
     useEffect(() => {
         if (manv !== undefined && manv !== "") {
             navigate("/home");
         }
-    }, [manv])
+    }, [manv]);
 
     return (
         <div

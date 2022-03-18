@@ -1,15 +1,10 @@
-import { Login } from './../../Components/Login/LoginPage';
+import { Login } from "./../../Components/Login/LoginPage";
 
-import {
-    call,
-    delay,
-    fork, take
-} from "@redux-saga/core/effects";
+import { call, delay, fork, take } from "@redux-saga/core/effects";
 import { PayloadAction } from "@reduxjs/toolkit";
 import authApi from "../../API/auth";
 import { authActions, UserPayload } from "./authSlice";
-import { put } from 'redux-saga/effects';
-
+import { put } from "redux-saga/effects";
 
 function* handleLogin(payload: Login) {
     try {
@@ -17,13 +12,15 @@ function* handleLogin(payload: Login) {
         const data: UserPayload = yield call(authApi.login, payload);
         if (data.status === "success") {
             localStorage.setItem("access_token", data.access_token);
+            localStorage.setItem("manv", data.manv);
             const payload: UserPayload = {
                 status: data.status,
-                manv : data.manv,
-                quyen : data.quyen,
+                manv: data.manv,
+                quyen: data.quyen,
                 access_token: data.access_token,
+                bophan: data.bophan,
+                donvi: data.donvi,
             };
-            
 
             yield put(authActions.loginSuccess(payload));
             //yield delay(1500);
@@ -38,10 +35,8 @@ function* handleLogin(payload: Login) {
 
 function* handleLogOut() {
     localStorage.removeItem("access_token");
-    yield put(authActions.logout);   
+    yield put(authActions.logout);
 }
-
-
 
 function* watchLoginFlow() {
     while (true) {
@@ -64,5 +59,3 @@ function* watchLoginFlow() {
 export default function* authSaga() {
     yield fork(watchLoginFlow);
 }
-
-

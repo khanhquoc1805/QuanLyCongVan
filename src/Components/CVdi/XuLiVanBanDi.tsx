@@ -31,6 +31,7 @@ import {
 import cvDiApi from "../../API/CVdi";
 import { toast } from "react-toastify";
 import PreviewDialog from "../PreviewDialog/PreviewDialog";
+import NhanVienAPI from "../../API/NhanVien";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -66,9 +67,11 @@ export default function XuLiVanBanDi() {
     useEffect(() => {
         (() => {
             dispatch(cvDiActions.fetchData(filter));
+            
         })();
     }, [dispatch, filter]);
     
+   
 
     const handleChange = (e: any, page: number) => {
         dispatch(
@@ -216,7 +219,7 @@ export default function XuLiVanBanDi() {
                                         </StyledTableCell>
                                         <StyledTableCell
                                             align="left"
-                                            sx={{ maxWidth: "20px" }}
+                                            sx={{ maxWidth: "200px" }}
                                         >
                                             {row.cvdi.tenvbdi}
                                         </StyledTableCell>
