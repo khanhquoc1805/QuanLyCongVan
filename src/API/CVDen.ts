@@ -7,7 +7,10 @@ const cvDenApi = {
         const url = "/cvden";
         return axiosClient.get(url, { params });
     },
-
+    getCVDenById(macvden: string): Promise<ICVDen> {
+        const url = `/cvden/${macvden}`;
+        return axiosClient.get(url);
+    },
     add(formData: FormData): Promise<any> {
         const url = "/cvden/add";
         return axiosClient.post(url, formData, {

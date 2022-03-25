@@ -7,6 +7,7 @@ import TableVaoSo from "./TableVaoSo";
 import TiepNhanCVDen from "./TiepNhanCVDen";
 import { useAppDispatch, useAppSelector } from "../../App/hooks";
 import { cvDenActions, selectDsCVden } from "../../features/CVDen/CVDenSlice";
+import XuLyVanBanDen from "./XuLyVanBanDen";
 
 export default function CVden() {
     return (
@@ -140,6 +141,10 @@ export default function CVden() {
                     <Route
                         path="/tiepnhanvanbanden"
                         element={<TiepNhanCVDen />}
+                    ></Route>
+                    <Route
+                        path="/vanbandavaoso/:macvden"
+                        element={<XuLyVanBanDen />}
                     ></Route>
                 </Routes>
             </Stack>

@@ -7,6 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
+import { Link, useLocation } from "react-router-dom";
 import {
     Button,
     FormControl,
@@ -243,15 +244,31 @@ export default function TableVaoSo() {
                                         direction="row"
                                         justifyContent="space-evenly"
                                     >
-                                        <img
-                                            src="/forward-svgrepo-com.svg"
-                                            alt=""
+                                        <Link
+                                            to={`${row.cvden.macvden}`}
                                             style={{
-                                                width: "24px",
-                                                height: "24px",
+                                                textDecoration: "none",
                                                 cursor: "pointer",
+                                                color: "black",
                                             }}
-                                        />
+                                        >
+                                            <Stack
+                                                direction="row"
+                                                spacing={1}
+                                                sx={{ cursor: "pointer" }}
+                                            >
+                                                <img
+                                                    src="/forward-svgrepo-com.svg"
+                                                    alt=""
+                                                    style={{
+                                                        width: "24px",
+                                                        height: "24px",
+                                                        cursor: "pointer",
+                                                    }}
+                                                />
+                                            </Stack>
+                                        </Link>
+
                                         <img
                                             src="/medical-records-svgrepo-com.svg"
                                             alt=""

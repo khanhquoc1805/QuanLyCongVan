@@ -22,7 +22,7 @@ export interface BaseCVden {
     ngaybanhanh : Date;
     nguoiky: string;
     xuly: string;
-    hanxuly: string;
+    hanxuli?: string;
     coquanbanhanh: string;
     noinhan: string;
     sohieugoc: string;
