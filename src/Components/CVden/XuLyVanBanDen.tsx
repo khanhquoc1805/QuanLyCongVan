@@ -5,6 +5,8 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import ThongTinCongVan from "./Tabs/ThongTinCongVan";
+import TienTrinhXuLy from "./Tabs/TienTrinhXuLy";
+import XuLy from "./Tabs/XuLy";
 
 //import { makeStyles } from "@mui/styles";
 
@@ -110,10 +112,10 @@ export default function XuLyVanBanDen() {
                 <ThongTinCongVan macvden={macvden} />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                Item Two
+                <XuLy></XuLy>
             </TabPanel>
             <TabPanel value={value} index={2}>
-                Item Three
+                <TienTrinhXuLy></TienTrinhXuLy>
             </TabPanel>
             <TabPanel value={value} index={3}>
                 đơn vị
