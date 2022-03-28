@@ -9,7 +9,8 @@ import PhatHanhVanBanDi from "./PhatHanhVanBanDi";
 interface Props {}
 
 export default function CVdi() {
-    return (
+    const token = localStorage.getItem("access_token");
+    return token ? (
         <div style={{ margin: "0 40px 0 40px" }}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <div
@@ -46,7 +47,10 @@ export default function CVdi() {
                                 <img
                                     src="/home-svgrepo-com.svg"
                                     alt=""
-                                    style={{ width: "20px", height: "20px" }}
+                                    style={{
+                                        width: "20px",
+                                        height: "20px",
+                                    }}
                                 />
                             </div>
                             <p>Trang Chủ</p>
@@ -69,7 +73,10 @@ export default function CVdi() {
                                 <img
                                     src="/add-svgrepo-com.svg"
                                     alt=""
-                                    style={{ width: "20px", height: "20px" }}
+                                    style={{
+                                        width: "20px",
+                                        height: "20px",
+                                    }}
                                 />
                             </div>
                             <p>Dự thảo văn bản đi</p>
@@ -93,7 +100,10 @@ export default function CVdi() {
                                 <img
                                     src="/process-svgrepo-com.svg"
                                     alt=""
-                                    style={{ width: "20px", height: "20px" }}
+                                    style={{
+                                        width: "20px",
+                                        height: "20px",
+                                    }}
                                 />
                             </div>
                             <p>Xử lí văn bản đi</p>
@@ -101,19 +111,19 @@ export default function CVdi() {
                     </Link>
                     {/*  */}
                     {/* <Stack
-                        direction="row"
-                        spacing={1}
-                        sx={{ cursor: "pointer" }}
-                    >
-                        <div>
-                            <img
-                                src="/process-svgrepo-com.svg"
-                                alt=""
-                                style={{ width: "20px", height: "20px" }}
-                            />
-                        </div>
-                        <p>Xử lí văn bản đi</p>
-                    </Stack> */}
+                direction="row"
+                spacing={1}
+                sx={{ cursor: "pointer" }}
+            >
+                <div>
+                    <img
+                        src="/process-svgrepo-com.svg"
+                        alt=""
+                        style={{ width: "20px", height: "20px" }}
+                    />
+                </div>
+                <p>Xử lí văn bản đi</p>
+            </Stack> */}
 
                     <Link
                         to="phathanhvanbandi"
@@ -132,7 +142,10 @@ export default function CVdi() {
                                 <img
                                     src="/send-svgrepo-com.svg"
                                     alt=""
-                                    style={{ width: "20px", height: "20px" }}
+                                    style={{
+                                        width: "20px",
+                                        height: "20px",
+                                    }}
                                 />
                             </div>
                             <p>Phát hành văn bản đi</p>
@@ -158,5 +171,7 @@ export default function CVdi() {
                 </Routes>
             </Stack>
         </div>
+    ) : (
+        <></>
     );
 }

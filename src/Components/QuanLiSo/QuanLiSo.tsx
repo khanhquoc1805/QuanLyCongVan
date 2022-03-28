@@ -31,6 +31,7 @@ const schema = yup.object().shape({
 });
 
 export default function QuanLiSo() {
+    const token = localStorage.getItem("access_token");
     const [open, setOpen] = useState<boolean>(false);
     const [donVi, setDonVi] = useState<[IDonVi]>([{ madv: 1, tendv: "" }]);
     const searchRef = useRef<HTMLInputElement>();
@@ -65,7 +66,7 @@ export default function QuanLiSo() {
         setOpen(false);
     };
 
-    return (
+    return token ? (
         <div style={{ margin: "0 40px 0 40px" }}>
             <div>
                 <div
@@ -259,5 +260,7 @@ export default function QuanLiSo() {
                 </Dialog>
             </div>
         </div>
+    ) : (
+        <></>
     );
 }

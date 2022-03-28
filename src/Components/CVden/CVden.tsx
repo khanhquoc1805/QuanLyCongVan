@@ -10,7 +10,8 @@ import { cvDenActions, selectDsCVden } from "../../features/CVDen/CVDenSlice";
 import XuLyVanBanDen from "./XuLyVanBanDen";
 
 export default function CVden() {
-    return (
+    const token = localStorage.getItem("access_token");
+    return token ? (
         <div style={{ margin: "0 40px 0 40px" }}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <div
@@ -151,5 +152,7 @@ export default function CVden() {
 
             {/* <TableCV></TableCV> */}
         </div>
+    ) : (
+        <></>
     );
 }
