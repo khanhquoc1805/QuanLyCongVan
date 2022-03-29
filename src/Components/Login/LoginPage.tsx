@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../../App/hooks";
 import {
     authActions,
+    selectAccessToken,
     selectBoPhanAuth,
     selectDonViAuth,
     selectManv,
@@ -42,7 +43,6 @@ export default function LoginPage() {
     const handleSubmitForm = async (formValues: Login) => {
         dispatch(authActions.login(formValues));
     };
-    console.log(donvi);
     useEffect(() => {
         if (manv !== undefined && manv !== "") {
             navigate("/home");

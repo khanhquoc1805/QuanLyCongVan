@@ -112,10 +112,10 @@ export default function XuLyVanBanDen() {
                 <ThongTinCongVan macvden={macvden} />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <XuLy></XuLy>
+                <XuLy macvden={macvden}></XuLy>
             </TabPanel>
             <TabPanel value={value} index={2}>
-                <TienTrinhXuLy></TienTrinhXuLy>
+                <TienTrinhXuLy macvden={macvden}></TienTrinhXuLy>
             </TabPanel>
             <TabPanel value={value} index={3}>
                 đơn vị

@@ -45,7 +45,6 @@ export default function ThongTinCongVan(props: { macvden: string }) {
     }, []);
     const ngayden = new Date(`${data?.cvden.ngaycvden}`).toLocaleString();
     const ngaybanhanh = new Date(`${data?.cvden.ngaybanhanh}`).toLocaleString();
-    console.log(ngaybanhanh);
     const hanxuly = new Date(`${data?.cvden.hanxuli}`).toLocaleString();
     const data1: string[] = [
         `${data?.cvden.sohieugoc}`,

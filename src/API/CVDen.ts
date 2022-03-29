@@ -1,5 +1,6 @@
+import { IXuly } from "../Components/CVden/Tabs/XuLy";
 import { ListParams } from "../Model/Commom";
-import { ICVDen } from "../Model/CVDenModel";
+import { ICVDen, InfoXuLy } from "../Model/CVDenModel";
 import axiosClient from "./axiosClient";
 
 const cvDenApi = {
@@ -18,6 +19,15 @@ const cvDenApi = {
                 "Content-Type": "multipart/form-data",
             },
         });
+    },
+    phanCongXuLyCVDen(formValues: IXuly): Promise<any> {
+        const url = "/xuly/add";
+        return axiosClient.post(url, formValues);
+    },
+
+    getInfoXuLy(macvden: string): Promise<[InfoXuLy]> {
+        const url = `/xuly/${macvden}`;
+        return axiosClient.get(url);
     },
 };
 

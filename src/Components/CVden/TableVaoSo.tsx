@@ -25,6 +25,7 @@ import {
 } from "../../features/CVDen/CVDenSlice";
 import { getDateFromString } from "../../Utils/getDateFromString";
 import PreviewDialog from "../PreviewDialog/PreviewDialog";
+import { getDonViFromToken } from "../../Utils/getValueFormToken";
 
 interface Props {}
 
@@ -74,6 +75,16 @@ export default function TableVaoSo() {
             dispatch(cvDenActions.fetchData(filter));
         })();
     }, [dispatch, filter]);
+    console.log(filter);
+
+    useEffect(() => {
+        dispatch(
+            cvDenActions.setFilter({
+                ...filter,
+                madv: getDonViFromToken(),
+            })
+        );
+    }, []);
 
     const handleChange = (e: any, page: number) => {
         dispatch(
@@ -171,94 +182,112 @@ export default function TableVaoSo() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {dscvden?.map((row, index) => (
-                            <StyledTableRow key={index}>
-                                <StyledTableCell
-                                    component="th"
-                                    scope="row"
-                                    sx={{ maxWidth: "20px" }}
-                                ></StyledTableCell>
-                                <StyledTableCell align="center">
-                                    {getDateFromString(
-                                        row.cvden.ngaycvden as Date
-                                    )}
-                                </StyledTableCell>
-                                <StyledTableCell align="center">
-                                    {row.cvden.soden}
-                                </StyledTableCell>
-                                <StyledTableCell align="left">
-                                    {row.cvden.coquanbanhanh}
-                                </StyledTableCell>
-                                <StyledTableCell
-                                    align="center"
-                                    sx={{ maxWidth: "120px" }}
-                                >
-                                    {" "}
-                                    {getDateFromString(
-                                        row.cvden.ngaybanhanh as Date
-                                    )}
-                                </StyledTableCell>
-                                <StyledTableCell
-                                    align="left"
-                                    sx={{ maxWidth: "20px" }}
-                                >
-                                    {row.cvden.tencvden}
-                                </StyledTableCell>
-                                <StyledTableCell align="right">
-                                    {row.linhvuc.tenlv}
-                                </StyledTableCell>
-                                <StyledTableCell align="right">
-                                    {row.cvden.nguoiky}
-                                </StyledTableCell>
-                                <StyledTableCell align="center">
-                                    <Stack
-                                        direction="row"
-                                        justifyContent="space-evenly"
-                                    >
-                                        <img
-                                            src="/download-svgrepo-com.svg"
-                                            alt=""
-                                            style={{
-                                                width: "24px",
-                                                height: "24px",
-                                                cursor: "pointer",
-                                            }}
-                                        />
-                                        <img
-                                            src="/eye-svgrepo-com.svg"
-                                            alt=""
-                                            style={{
-                                                width: "24px",
-                                                height: "24px",
-                                                cursor: "pointer",
-                                            }}
-                                            onClick={() => {
-                                                setOpenPreview(true);
-                                                setUrl(row.ttbosung.dinhkem);
-                                            }}
-                                        />
-                                    </Stack>
-                                </StyledTableCell>
-                                <StyledTableCell align="right">
-                                    <Stack
-                                        direction="row"
-                                        justifyContent="space-evenly"
-                                    >
-                                        <Link
-                                            to={`${row.cvden.macvden}`}
-                                            style={{
-                                                textDecoration: "none",
-                                                cursor: "pointer",
-                                                color: "black",
-                                            }}
+                        {dscvden?.map(
+                            (row, index) =>
+                                row.cvden.macvden !== 0 && (
+                                    <StyledTableRow key={index}>
+                                        <StyledTableCell
+                                            component="th"
+                                            scope="row"
+                                            sx={{ maxWidth: "20px" }}
+                                        ></StyledTableCell>
+                                        <StyledTableCell align="center">
+                                            {getDateFromString(
+                                                row.cvden.ngaycvden as Date
+                                            )}
+                                        </StyledTableCell>
+                                        <StyledTableCell align="center">
+                                            {row.cvden.soden}
+                                        </StyledTableCell>
+                                        <StyledTableCell align="left">
+                                            {row.cvden.coquanbanhanh}
+                                        </StyledTableCell>
+                                        <StyledTableCell
+                                            align="center"
+                                            sx={{ maxWidth: "120px" }}
                                         >
+                                            {" "}
+                                            {getDateFromString(
+                                                row.cvden.ngaybanhanh as Date
+                                            )}
+                                        </StyledTableCell>
+                                        <StyledTableCell
+                                            align="left"
+                                            sx={{ maxWidth: "20px" }}
+                                        >
+                                            {row.cvden.tencvden}
+                                        </StyledTableCell>
+                                        <StyledTableCell align="right">
+                                            {row.linhvuc.tenlv}
+                                        </StyledTableCell>
+                                        <StyledTableCell align="right">
+                                            {row.cvden.nguoiky}
+                                        </StyledTableCell>
+                                        <StyledTableCell align="center">
                                             <Stack
                                                 direction="row"
-                                                spacing={1}
-                                                sx={{ cursor: "pointer" }}
+                                                justifyContent="space-evenly"
                                             >
                                                 <img
-                                                    src="/forward-svgrepo-com.svg"
+                                                    src="/download-svgrepo-com.svg"
+                                                    alt=""
+                                                    style={{
+                                                        width: "24px",
+                                                        height: "24px",
+                                                        cursor: "pointer",
+                                                    }}
+                                                />
+                                                <img
+                                                    src="/eye-svgrepo-com.svg"
+                                                    alt=""
+                                                    style={{
+                                                        width: "24px",
+                                                        height: "24px",
+                                                        cursor: "pointer",
+                                                    }}
+                                                    onClick={() => {
+                                                        setOpenPreview(true);
+                                                        setUrl(
+                                                            row.ttbosung.dinhkem
+                                                        );
+                                                    }}
+                                                />
+                                            </Stack>
+                                        </StyledTableCell>
+                                        <StyledTableCell align="right">
+                                            <Stack
+                                                direction="row"
+                                                justifyContent="space-evenly"
+                                            >
+                                                <Link
+                                                    to={`${row.cvden.macvden}`}
+                                                    style={{
+                                                        textDecoration: "none",
+                                                        cursor: "pointer",
+                                                        color: "black",
+                                                    }}
+                                                >
+                                                    <Stack
+                                                        direction="row"
+                                                        spacing={1}
+                                                        sx={{
+                                                            cursor: "pointer",
+                                                        }}
+                                                    >
+                                                        <img
+                                                            src="/forward-svgrepo-com.svg"
+                                                            alt=""
+                                                            style={{
+                                                                width: "24px",
+                                                                height: "24px",
+                                                                cursor: "pointer",
+                                                            }}
+                                                        />
+                                                    </Stack>
+                                                </Link>
+
+                                                <img
+                                                    src="/medical-records-svgrepo-com.svg"
                                                     alt=""
                                                     style={{
                                                         width: "24px",
@@ -267,37 +296,26 @@ export default function TableVaoSo() {
                                                     }}
                                                 />
                                             </Stack>
-                                        </Link>
-
-                                        <img
-                                            src="/medical-records-svgrepo-com.svg"
-                                            alt=""
-                                            style={{
-                                                width: "24px",
-                                                height: "24px",
-                                                cursor: "pointer",
-                                            }}
-                                        />
-                                    </Stack>
-                                    <div
-                                        style={{
-                                            textAlign: "center",
-                                            marginTop: "4px",
-                                        }}
-                                    >
-                                        <img
-                                            src="/delete-svgrepo-com.svg"
-                                            alt=""
-                                            style={{
-                                                width: "24px",
-                                                height: "24px",
-                                                cursor: "pointer",
-                                            }}
-                                        />
-                                    </div>
-                                </StyledTableCell>
-                            </StyledTableRow>
-                        ))}
+                                            <div
+                                                style={{
+                                                    textAlign: "center",
+                                                    marginTop: "4px",
+                                                }}
+                                            >
+                                                <img
+                                                    src="/delete-svgrepo-com.svg"
+                                                    alt=""
+                                                    style={{
+                                                        width: "24px",
+                                                        height: "24px",
+                                                        cursor: "pointer",
+                                                    }}
+                                                />
+                                            </div>
+                                        </StyledTableCell>
+                                    </StyledTableRow>
+                                )
+                        )}
                     </TableBody>
                 </Table>
             </TableContainer>

@@ -8,8 +8,12 @@ export interface NhanVien {
 
 const NhanVienAPI = {
     getNhanVien(): Promise<[NhanVien]> {
-        const url = "nhanvien";
+        const url = "/nhanvien";
         return axiosClient.post(url);
+    },
+    getNhanVienByMadv(madv: number): Promise<[NhanVien]> {
+        const url = `/nhanvien/${madv}`;
+        return axiosClient.get(url);
     },
 };
 

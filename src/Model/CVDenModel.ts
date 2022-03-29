@@ -1,3 +1,4 @@
+import { StringLocale } from "yup/lib/locale";
 import { ILinhVuc } from "./../API/LinhVuc";
 import { ILoaiCV } from "./../API/LoaiCV";
 import { IDonVi } from "./../API/DonVi";
@@ -19,7 +20,7 @@ export interface BaseCVden {
     ngayracv: Date;
     ngaycvden: Date;
     ngayvaoso: Date;
-    ngaybanhanh : Date;
+    ngaybanhanh: Date;
     nguoiky: string;
     xuly: string;
     hanxuli?: string;
@@ -41,4 +42,21 @@ export interface TTCVden {
     dokhan: string;
     domat: string;
     khac: string;
+}
+
+export interface XuLy {
+    manv: string;
+    macvden: number;
+    trangthai: string;
+    butphe: string;
+    hanxuly: string;
+    vaitro: string;
+}
+interface NV {
+    tennv: string;
+    chucvu: string;
+}
+export interface InfoXuLy {
+    xuly: XuLy;
+    nv: NV;
 }

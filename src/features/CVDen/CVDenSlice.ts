@@ -1,3 +1,4 @@
+import { getDonViFromToken } from "./../../Utils/getValueFormToken";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../App/store";
 import { ListResponse, PaginationParams, ListParams } from "../../Model/Commom";
@@ -67,6 +68,7 @@ const initialState: CVDenState = {
         limit: 2,
         status: "chuaxuly",
         textSearch: "",
+        madv: getDonViFromToken(),
     },
 };
 

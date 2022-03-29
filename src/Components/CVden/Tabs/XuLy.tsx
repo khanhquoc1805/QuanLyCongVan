@@ -5,28 +5,46 @@ import {
     FormControlLabel,
     Radio,
     Button,
+    Grid,
 } from "@mui/material";
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { InputField, SelectField, SelectOption } from "../../FormField";
 import { useForm } from "react-hook-form";
 import { getCurrentDate } from "../../../Utils/getCurrentDate";
+import {
+    getDonViFromToken,
+    getPermission,
+} from "../../../Utils/getValueFormToken";
+import NhanVienAPI, { NhanVien } from "../../../API/NhanVien";
+import cvDenApi from "../../../API/CVDen";
+import Alert from "@mui/material/Alert";
 
-interface IXuly {
-    xulychinh?: string;
-    xulykethop?: string;
-    ykien?: string;
-    nhanxuly?: string;
-    hanxuly?: string;
+export interface IXuly {
+    macvden?: number | string;
+    maxulychinh?: string;
+    maxulykethop?: string;
+    butphexulychinh?: string;
+    butphexulykethop?: string;
+    hanxulychinh?: string;
+    hanxulykethop?: string;
+    hanchuyenxuly?: string;
 }
 
 const initialValue: IXuly = {
-    xulychinh: "",
-    xulykethop: "",
-    ykien: "",
-    nhanxuly: "",
-    hanxuly: getCurrentDate(),
+    maxulychinh: "",
+    maxulykethop: "",
+    butphexulychinh: "",
+    butphexulykethop: "",
+    hanxulychinh: getCurrentDate(),
+    hanxulykethop: getCurrentDate(),
+    hanchuyenxuly :  getCurrentDate(),
 };
-export default function XuLy() {
+export default function XuLy(props: { macvden: string }) {
+    const { macvden } = props;
+    const [nhanvien, setNhanVien] = React.useState<[NhanVien]>([
+        { manv: "", tennv: "" },
+    ]);
+    const [alert, setAlert] = React.useState<boolean>(false);
     const { control, handleSubmit } = useForm<IXuly>({
         defaultValues: initialValue,
     });
@@ -36,12 +54,28 @@ export default function XuLy() {
         setValue((event.target as HTMLInputElement).value);
     };
     const handleSubmitForm = async (formValues: IXuly) => {
-        if (value === "phancong") console.log(formValues);
+        if (value === "phancong") {
+            formValues.macvden = macvden;
+            const add = await cvDenApi.phanCongXuLyCVDen(formValues);
+            if(add.status === "successfully") setAlert(true);
+        }
     };
-    const xuLyChinhOptions: SelectOption[] = [
-        { label: "Cán Bộ 1", value: "cb1" },
-        { label: "Cán Bộ 2", value: "cb2" },
-    ];
+
+    const madv = getDonViFromToken();
+    console.log(madv);
+    useEffect(() => {
+        (async () => {
+            const data = await NhanVienAPI.getNhanVienByMadv(madv);
+            setNhanVien(data);
+        })();
+    }, []);
+    const xuLyChinhOptions: SelectOption[] = nhanvien?.map((nv) => ({
+        label: nv.tennv,
+        value: nv.manv,
+    }));
+
+    const permission = getPermission();
+    //console.log(permission);
     return (
         <form onSubmit={handleSubmit(handleSubmitForm)}>
             <FormControl component="fieldset">
@@ -53,11 +87,13 @@ export default function XuLy() {
                     onChange={handleChange}
                     row
                 >
-                    <FormControlLabel
-                        value="phancong"
-                        control={<Radio />}
-                        label="Phân công xử lý"
-                    />
+                    {permission === "lanhdao" && (
+                        <FormControlLabel
+                            value="phancong"
+                            control={<Radio />}
+                            label="Phân công xử lý"
+                        />
+                    )}
                     <FormControlLabel
                         value="hoanthanh"
                         control={<Radio />}
@@ -70,28 +106,66 @@ export default function XuLy() {
                     />
                 </RadioGroup>
             </FormControl>
-            {value === "phancong" && (
-                <div style={{ width: "50%" }}>
-                    <SelectField
-                        name="xulychinh"
-                        control={control}
-                        label="Xử lý chính"
-                        options={xuLyChinhOptions}
-                    ></SelectField>
-                    <SelectField
-                        name="xulykethop"
-                        control={control}
-                        label="Xử lý kết hợp"
-                        options={xuLyChinhOptions}
-                    ></SelectField>
-                    <InputField
-                        name="ykien"
-                        control={control}
-                        label="Ý Kiến"
-                    ></InputField>
+            {value === "phancong" && permission === "lanhdao" && (
+                <div style={{ width: "90%" }}>
+                    <Grid container spacing={2}>
+                        <Grid item lg={4}>
+                            <SelectField
+                                name="maxulychinh"
+                                control={control}
+                                label="Xử lý chính"
+                                options={xuLyChinhOptions}
+                            ></SelectField>
+                            <SelectField
+                                name="maxulykethop"
+                                control={control}
+                                label="Xử lý kết hợp"
+                                options={xuLyChinhOptions}
+                            ></SelectField>
+                        </Grid>
+                        <Grid item lg={4}>
+                            <InputField
+                                name="butphexulychinh"
+                                control={control}
+                                label="Bút Phê"
+                            ></InputField>
+                            <InputField
+                                name="butphexulykethop"
+                                control={control}
+                                label="Bút Phê"
+                            ></InputField>
+                        </Grid>
+                        <Grid item lg={4}>
+                            <InputField
+                                name="hanxulychinh"
+                                control={control}
+                                label="Hạn xử lý"
+                                type="date"
+                            ></InputField>
+                            <InputField
+                                name="hanxulykethop"
+                                control={control}
+                                label="Hạn xử lý"
+                                type="date"
+                            ></InputField>
+                        </Grid>
+                    </Grid>
+
                     <Button type="submit" variant="outlined" color="primary">
                         Xác nhận
                     </Button>
+
+                    {alert && (
+                        <Alert
+                            severity="success"
+                            role="alert"
+                            onClose={() => {
+                                setAlert(false);
+                            }}
+                        >
+                           Phân công xử lý thành công!
+                        </Alert>
+                    )}
                 </div>
             )}
             {value === "hoanthanh" && (
@@ -118,7 +192,7 @@ export default function XuLy() {
                         options={xuLyChinhOptions}
                     ></SelectField>
                     <InputField
-                        name="hanxuly"
+                        name="hanchuyenxuly"
                         control={control}
                         label="Hạn xử lý"
                         type="date"
