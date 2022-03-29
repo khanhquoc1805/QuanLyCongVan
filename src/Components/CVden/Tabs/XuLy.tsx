@@ -13,11 +13,20 @@ import { useForm } from "react-hook-form";
 import { getCurrentDate } from "../../../Utils/getCurrentDate";
 import {
     getDonViFromToken,
+    getMaNVFromToken,
     getPermission,
 } from "../../../Utils/getValueFormToken";
 import NhanVienAPI, { NhanVien } from "../../../API/NhanVien";
 import cvDenApi from "../../../API/CVDen";
 import Alert from "@mui/material/Alert";
+import {
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Stack,
+} from "@mui/material";
 
 export interface IXuly {
     macvden?: number | string;
@@ -37,13 +46,16 @@ const initialValue: IXuly = {
     butphexulykethop: "",
     hanxulychinh: getCurrentDate(),
     hanxulykethop: getCurrentDate(),
-    hanchuyenxuly :  getCurrentDate(),
+    hanchuyenxuly: getCurrentDate(),
 };
 export default function XuLy(props: { macvden: string }) {
     const { macvden } = props;
     const [nhanvien, setNhanVien] = React.useState<[NhanVien]>([
         { manv: "", tennv: "" },
     ]);
+    const [manv, setManv] = React.useState<string>("");
+    const [openApproveDialog, setOpenApproveDialog] =
+        React.useState<boolean>(false);
     const [alert, setAlert] = React.useState<boolean>(false);
     const { control, handleSubmit } = useForm<IXuly>({
         defaultValues: initialValue,
@@ -57,16 +69,18 @@ export default function XuLy(props: { macvden: string }) {
         if (value === "phancong") {
             formValues.macvden = macvden;
             const add = await cvDenApi.phanCongXuLyCVDen(formValues);
-            if(add.status === "successfully") setAlert(true);
+            if (add.status === "successfully") setAlert(true);
         }
     };
 
     const madv = getDonViFromToken();
-    console.log(madv);
+
     useEffect(() => {
         (async () => {
             const data = await NhanVienAPI.getNhanVienByMadv(madv);
             setNhanVien(data);
+            const manv = getMaNVFromToken();
+            setManv(manv);
         })();
     }, []);
     const xuLyChinhOptions: SelectOption[] = nhanvien?.map((nv) => ({
@@ -76,6 +90,17 @@ export default function XuLy(props: { macvden: string }) {
 
     const permission = getPermission();
     //console.log(permission);
+
+    const handleApproveConfirm = async () => {
+        const process = await cvDenApi.hoanThanhXuLy({
+            manv: manv,
+            macvden: macvden,
+        });
+        if (process.status === "successfully") {
+            setAlert(true);
+            setOpenApproveDialog(false);
+        }
+    };
     return (
         <form onSubmit={handleSubmit(handleSubmitForm)}>
             <FormControl component="fieldset">
@@ -154,18 +179,6 @@ export default function XuLy(props: { macvden: string }) {
                     <Button type="submit" variant="outlined" color="primary">
                         Xác nhận
                     </Button>
-
-                    {alert && (
-                        <Alert
-                            severity="success"
-                            role="alert"
-                            onClose={() => {
-                                setAlert(false);
-                            }}
-                        >
-                           Phân công xử lý thành công!
-                        </Alert>
-                    )}
                 </div>
             )}
             {value === "hoanthanh" && (
@@ -178,7 +191,13 @@ export default function XuLy(props: { macvden: string }) {
                         alignItems: "center",
                     }}
                 >
-                    <Button type="submit" variant="contained" color="secondary">
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => {
+                            setOpenApproveDialog(true);
+                        }}
+                    >
                         Xác nhận hoàn thành xử lý văn bản
                     </Button>
                 </div>
@@ -202,6 +221,57 @@ export default function XuLy(props: { macvden: string }) {
                     </Button>
                 </div>
             )}
+            {alert && (
+                <Alert
+                    severity="success"
+                    role="alert"
+                    onClose={() => {
+                        setAlert(false);
+                    }}
+                >
+                    Phân công xử lý thành công!
+                </Alert>
+            )}
+            <Dialog
+                open={openApproveDialog}
+                // onClose={() => {
+                //     setOpenApproveDialog(false);
+                // }}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    Duyệt văn bản đi
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Bạn có chắc chắn muốn hoàn thành xử lý!
+                        <br /> Thao tác này sẽ không thể hoàn tác nếu bạn đã
+                        chấp thuận!
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        onClick={() => {
+                            setOpenApproveDialog(false);
+                        }}
+                        color="primary"
+                        variant="outlined"
+                    >
+                        Đóng
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            handleApproveConfirm();
+                        }}
+                        color="secondary"
+                        variant="contained"
+                        autoFocus
+                    >
+                        Duyệt
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </form>
     );
 }
