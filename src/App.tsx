@@ -7,6 +7,7 @@ import LoginPage from "./Components/Login/LoginPage";
 import Main from "./Components/Main";
 import PreviewDialog from "./Components/PreviewDialog/PreviewDialog";
 import QuanLiSo from "./Components/QuanLiSo/QuanLiSo";
+import HomeUser from "./Components/QuanTriNguoiDung/HomeUser";
 import { selectAccessToken } from "./features/Auth/authSlice";
 
 function App() {
@@ -21,6 +22,10 @@ function App() {
                     <Route
                         path="/quanlycongvanden/*"
                         element={<CVden />}
+                    ></Route>
+                    <Route
+                        path="/quantringuoidung/*"
+                        element={<HomeUser />}
                     ></Route>
                 </Routes>
             </BrowserRouter>

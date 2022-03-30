@@ -10,12 +10,14 @@ import rootSaga from "./rootSaga";
 import { Action, ThunkAction } from "@reduxjs/toolkit";
 import authReducer from "../features/Auth/authSlice";
 import cvDiReducer from "../features/CVDi/CVDiSlice";
+import userReducer from "../features/User/UserSlice";
 
 const reducer = combineReducers({
     cvden: cvDenReducer,
     socv: soCVReducer,
     auth: authReducer,
     cvdi: cvDiReducer,
+    user: userReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();

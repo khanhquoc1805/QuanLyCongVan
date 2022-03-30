@@ -13,7 +13,9 @@ import {
     cvDenActions,
     selectDsCVden,
     selectFilter,
+    selectPagination,
 } from "../../features/CVDen/CVDenSlice";
+import Pagination from "@mui/material/Pagination";
 import { getDateFromString } from "../../Utils/getDateFromString";
 import PreviewDialog from "../PreviewDialog/PreviewDialog";
 
@@ -24,8 +26,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     },
     [`&.${tableCellClasses.body}`]: {
         fontSize: 15,
-        height: "48px"
-       
+        height: "48px",
     },
 }));
 
@@ -43,6 +44,7 @@ export default function CVDenVaoSo() {
     const searchRef = useRef<HTMLInputElement>();
     const dispatch = useAppDispatch();
     const filter = useAppSelector(selectFilter);
+    const pagination = useAppSelector(selectPagination);
     const dscvden = useAppSelector(selectDsCVden);
     const [openPreview, setOpenPreview] = useState<boolean>(false);
     const [url, setUrl] = useState<string>("");
@@ -54,6 +56,15 @@ export default function CVDenVaoSo() {
             );
         })();
     }, [dispatch, filter]);
+
+    const handleChange = (e: any, page: number) => {
+        dispatch(
+            cvDenActions.setFilter({
+                ...filter,
+                page: page,
+            })
+        );
+    };
     console.log(dscvden);
     return (
         <>
@@ -179,6 +190,17 @@ export default function CVDenVaoSo() {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Stack direction="row" justifyContent="center" mt={3}>
+                <Pagination
+                    variant="outlined"
+                    shape="circular"
+                    count={Math.ceil(pagination.totalRows / pagination.limit)}
+                    page={pagination.page}
+                    onChange={handleChange}
+                    color="primary"
+                    //showLastButton={true}
+                />
+            </Stack>
             <PreviewDialog
                 open={openPreview}
                 url={url}
