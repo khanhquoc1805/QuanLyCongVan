@@ -1,12 +1,10 @@
 import { Stack } from "@mui/material";
-import React, { useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React from "react";
+import { Link, Route, Routes } from "react-router-dom";
+import CVDenCanXuLy from "./CVDenCanXuLy";
+import CVDenVaoSo from "./CVDenVaoSo";
 import TableCV from "./TableCV";
-import { Route, Routes } from "react-router-dom";
-import TableVaoSo from "./TableVaoSo";
 import TiepNhanCVDen from "./TiepNhanCVDen";
-import { useAppDispatch, useAppSelector } from "../../App/hooks";
-import { cvDenActions, selectDsCVden } from "../../features/CVDen/CVDenSlice";
 import XuLyVanBanDen from "./XuLyVanBanDen";
 
 export default function CVden() {
@@ -103,6 +101,30 @@ export default function CVden() {
                     </Link>
 
                     <Link
+                        to="vanbancanxuly"
+                        style={{
+                            textDecoration: "none",
+                            cursor: "pointer",
+                            color: "black",
+                        }}
+                    >
+                        <Stack
+                            direction="row"
+                            spacing={1}
+                            sx={{ cursor: "pointer" }}
+                        >
+                            <div>
+                                <img
+                                    src="/reload-svgrepo-com.svg"
+                                    alt=""
+                                    style={{ width: "20px", height: "20px" }}
+                                />
+                            </div>
+                            <p>Văn bản cần xử lý</p>
+                        </Stack>
+                    </Link>
+
+                    <Link
                         to="vanbandavaoso"
                         style={{
                             textDecoration: "none",
@@ -136,15 +158,19 @@ export default function CVden() {
                         element={<TableCV />}
                     ></Route>
                     <Route
+                        path="/vanbancanxuly"
+                        element={<CVDenCanXuLy />}
+                    ></Route>
+                    <Route
                         path="/vanbandavaoso"
-                        element={<TableVaoSo />}
+                        element={<CVDenVaoSo />}
                     ></Route>
                     <Route
                         path="/tiepnhanvanbanden"
                         element={<TiepNhanCVDen />}
                     ></Route>
                     <Route
-                        path="/vanbandavaoso/:macvden"
+                        path="/vanbancanxuly/:macvden"
                         element={<XuLyVanBanDen />}
                     ></Route>
                 </Routes>

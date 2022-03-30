@@ -60,7 +60,7 @@ function createData(
     return { one, two, three, four, five, six };
 }
 
-export default function TableVaoSo() {
+export default function CVDenCanXuLy() {
     const searchRef = useRef<HTMLInputElement>();
     const [openPreview, setOpenPreview] = useState<boolean>(false);
     const [url, setUrl] = useState<string>("");

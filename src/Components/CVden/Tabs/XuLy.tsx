@@ -54,13 +54,15 @@ export default function XuLy(props: { macvden: string }) {
         { manv: "", tennv: "" },
     ]);
     const [manv, setManv] = React.useState<string>("");
+    const [role, setRole] = React.useState<string>();
+    const [massage, setMassage] = React.useState<string>("");
     const [openApproveDialog, setOpenApproveDialog] =
         React.useState<boolean>(false);
     const [alert, setAlert] = React.useState<boolean>(false);
     const { control, handleSubmit } = useForm<IXuly>({
         defaultValues: initialValue,
     });
-    const [value, setValue] = React.useState("chuyen");
+    const [value, setValue] = React.useState("phancong");
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue((event.target as HTMLInputElement).value);
@@ -69,7 +71,10 @@ export default function XuLy(props: { macvden: string }) {
         if (value === "phancong") {
             formValues.macvden = macvden;
             const add = await cvDenApi.phanCongXuLyCVDen(formValues);
-            if (add.status === "successfully") setAlert(true);
+            if (add.status === "successfully") {
+                setMassage(add.massage);
+                setAlert(true);
+            }
         }
     };
 
@@ -81,8 +86,14 @@ export default function XuLy(props: { macvden: string }) {
             setNhanVien(data);
             const manv = getMaNVFromToken();
             setManv(manv);
+            const quyen = await cvDenApi.xacNhanQuyenXuLy({
+                manv: manv,
+                macvden: macvden,
+            });
+            setRole(quyen.status);
         })();
     }, []);
+    console.log(role);
     const xuLyChinhOptions: SelectOption[] = nhanvien?.map((nv) => ({
         label: nv.tennv,
         value: nv.manv,
@@ -97,6 +108,7 @@ export default function XuLy(props: { macvden: string }) {
             macvden: macvden,
         });
         if (process.status === "successfully") {
+            setMassage(process.massage);
             setAlert(true);
             setOpenApproveDialog(false);
         }
@@ -119,16 +131,22 @@ export default function XuLy(props: { macvden: string }) {
                             label="Phân công xử lý"
                         />
                     )}
-                    <FormControlLabel
-                        value="hoanthanh"
-                        control={<Radio />}
-                        label="Hoàn thành xử lý"
-                    />
-                    <FormControlLabel
-                        value="chuyen"
-                        control={<Radio />}
-                        label="Chuyển xử lý"
-                    />
+                    {role === "successfully" || permission === "lanhdao" ? (
+                        <>
+                            <FormControlLabel
+                                value="hoanthanh"
+                                control={<Radio />}
+                                label="Hoàn thành xử lý"
+                            />
+                            <FormControlLabel
+                                value="chuyen"
+                                control={<Radio />}
+                                label="Chuyển xử lý"
+                            />
+                        </>
+                    ) : (
+                        <></>
+                    )}
                 </RadioGroup>
             </FormControl>
             {value === "phancong" && permission === "lanhdao" && (
@@ -223,13 +241,14 @@ export default function XuLy(props: { macvden: string }) {
             )}
             {alert && (
                 <Alert
+                    variant="filled"
                     severity="success"
                     role="alert"
                     onClose={() => {
                         setAlert(false);
                     }}
                 >
-                    Phân công xử lý thành công!
+                    <strong> {massage}</strong>
                 </Alert>
             )}
             <Dialog

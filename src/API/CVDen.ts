@@ -33,6 +33,13 @@ const cvDenApi = {
         const url = "/xuly/hoanthanhxuly";
         return axiosClient.post(url, formValue);
     },
+    xacNhanQuyenXuLy(formvalue: {
+        manv: string;
+        macvden: string;
+    }): Promise<any> {
+        const url = "/xuly/thongtinxuly/xacnhanquyenxuly";
+        return axiosClient.post(url, formvalue);
+    },
 };
 
 export default cvDenApi;
