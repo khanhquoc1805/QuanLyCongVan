@@ -18,10 +18,10 @@ const initUser: IUser = {
         diachi: "",
         sdt: "",
         chucvu: "",
-        password: "",
+        matkhau: "",
         quyen: "",
         mabp: "",
-        madv: 0,
+        madv: "",
     },
     bophan: {
         mabp: "",
@@ -38,12 +38,12 @@ const initialState: UserState = {
     dsnv: [initUser],
     pagination: {
         page: 1,
-        limit: 6,
+        limit: 10,
         totalRows: 23,
     },
     filter: {
         page: 1,
-        limit: 5,
+        limit: 9,
     },
 };
 

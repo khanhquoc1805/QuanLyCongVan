@@ -7,10 +7,10 @@ export interface BaseNV {
     diachi: string;
     sdt: string;
     chucvu: string;
-    password: string;
-    quyen: string;
-    mabp: string;
-    madv: number;
+    matkhau: string;
+    quyen?: string;
+    mabp?: string;
+    madv: string;
 }
 
 interface BPhan {
@@ -20,6 +20,6 @@ interface BPhan {
 
 export interface IUser {
     nv: BaseNV;
-    bophan: BPhan;
+    bophan?: BPhan;
     donvi: IDonVi;
 }

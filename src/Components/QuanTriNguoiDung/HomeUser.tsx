@@ -17,6 +17,10 @@ import {
     selectUserFilter,
     userActions,
 } from "../../features/User/UserSlice";
+import { BaseNV, IUser } from "../../Model/User";
+import AddUserForm from "./AddUserForm";
+import { getCurrentDate, getDefaultBirthDay } from "../../Utils/getCurrentDate";
+import userApi from "../../API/User";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -57,8 +61,27 @@ export default function HomeUser() {
             })
         );
     };
+    const initialValue: BaseNV = {
+        manv: "",
+        tennv: "",
+        ngaysinh: getDefaultBirthDay(),
+        diachi: "",
+        sdt: "",
+        chucvu: "",
+        matkhau: "",
+        quyen: "",
+        mabp: "",
+        madv: "",
+    };
 
-    console.log(dsnv);
+    const handleStudentFormSubmit = async (formValues: BaseNV) => {
+        console.log(formValues);
+        const response = await userApi.addUser(formValues);
+        if (response.status === "successfully") {
+            dispatch(userActions.fetchUserList({ ...filter }));
+        }
+    };
+    console.log(getDefaultBirthDay());
     return (
         <div style={{ margin: "0 40px 0 40px" }}>
             <div>
@@ -109,80 +132,79 @@ export default function HomeUser() {
                             </Stack>
                         </Link>
                     </Stack>
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        sx={{
-                            position: "absolute",
-                            right: "40px",
-                            top: "72px",
-                        }}
-                        // onClick={() => {
-                        //     setOpen(true);
-                        // }}
-                    >
-                        Thêm Mới
-                    </Button>
                 </div>
-                <div style={{marginTop: "64px", maxWidth: "50%"}}>
-                    <TableContainer
-                        component={Paper}
-                        sx={{  }}
-                    >
-                        <Table aria-label="customized table">
-                            <TableHead>
-                                <TableRow>
-                                    <StyledTableCell sx={{ maxWidth: "20px" }}>
-                                        STT
-                                    </StyledTableCell>
-                                    <StyledTableCell align="center">
-                                        Mã cán bộ
-                                    </StyledTableCell>
-                                    <StyledTableCell align="center">
-                                        Tên cán bộ
-                                    </StyledTableCell>
-                                    <StyledTableCell align="center">
-                                        Đơn vị
-                                    </StyledTableCell>
-                                    <StyledTableCell align="center">
-                                        Chức vụ
-                                    </StyledTableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {dsnv.map((row, index) => (
-                                    <StyledTableRow key={index}>
-                                        <StyledTableCell>
-                                            {index + 1}
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-evenly",
+                    }}
+                >
+                    <div style={{ marginTop: "64px" }}>
+                        <TableContainer component={Paper} sx={{}}>
+                            <Table aria-label="customized table">
+                                <TableHead>
+                                    <TableRow>
+                                        <StyledTableCell
+                                            sx={{ maxWidth: "20px" }}
+                                        >
+                                            STT
                                         </StyledTableCell>
                                         <StyledTableCell align="center">
-                                            {row.nv.manv}
+                                            Mã cán bộ
                                         </StyledTableCell>
                                         <StyledTableCell align="center">
-                                            {row.nv.tennv}
+                                            Tên cán bộ
                                         </StyledTableCell>
                                         <StyledTableCell align="center">
-                                            {row.donvi.tendv}
+                                            Đơn vị
                                         </StyledTableCell>
                                         <StyledTableCell align="center">
-                                            {row.bophan.tenbp}
+                                            Chức vụ
                                         </StyledTableCell>
-                                    </StyledTableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    <Stack justifyContent="center" mt={5} direction="row">
-                        <Pagination
-                            variant="outlined"
-                            color="secondary"
-                            count={Math.ceil(
-                                pagination.totalRows / pagination.limit
-                            )}
-                            page={pagination.page}
-                            onChange={handleChange}
-                        />
-                    </Stack>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {dsnv.map((row, index) => (
+                                        <StyledTableRow key={index}>
+                                            <StyledTableCell>
+                                                {index + 1}
+                                            </StyledTableCell>
+                                            <StyledTableCell align="center">
+                                                {row.nv.manv}
+                                            </StyledTableCell>
+                                            <StyledTableCell align="center">
+                                                {row.nv.tennv}
+                                            </StyledTableCell>
+                                            <StyledTableCell align="center">
+                                                {row.donvi.tendv}
+                                            </StyledTableCell>
+                                            <StyledTableCell align="center">
+                                                {row.nv?.chucvu}
+                                            </StyledTableCell>
+                                        </StyledTableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                        <Stack justifyContent="center" mt={5} direction="row">
+                            <Pagination
+                                variant="outlined"
+                                color="secondary"
+                                count={Math.ceil(
+                                    pagination.totalRows / pagination.limit
+                                )}
+                                page={pagination.page}
+                                onChange={handleChange}
+                            />
+                        </Stack>
+                    </div>
+                    <div style={{ marginTop: "44px", maxWidth: "40%" }}>
+                        <AddUserForm
+                            initialValue={initialValue}
+                            onSubmit={handleStudentFormSubmit}
+                        ></AddUserForm>
+                    </div>
                 </div>
             </div>
         </div>
