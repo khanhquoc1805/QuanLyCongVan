@@ -14,6 +14,8 @@ import FormAddLoaiCV from "./FormAdd/FormAddLoaiCV";
 import Alert from "@mui/material/Alert";
 import { useAppSelector } from "../../App/hooks";
 import { selectManv } from "../../features/Auth/authSlice";
+import { DonutLargeTwoTone } from "@mui/icons-material";
+import { getDonViFromToken } from "../../Utils/getValueFormToken";
 
 export interface IDuThaoVanBanDi {
     madv: string;
@@ -107,6 +109,9 @@ export default function DuThaoVanBanDi() {
         label: dv.tendv,
         value: dv.madv,
     }));
+    const donViDefault = donViOptions.filter(
+        (x) => x.value === getDonViFromToken()
+    );
 
     const handleChange = (event: any) => {
         setFileUpload(event.target.files[0]);
@@ -171,9 +176,10 @@ export default function DuThaoVanBanDi() {
                 <Grid item xs={6}>
                     <SelectField
                         name="madv"
+                        selected={donViDefault[0]}
                         control={control}
                         label="Đơn Vị"
-                        options={donViOptions}
+                        options={donViDefault}
                     ></SelectField>
                     <div
                         style={{

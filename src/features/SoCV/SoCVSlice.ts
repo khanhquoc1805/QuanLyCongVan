@@ -2,6 +2,7 @@ import { ISoCV } from "../../Model/SoCV";
 import { ListResponse, PaginationParams, ListParams } from "../../Model/Commom";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../App/store";
+import { getDonViFromToken } from "../../Utils/getValueFormToken";
 
 export interface SoCVState {
     dssocv: [ISoCV];

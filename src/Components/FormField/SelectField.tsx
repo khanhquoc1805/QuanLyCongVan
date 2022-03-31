@@ -14,6 +14,7 @@ interface SelectProps {
     label?: string;
     disable?: boolean;
     options: SelectOption[];
+    selected?: SelectOption;
 }
 
 export interface SelectOption {
@@ -22,7 +23,7 @@ export interface SelectOption {
 }
 
 export function SelectField(props: SelectProps) {
-    const { name, control, label, disable, options } = props;
+    const { name, control, label, disable, options, selected } = props;
 
     const {
         field: { value, onChange, onBlur },

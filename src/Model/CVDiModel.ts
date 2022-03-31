@@ -6,11 +6,10 @@ import { TTCVden } from "./CVDenModel";
 export interface ICVDi {
     cvdi: BaseCVDi;
     ttbosung: TTCVden; // thong tin bo sung cho den va di la nhu nhau nen dung chung interface
+    loaicv: ILoaiCV;
     donvi: IDonVi;
-    loaicv : ILoaiCV;
     linhvuc: ILinhVuc;
 }
-
 
 export interface BaseCVDi {
     mavbdi: number;
@@ -30,3 +29,5 @@ export interface BaseCVDi {
     malv?: number;
     madv?: number;
 }
+
+

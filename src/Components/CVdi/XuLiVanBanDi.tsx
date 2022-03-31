@@ -32,6 +32,7 @@ import cvDiApi from "../../API/CVdi";
 import { toast } from "react-toastify";
 import PreviewDialog from "../PreviewDialog/PreviewDialog";
 import NhanVienAPI from "../../API/NhanVien";
+import { getDonViFromToken } from "../../Utils/getValueFormToken";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -67,11 +68,10 @@ export default function XuLiVanBanDi() {
     useEffect(() => {
         (() => {
             dispatch(cvDiActions.fetchData(filter));
-            
         })();
-    }, [dispatch, filter]);
-    
-   
+    }, [dispatch, filter, token]);
+
+    console.log(dscvdi);
 
     const handleChange = (e: any, page: number) => {
         dispatch(
@@ -189,114 +189,137 @@ export default function XuLiVanBanDi() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {dscvdi.map(
-                            (row, index) =>
-                                row.cvdi.ttxuly === "chuaxuly" && (
-                                    <StyledTableRow key={index}>
-                                        <StyledTableCell
-                                            component="th"
-                                            scope="row"
-                                            sx={{ maxWidth: "20px" }}
-                                        ></StyledTableCell>
-                                        <StyledTableCell align="center">
-                                            {getDateFromString(
-                                                row.cvdi?.ngayvbdi as Date
-                                            )}
-                                        </StyledTableCell>
-                                        <StyledTableCell align="center">
-                                            {getDateFromString(
-                                                row.cvdi?.ngayravbdi as Date
-                                            )}
-                                        </StyledTableCell>
-                                        <StyledTableCell align="left">
-                                            {row.donvi.tendv}
-                                        </StyledTableCell>
-                                        <StyledTableCell
-                                            align="left"
-                                            sx={{ maxWidth: "120px" }}
-                                        >
-                                            {row.loaicv.tenloai}
-                                        </StyledTableCell>
-                                        <StyledTableCell
-                                            align="left"
-                                            sx={{ maxWidth: "200px" }}
-                                        >
-                                            {row.cvdi.tenvbdi}
-                                        </StyledTableCell>
-                                        <StyledTableCell align="right">
-                                            {row.linhvuc.tenlv}
-                                        </StyledTableCell>
-                                        <StyledTableCell align="right">
-                                            <Box
-                                                color={getColorProcess(
-                                                    row.cvdi.ttxuly
+                        {dscvdi.length > 0 &&
+                            dscvdi?.map(
+                                (row, index) =>
+                                    row.cvdi.ttxuly === "chuaxuly" &&
+                                    row.donvi.madv === getDonViFromToken() && (
+                                        <StyledTableRow key={index}>
+                                            <StyledTableCell
+                                                component="th"
+                                                scope="row"
+                                                sx={{ maxWidth: "20px" }}
+                                            ></StyledTableCell>
+                                            <StyledTableCell align="center">
+                                                {getDateFromString(
+                                                    row.cvdi?.ngayvbdi as Date
                                                 )}
-                                            >
-                                                {getProcessState(
-                                                    row.cvdi.ttxuly
+                                            </StyledTableCell>
+                                            <StyledTableCell align="center">
+                                                {getDateFromString(
+                                                    row.cvdi?.ngayravbdi as Date
                                                 )}
-                                            </Box>
-                                        </StyledTableCell>
-                                        <StyledTableCell align="center">
-                                            <Stack
-                                                direction="row"
-                                                justifyContent="space-evenly"
+                                            </StyledTableCell>
+                                            <StyledTableCell align="left">
+                                                {row.donvi.tendv}
+                                            </StyledTableCell>
+                                            <StyledTableCell
+                                                align="left"
+                                                sx={{ maxWidth: "120px" }}
                                             >
-                                                <img
-                                                    src="/download-svgrepo-com.svg"
-                                                    alt=""
-                                                    style={{
-                                                        width: "24px",
-                                                        height: "24px",
-                                                        cursor: "pointer",
-                                                    }}
-                                                />
-                                                <img
-                                                    src="/eye-svgrepo-com.svg"
-                                                    alt=""
-                                                    style={{
-                                                        width: "24px",
-                                                        height: "24px",
-                                                        cursor: "pointer",
-                                                    }}
-                                                    onClick={() => {
-                                                        setOpenPreview(true);
-                                                        setUrl(
-                                                            row.ttbosung.dinhkem
-                                                        );
-                                                    }}
-                                                />
-                                            </Stack>
-                                        </StyledTableCell>
-                                        <StyledTableCell align="right">
-                                            <Stack
-                                                direction="row"
-                                                justifyContent="space-evenly"
+                                                {row.loaicv.tenloai}
+                                            </StyledTableCell>
+                                            <StyledTableCell
+                                                align="left"
+                                                sx={{ maxWidth: "200px" }}
                                             >
-                                                {" "}
-                                                <div>
+                                                {row.cvdi.tenvbdi}
+                                            </StyledTableCell>
+                                            <StyledTableCell align="right">
+                                                {row.linhvuc.tenlv}
+                                            </StyledTableCell>
+                                            <StyledTableCell align="right">
+                                                <Box
+                                                    color={getColorProcess(
+                                                        row.cvdi.ttxuly
+                                                    )}
+                                                >
+                                                    {getProcessState(
+                                                        row.cvdi.ttxuly
+                                                    )}
+                                                </Box>
+                                            </StyledTableCell>
+                                            <StyledTableCell align="center">
+                                                <Stack
+                                                    direction="row"
+                                                    justifyContent="space-evenly"
+                                                >
                                                     <img
+                                                        src="/download-svgrepo-com.svg"
+                                                        alt=""
+                                                        style={{
+                                                            width: "24px",
+                                                            height: "24px",
+                                                            cursor: "pointer",
+                                                        }}
+                                                    />
+                                                    <img
+                                                        src="/eye-svgrepo-com.svg"
+                                                        alt=""
+                                                        style={{
+                                                            width: "24px",
+                                                            height: "24px",
+                                                            cursor: "pointer",
+                                                        }}
                                                         onClick={() => {
-                                                            setMavbdi(
-                                                                row.cvdi.mavbdi
-                                                            );
-                                                            setOpenApproveDialog(
+                                                            setOpenPreview(
                                                                 true
                                                             );
-                                                        }}
-                                                        src="/forward-svgrepo-com.svg"
-                                                        alt=""
-                                                        style={{
-                                                            width: "24px",
-                                                            height: "24px",
-                                                            cursor: "pointer",
+                                                            setUrl(
+                                                                row.ttbosung
+                                                                    .dinhkem
+                                                            );
                                                         }}
                                                     />
-                                                </div>
-                                                <div>
+                                                </Stack>
+                                            </StyledTableCell>
+                                            <StyledTableCell align="right">
+                                                <Stack
+                                                    direction="row"
+                                                    justifyContent="space-evenly"
+                                                >
                                                     {" "}
+                                                    <div>
+                                                        <img
+                                                            onClick={() => {
+                                                                setMavbdi(
+                                                                    row.cvdi
+                                                                        .mavbdi
+                                                                );
+                                                                setOpenApproveDialog(
+                                                                    true
+                                                                );
+                                                            }}
+                                                            src="/forward-svgrepo-com.svg"
+                                                            alt=""
+                                                            style={{
+                                                                width: "24px",
+                                                                height: "24px",
+                                                                cursor: "pointer",
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        {" "}
+                                                        <img
+                                                            src="/medical-records-svgrepo-com.svg"
+                                                            alt=""
+                                                            style={{
+                                                                width: "24px",
+                                                                height: "24px",
+                                                                cursor: "pointer",
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </Stack>
+                                                <div
+                                                    style={{
+                                                        textAlign: "center",
+                                                        marginTop: "4px",
+                                                    }}
+                                                >
                                                     <img
-                                                        src="/medical-records-svgrepo-com.svg"
+                                                        src="/delete-svgrepo-com.svg"
                                                         alt=""
                                                         style={{
                                                             width: "24px",
@@ -305,27 +328,10 @@ export default function XuLiVanBanDi() {
                                                         }}
                                                     />
                                                 </div>
-                                            </Stack>
-                                            <div
-                                                style={{
-                                                    textAlign: "center",
-                                                    marginTop: "4px",
-                                                }}
-                                            >
-                                                <img
-                                                    src="/delete-svgrepo-com.svg"
-                                                    alt=""
-                                                    style={{
-                                                        width: "24px",
-                                                        height: "24px",
-                                                        cursor: "pointer",
-                                                    }}
-                                                />
-                                            </div>
-                                        </StyledTableCell>
-                                    </StyledTableRow>
-                                )
-                        )}
+                                            </StyledTableCell>
+                                        </StyledTableRow>
+                                    )
+                            )}
                     </TableBody>
                 </Table>
             </TableContainer>
@@ -338,7 +344,6 @@ export default function XuLiVanBanDi() {
                     shape="rounded"
                 />
             </Stack>
-           
 
             <Dialog
                 open={openApproveDialog}

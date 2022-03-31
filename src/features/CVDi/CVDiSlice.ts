@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../App/store";
 import { ListParams, ListResponse, PaginationParams } from "../../Model/Commom";
 import { ICVDi } from "../../Model/CVDiModel";
+import { getDonViFromToken } from "../../Utils/getValueFormToken";
 
 export interface CVDiState {
     dscvdi: [ICVDi];
@@ -36,13 +37,13 @@ const initCVDiState: ICVDi = {
         domat: " string",
         khac: "string",
     },
-    donvi: {
-        madv: 0,
-        tendv: "",
-    },
     loaicv: {
         maloai: 0,
         tenloai: "",
+    },
+    donvi: {
+        madv: 0,
+        tendv: "",
     },
     linhvuc: {
         malv: 0,
@@ -54,14 +55,15 @@ const initialState: CVDiState = {
     dscvdi: [initCVDiState],
     pagination: {
         page: 1,
-        limit: 6,
-        totalRows: 10,
+        limit: 5,
+        totalRows: 4,
     },
     filter: {
         page: 1,
         limit: 5,
         status: "chuaxuly",
         textSearch: "",
+        madv: getDonViFromToken(),
     },
 };
 
@@ -77,8 +79,7 @@ const cvDiSlice = createSlice({
         setFilter(state, action: PayloadAction<ListParams>) {
             state.filter = action.payload;
         },
-        setFilterWithDebounce(state, action: PayloadAction<ListParams>) {
-        },
+        setFilterWithDebounce(state, action: PayloadAction<ListParams>) {},
     },
 });
 
