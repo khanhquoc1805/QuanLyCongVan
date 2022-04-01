@@ -5,6 +5,7 @@ import DuThaoVanBanDi from "./DuThaoVanBanDi";
 import { Routes, Route } from "react-router-dom";
 import XuLiVanBanDi from "./XuLiVanBanDi";
 import PhatHanhVanBanDi from "./PhatHanhVanBanDi";
+import MainXuLyCVDi from "./Tabs/MainXuLyCVDi";
 
 interface Props {}
 
@@ -167,6 +168,10 @@ export default function CVdi() {
                     <Route
                         path="/phathanhvanbandi"
                         element={<PhatHanhVanBanDi />}
+                    ></Route>
+                    <Route
+                        path="/xulivanbandi/:mavbdi"
+                        element={<MainXuLyCVDi />}
                     ></Route>
                 </Routes>
             </Stack>

@@ -33,6 +33,7 @@ import { toast } from "react-toastify";
 import PreviewDialog from "../PreviewDialog/PreviewDialog";
 import NhanVienAPI from "../../API/NhanVien";
 import { getDonViFromToken } from "../../Utils/getValueFormToken";
+import { Link } from "react-router-dom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -69,7 +70,7 @@ export default function XuLiVanBanDi() {
         (() => {
             dispatch(cvDiActions.fetchData(filter));
         })();
-    }, [dispatch, filter, token]);
+    }, [dispatch, filter]);
 
     console.log(dscvdi);
 
@@ -299,18 +300,33 @@ export default function XuLiVanBanDi() {
                                                             }}
                                                         />
                                                     </div>
-                                                    <div>
-                                                        {" "}
-                                                        <img
-                                                            src="/medical-records-svgrepo-com.svg"
-                                                            alt=""
-                                                            style={{
-                                                                width: "24px",
-                                                                height: "24px",
+                                                    <Link
+                                                        to={`${row.cvdi.mavbdi}`}
+                                                        style={{
+                                                            textDecoration:
+                                                                "none",
+                                                            cursor: "pointer",
+                                                            color: "black",
+                                                        }}
+                                                    >
+                                                        <Stack
+                                                            direction="row"
+                                                            spacing={1}
+                                                            sx={{
                                                                 cursor: "pointer",
                                                             }}
-                                                        />
-                                                    </div>
+                                                        >
+                                                            <img
+                                                                src="/process-svgrepo-com.svg"
+                                                                alt=""
+                                                                style={{
+                                                                    width: "24px",
+                                                                    height: "24px",
+                                                                    cursor: "pointer",
+                                                                }}
+                                                            />
+                                                        </Stack>
+                                                    </Link>
                                                 </Stack>
                                                 <div
                                                     style={{
