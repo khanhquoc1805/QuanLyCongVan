@@ -1,5 +1,6 @@
 export const getProcessState = (str: string): string => {
     if (str === "chuaxuly") return "Chưa Xử lý";
+    if (str === "hoanthanhxuly") return "<b>Đã xử lý</b>";
     if (str === "daduyet") return "<b>Đã xử lý</b>";
     if (str === "davaoso") return "<b>Đã vào sổ<br />Chờ phát hành</b>";
 

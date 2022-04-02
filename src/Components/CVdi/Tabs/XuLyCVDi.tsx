@@ -1,24 +1,32 @@
-import React, { ChangeEvent, ReactElement } from "react";
 import {
-    FormControl,
-    FormLabel,
-    RadioGroup,
-    FormControlLabel,
-    Radio,
     Button,
-    Grid,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    FormControl,
+    FormControlLabel,
+    FormLabel,
+    Radio,
+    RadioGroup,
 } from "@mui/material";
-import { InputField, SelectField, SelectOption } from "../../FormField";
-import { useForm } from "react-hook-form";
-import { getCurrentDate } from "../../../Utils/getCurrentDate";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import cvDiApi from "../../../API/CVdi";
 import donViApi, { IDonVi } from "../../../API/DonVi";
 import NhanVienAPI, { NhanVien } from "../../../API/NhanVien";
-import cvDiApi from "../../../API/CVdi";
+import { getCurrentDate } from "../../../Utils/getCurrentDate";
+import Alert from "@mui/material/Alert";
+import {
+    getMaNVFromToken,
+    getPermission,
+} from "../../../Utils/getValueFormToken";
+import { InputField, SelectField, SelectOption } from "../../FormField";
 
 export interface IXuLyCVDi {
     mavbdi: string;
@@ -41,6 +49,12 @@ export default function XuLyCVDi(props: { mavbdi: string }) {
     const [value, setValue] = React.useState("phancong");
     const [donvi, setDonVi] = React.useState<[IDonVi]>();
     const [nhanvien, setNhanVien] = React.useState<[NhanVien]>();
+    const [manv, setManv] = React.useState<string>("");
+    const [role, setRole] = React.useState<string>();
+    const [alert, setAlert] = React.useState<boolean>(false);
+    const [massage, setMassage] = React.useState<string>("");
+    const [openApproveDialog, setOpenApproveDialog] =
+        React.useState<boolean>(false);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue((event.target as HTMLInputElement).value);
@@ -51,9 +65,16 @@ export default function XuLyCVDi(props: { mavbdi: string }) {
         (async () => {
             const dv = await donViApi.getDonVi();
             setDonVi(dv);
+            const manv = getMaNVFromToken();
+            setManv(manv);
+            const per = await cvDiApi.xacNhanQuyenXuLyCVDi({
+                manv: manv,
+                mavbdi: mavbdi,
+            });
+            setRole(per.status);
         })();
     }, []);
-
+    console.log(role);
     const handleChangeDV = async (event: SelectChangeEvent) => {
         setdvChuyen(event.target.value as string);
         const nv = await NhanVienAPI.getNhanVienByMadv(
@@ -70,6 +91,8 @@ export default function XuLyCVDi(props: { mavbdi: string }) {
         }));
     }
 
+    const permission = getPermission();
+
     const handleSubmitForm = async (formValues: IXuLyCVDi) => {
         if (value === "chuyen") {
             formValues.mavbdi = mavbdi;
@@ -77,6 +100,19 @@ export default function XuLyCVDi(props: { mavbdi: string }) {
             const response = await cvDiApi.chuyenXuLy(formValues);
             if (response.status === "successfully")
                 console.log(response.massage);
+        }
+    };
+
+    const handleApproveConfirm = async () => {
+        const process = await cvDiApi.hoanThanhXuLyCVDi({
+            manv: manv,
+            mavbdi: mavbdi,
+        });
+        console.log(process);
+        if (process.status === "successfully") {
+            setMassage(process.massage);
+            setAlert(true);
+            setOpenApproveDialog(false);
         }
     };
     return (
@@ -90,16 +126,23 @@ export default function XuLyCVDi(props: { mavbdi: string }) {
                     onChange={handleChange}
                     row
                 >
-                    <FormControlLabel
-                        value="hoanthanh"
-                        control={<Radio />}
-                        label="Hoàn thành xử lý"
-                    />
-                    <FormControlLabel
-                        value="chuyen"
-                        control={<Radio />}
-                        label="Chuyển xử lý"
-                    />
+                    {" "}
+                    {role === "successfully" || permission === "lanhdao" ? (
+                        <>
+                            <FormControlLabel
+                                value="hoanthanh"
+                                control={<Radio />}
+                                label="Hoàn thành xử lý"
+                            />
+                            <FormControlLabel
+                                value="chuyen"
+                                control={<Radio />}
+                                label="Chuyển xử lý"
+                            />
+                        </>
+                    ) : (
+                        <></>
+                    )}
                 </RadioGroup>
             </FormControl>
 
@@ -116,9 +159,9 @@ export default function XuLyCVDi(props: { mavbdi: string }) {
                     <Button
                         variant="contained"
                         color="secondary"
-                        // onClick={() => {
-                        //     setOpenApproveDialog(true);
-                        // }}
+                        onClick={() => {
+                            setOpenApproveDialog(true);
+                        }}
                     >
                         Xác nhận hoàn thành xử lý văn bản
                     </Button>
@@ -171,7 +214,7 @@ export default function XuLyCVDi(props: { mavbdi: string }) {
                     </Button>
                 </div>
             )}
-            {/* {alert && (
+            {alert && (
                 <Alert
                     variant="filled"
                     severity="success"
@@ -222,7 +265,7 @@ export default function XuLyCVDi(props: { mavbdi: string }) {
                         Duyệt
                     </Button>
                 </DialogActions>
-            </Dialog> */}
+            </Dialog>
         </form>
     );
 }

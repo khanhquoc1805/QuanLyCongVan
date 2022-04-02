@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import React from "react";
 import { useLocation } from "react-router-dom";
 import ThongTinCVDi from "./ThongTinCVDi";
+import TienTrinhXuLyCVDi from "./TienTrinhXuLyCVDi";
 import XuLyCVDi from "./XuLyCVDi";
 
 //import { makeStyles } from "@mui/styles";
@@ -113,7 +114,9 @@ export default function MainXuLyCVDi() {
             <TabPanel value={value} index={1}>
                 <XuLyCVDi mavbdi={mavbdi}></XuLyCVDi>
             </TabPanel>
-            <TabPanel value={value} index={2}></TabPanel>
+            <TabPanel value={value} index={2}>
+                <TienTrinhXuLyCVDi mavbdi={mavbdi}></TienTrinhXuLyCVDi>
+            </TabPanel>
             <TabPanel value={value} index={3}>
                 đơn vị
             </TabPanel>

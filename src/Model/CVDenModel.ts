@@ -52,7 +52,7 @@ export interface XuLy {
     hanxuly: string;
     vaitro: string;
 }
-interface NV {
+export interface NV {
     tennv: string;
     chucvu: string;
 }

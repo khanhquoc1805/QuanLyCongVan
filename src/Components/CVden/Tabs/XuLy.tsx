@@ -1,32 +1,22 @@
 import {
-    FormControl,
-    FormLabel,
-    RadioGroup,
-    FormControlLabel,
-    Radio,
-    Button,
-    Grid,
+    Button, Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup
 } from "@mui/material";
-import React, { ReactElement, useEffect } from "react";
-import { InputField, SelectField, SelectOption } from "../../FormField";
+import Alert from "@mui/material/Alert";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import cvDenApi from "../../../API/CVDen";
+import NhanVienAPI, { NhanVien } from "../../../API/NhanVien";
 import { getCurrentDate } from "../../../Utils/getCurrentDate";
 import {
     getDonViFromToken,
     getMaNVFromToken,
-    getPermission,
+    getPermission
 } from "../../../Utils/getValueFormToken";
-import NhanVienAPI, { NhanVien } from "../../../API/NhanVien";
-import cvDenApi from "../../../API/CVDen";
-import Alert from "@mui/material/Alert";
-import {
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    Stack,
-} from "@mui/material";
+import { InputField, SelectField, SelectOption } from "../../FormField";
 
 export interface IXuly {
     macvden?: number | string;

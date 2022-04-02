@@ -1,7 +1,8 @@
+import { IXuLyCVDi } from "./../Components/CVdi/Tabs/XuLyCVDi";
 import { IDonVi } from "../API/DonVi";
 import { ILinhVuc } from "../API/LinhVuc";
 import { ILoaiCV } from "../API/LoaiCV";
-import { TTCVden } from "./CVDenModel";
+import { NV, TTCVden } from "./CVDenModel";
 
 export interface ICVDi {
     cvdi: BaseCVDi;
@@ -9,6 +10,7 @@ export interface ICVDi {
     loaicv: ILoaiCV;
     donvi: IDonVi;
     linhvuc: ILinhVuc;
+    duthao: { tennv: string };
 }
 
 export interface BaseCVDi {
@@ -30,4 +32,16 @@ export interface BaseCVDi {
     madv?: number;
 }
 
+export interface TTXuLy {
+    manv: string;
+    mavbdi: number;
+    trangthai: string;
+    butphe: string;
+    hanxuly: string;
+    vaitro: string;
+}
 
+export interface ITTXuLyCVDi {
+    xuly: TTXuLy;
+    nv: NV;
+}

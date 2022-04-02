@@ -96,21 +96,10 @@ function Row(props: {
     const dispatch = useAppDispatch();
     const [openPreview, setOpenPreview] = useState<boolean>(false);
     const [url, setUrl] = useState<string>("");
-    const [nhanVien, setNhanVien] = useState<[NhanVien]>([
-        { manv: "", tennv: "" },
-    ]);
-
     const { control, handleSubmit } = useForm<AddCVVaoSo>({
         defaultValues: initialValue,
         resolver: yupResolver(schema),
     });
-
-    useEffect(() => {
-        (async () => {
-            const nv: [NhanVien] = await NhanVienAPI.getNhanVien();
-            setNhanVien(nv);
-        })();
-    }, []);
 
     const handleCLickAdd = (code: number) => {
         setMavbdi(code);
@@ -156,9 +145,7 @@ function Row(props: {
                         dangerouslySetInnerHTML={{
                             __html: `${getProcessState(row.cvdi.ttxuly)}`,
                         }}
-                    >
-                        {/* {getProcessState(row.cvdi.ttxuly)} */}
-                    </Box>
+                    ></Box>
                 </TableCell>
                 <TableCell align="center">
                     <ArrowForwardIcon color="success" />
@@ -218,9 +205,7 @@ function Row(props: {
                                             )}
                                         </TableCell>
                                         <TableCell align="right">
-                                            {nhanVien?.filter(
-                                                (x) => x.manv === row.cvdi.manv
-                                            )[0]?.tennv}
+                                            {row.duthao.tennv}
                                         </TableCell>
                                         <TableCell align="right">
                                             {row.loaicv.tenloai}
@@ -353,7 +338,10 @@ export default function PhatHanhVanBanDi() {
     useEffect(() => {
         (async () => {
             dispatch(
-                cvDiActions.fetchData({ ...filter, status: "daduyet,davaoso" })
+                cvDiActions.fetchData({
+                    ...filter,
+                    status: "hoanthanhxuly,davaoso",
+                })
             );
             dispatch(soCVActions.fetchData({}));
         })();

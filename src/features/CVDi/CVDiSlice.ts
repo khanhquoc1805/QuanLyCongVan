@@ -49,6 +49,9 @@ const initCVDiState: ICVDi = {
         malv: 0,
         tenlv: "",
     },
+    duthao: {
+        tennv: "",
+    },
 };
 
 const initialState: CVDiState = {
