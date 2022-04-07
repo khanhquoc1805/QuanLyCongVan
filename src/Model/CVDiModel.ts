@@ -1,3 +1,4 @@
+import { StringLocale } from 'yup/lib/locale';
 import { IXuLyCVDi } from "./../Components/CVdi/Tabs/XuLyCVDi";
 import { IDonVi } from "../API/DonVi";
 import { ILinhVuc } from "../API/LinhVuc";
@@ -44,4 +45,9 @@ export interface TTXuLy {
 export interface ITTXuLyCVDi {
     xuly: TTXuLy;
     nv: NV;
+}
+
+export interface NoiNhanCVDi {
+    mavbdi: string;
+    dsnoinhan : [number];
 }

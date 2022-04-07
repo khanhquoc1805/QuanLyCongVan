@@ -1,21 +1,20 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import CommentIcon from "@mui/icons-material/Comment";
 import { Button, Grid } from "@mui/material";
+import Alert from "@mui/material/Alert";
+
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import cvDiApi from "../../API/CVdi";
 import donViApi, { IDonVi } from "../../API/DonVi";
-import linhVucApi, { AddLinhVuc, ILinhVuc } from "../../API/LinhVuc";
+import linhVucApi, { ILinhVuc } from "../../API/LinhVuc";
 import loaiCVApi, { ILoaiCV } from "../../API/LoaiCV";
 import { getCurrentDate } from "../../Utils/getCurrentDate";
+import { getDonViFromToken } from "../../Utils/getValueFormToken";
 import { InputField, SelectField, SelectOption } from "../FormField";
 import FormAddLinhVuc from "./FormAdd/FormAddLinhVuc";
 import FormAddLoaiCV from "./FormAdd/FormAddLoaiCV";
-import Alert from "@mui/material/Alert";
-import { useAppSelector } from "../../App/hooks";
-import { selectManv } from "../../features/Auth/authSlice";
-import { DonutLargeTwoTone } from "@mui/icons-material";
-import { getDonViFromToken } from "../../Utils/getValueFormToken";
 
 export interface IDuThaoVanBanDi {
     madv: string;
@@ -66,6 +65,7 @@ export default function DuThaoVanBanDi() {
         defaultValues: initialValue,
         resolver: yupResolver(schema),
     });
+   
 
     const manv = localStorage.getItem("manv");
 
@@ -83,6 +83,8 @@ export default function DuThaoVanBanDi() {
     const [fileUpload, setFileUpload] = useState<File>(
         new File([""], "filename")
     );
+
+    
 
     useEffect(() => {
         (async () => {
@@ -300,11 +302,9 @@ export default function DuThaoVanBanDi() {
                         control={control}
                         label="Số Tờ"
                     ></InputField>
-                    <InputField
-                        name="thuchientheovanban"
-                        control={control}
-                        label="Thực hiện theo văn bản"
-                    ></InputField>
+
+                    
+
                     <div
                         style={{ display: "flex", justifyContent: "flex-end" }}
                     >

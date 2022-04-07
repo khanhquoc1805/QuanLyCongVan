@@ -1,9 +1,9 @@
 import { Stack } from "@mui/material";
 import React from "react";
 import { Link, Route, Routes } from "react-router-dom";
+import CVCungHeThong from "./CVCungHeThong";
 import CVDenCanXuLy from "./CVDenCanXuLy";
 import CVDenVaoSo from "./CVDenVaoSo";
-import TableCV from "./TableCV";
 import TiepNhanCVDen from "./TiepNhanCVDen";
 import XuLyVanBanDen from "./XuLyVanBanDen";
 
@@ -152,10 +152,10 @@ export default function CVden() {
 
             <Stack>
                 <Routes>
-                    <Route path="/" element={<TableCV />}></Route>
+                    <Route path="/" element={<CVDenCanXuLy />}></Route>
                     <Route
                         path="/vanbancunghethong"
-                        element={<TableCV />}
+                        element={<CVCungHeThong />}
                     ></Route>
                     <Route
                         path="/vanbancanxuly"

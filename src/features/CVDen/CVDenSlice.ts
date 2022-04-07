@@ -65,7 +65,7 @@ const initialState: CVDenState = {
     },
     filter: {
         page: 1,
-        limit: 2,
+        limit: 5,
         status: "chuaxuly",
         textSearch: "",
         madv: getDonViFromToken(),

@@ -1,6 +1,6 @@
 import { AddCVVaoSo } from "../Components/CVdi/PhatHanhVanBanDi";
 import { ListParams } from "../Model/Commom";
-import { ICVDi, ITTXuLyCVDi } from "../Model/CVDiModel";
+import { ICVDi, ITTXuLyCVDi, NoiNhanCVDi } from "../Model/CVDiModel";
 import { IDuThaoVanBanDi } from "./../Components/CVdi/DuThaoVanBanDi";
 import axiosClient from "./axiosClient";
 import { ResponseStatus } from "./SoCV";
@@ -52,6 +52,10 @@ const cvDiApi = {
     getInfoXuLyCVDi(mavbdi: string): Promise<[ITTXuLyCVDi]> {
         const url = `cvdi/thongtin/${mavbdi}`;
         return axiosClient.get(url);
+    },
+    addNoiNhan(formValues: NoiNhanCVDi): Promise<ResponseStatus> {
+        const url = "/cvdi/themnoinhan";
+        return axiosClient.post(url, formValues);
     },
 };
 

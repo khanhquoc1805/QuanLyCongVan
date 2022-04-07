@@ -1,13 +1,25 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { Stack } from "@mui/material";
+import {
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    Stack,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
 import Collapse from "@mui/material/Collapse";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 import Pagination from "@mui/material/Pagination";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -19,9 +31,12 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import PreviewDialog from "../../Components/PreviewDialog/PreviewDialog";
 import * as yup from "yup";
+import cvDiApi from "../../API/CVdi";
+import donViApi, { IDonVi } from "../../API/DonVi";
+import { ResponseStatus } from "../../API/SoCV";
 import { useAppDispatch, useAppSelector } from "../../App/hooks";
+import PreviewDialog from "../../Components/PreviewDialog/PreviewDialog";
 import {
     cvDiActions,
     selectDsCVDi,
@@ -29,15 +44,11 @@ import {
     selectPagination,
 } from "../../features/CVDi/CVDiSlice";
 import { selectDsSoCV, soCVActions } from "../../features/SoCV/SoCVSlice";
-import { ICVDi } from "../../Model/CVDiModel";
+import { ICVDi, NoiNhanCVDi } from "../../Model/CVDiModel";
 import { getDateFromString } from "../../Utils/getDateFromString";
 import { getColorProcess, getProcessState } from "../../Utils/getProcessState";
+import { getDonViFromToken } from "../../Utils/getValueFormToken";
 import { RadioGroupField, RadioOption } from "../FormField";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { ResponseStatus } from "../../API/SoCV";
-import cvDiApi from "../../API/CVdi";
-import NhanVienAPI, { NhanVien } from "../../API/NhanVien";
-
 function createData(
     name: string,
     calories: string,
@@ -91,22 +102,68 @@ function Row(props: {
 }) {
     const { row, openDialog, setOpenDialog, soCVOptions, mavbdi, setMavbdi } =
         props;
+
+    const [checked, setChecked] = React.useState<[number]>([0]);
     const [open, setOpen] = React.useState(false);
     const filter = useAppSelector(selectFilter);
     const dispatch = useAppDispatch();
     const [openPreview, setOpenPreview] = useState<boolean>(false);
+    const [openNoiNhanDialog, setOpenNoiNhanDialog] = useState<boolean>(false);
     const [url, setUrl] = useState<string>("");
+    const [donVi, setDonVi] = useState<[IDonVi]>([{ madv: 1, tendv: "" }]);
     const { control, handleSubmit } = useForm<AddCVVaoSo>({
         defaultValues: initialValue,
         resolver: yupResolver(schema),
     });
+
+    const [constraint, setConstraint] = useState<boolean>(false);
+
+    const [all, setAll] = React.useState<boolean>(false);
+
+    useEffect(() => {
+        (async () => {
+            const donvi = await donViApi.getDonVi();
+            setDonVi(donvi);
+        })();
+    }, []);
+    const donViFilter = donVi.filter((x) => x.madv !== getDonViFromToken());
+    useEffect(() => {
+        if (all) {
+            let checkedArray: [number] = [0];
+            checkedArray.splice(0, 1);
+            for (let i = 0; i < donViFilter.length; ++i) {
+                checkedArray.push(donViFilter[i].madv);
+            }
+            setChecked(checkedArray);
+        }
+    }, [all]);
+
+    useEffect(() => {
+        if (checked.length !== donViFilter.length) {
+            setAll(false);
+        }
+        const index = checked.indexOf(0);
+        if (index !== -1) checked.splice(index, 1);
+    }, [checked]);
 
     const handleCLickAdd = (code: number) => {
         setMavbdi(code);
         setOpenDialog(true);
         //console.log("asass");
     };
+    const handleToggle = (value: number) => () => {
+        const currentIndex = checked?.indexOf(value);
+        const newChecked: [number] = [...checked];
 
+        if (currentIndex === -1) {
+            newChecked.push(value);
+        } else {
+            newChecked.splice(currentIndex, 1);
+        }
+
+        setChecked(newChecked);
+    };
+    console.log(checked);
     const handleSubmitForm = async (formValues: AddCVVaoSo) => {
         formValues.mavbdi = mavbdi;
         const response: ResponseStatus = await cvDiApi.addCVDiVaoSo(formValues);
@@ -116,6 +173,19 @@ function Row(props: {
         dispatch(
             cvDiActions.fetchData({ ...filter, status: "daduyet,davaoso" })
         );
+    };
+
+    const handleAddNoiNhan = async (formValues: NoiNhanCVDi) => {
+        const response = await cvDiApi.addNoiNhan(formValues);
+        if (response.status === "successfully") {
+            setOpenNoiNhanDialog(false);
+            dispatch(
+                cvDiActions.fetchData({
+                    ...filter,
+                    status: "hoanthanhxuly,davaoso,daphathanh",
+                })
+            );
+        }
     };
 
     return (
@@ -148,7 +218,16 @@ function Row(props: {
                     ></Box>
                 </TableCell>
                 <TableCell align="center">
-                    <ArrowForwardIcon color="success" />
+                    <ArrowForwardIcon
+                        color="success"
+                        onClick={() => {
+                            if (row.cvdi.masocv !== null) {
+                                setOpenNoiNhanDialog(true);
+                            } else {
+                                setConstraint(true);
+                            }
+                        }}
+                    />
                 </TableCell>
             </TableRow>
             <TableRow>
@@ -322,6 +401,170 @@ function Row(props: {
                 url={url}
                 setOpen={setOpenPreview}
             />
+
+            <Dialog
+                open={openNoiNhanDialog}
+                onClose={() => {
+                    setOpenNoiNhanDialog(false);
+                }}
+            >
+                <div>
+                    <h1 style={{ textAlign: "center" }}>Phát hành văn bản</h1>
+                    <List
+                        sx={{
+                            boxSizing: "border-box",
+                            width: "100%",
+                            maxWidth: 960,
+                            bgcolor: "background.paper",
+                            minWidth: "600px",
+                            paddingLeft: "66px",
+                        }}
+                    >
+                        <h2>Chọn nơi nhận văn bản </h2>
+
+                        <ListItem
+                            key={0}
+                            secondaryAction={
+                                <IconButton
+                                    edge="end"
+                                    aria-label="comments"
+                                ></IconButton>
+                            }
+                            disablePadding
+                        >
+                            <ListItemButton
+                                role={undefined}
+                                onClick={() => {
+                                    setAll(!all);
+                                }}
+                                dense
+                            >
+                                <ListItemIcon>
+                                    <Checkbox
+                                        edge="start"
+                                        checked={all}
+                                        disableRipple
+                                        color="error"
+                                    />
+                                </ListItemIcon>
+                                <ListItemText
+                                    //id={labelId}
+                                    primary={"Tất cả"}
+                                />
+                            </ListItemButton>
+                        </ListItem>
+                        {donVi?.map((value) => {
+                            const labelId = `checkbox-list-label-${value.tendv}`;
+                            if (value.madv !== getDonViFromToken()) {
+                                return (
+                                    <ListItem
+                                        key={value.madv}
+                                        secondaryAction={
+                                            <IconButton
+                                                edge="end"
+                                                aria-label="comments"
+                                            ></IconButton>
+                                        }
+                                        disablePadding
+                                    >
+                                        <ListItemButton
+                                            role={undefined}
+                                            onClick={handleToggle(value.madv)}
+                                            dense
+                                        >
+                                            <ListItemIcon>
+                                                <Checkbox
+                                                    edge="start"
+                                                    checked={
+                                                        checked.indexOf(
+                                                            value.madv
+                                                        ) !== -1
+                                                    }
+                                                    tabIndex={-1}
+                                                    disableRipple
+                                                    inputProps={{
+                                                        "aria-labelledby":
+                                                            labelId,
+                                                    }}
+                                                    color="error"
+                                                />
+                                            </ListItemIcon>
+                                            <ListItemText
+                                                id={labelId}
+                                                primary={`${value.tendv}`}
+                                            />
+                                        </ListItemButton>
+                                    </ListItem>
+                                );
+                            }
+                        })}
+                    </List>
+                    <div
+                        style={{
+                            textAlign: "center",
+                            margin: "16px 0px 32px 0px",
+                        }}
+                    >
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            sx={{ width: "50%" }}
+                            onClick={() => {
+                                const formValues = {
+                                    mavbdi: mavbdi,
+                                    dsnoinhan: checked,
+                                };
+                                handleAddNoiNhan(formValues);
+                            }}
+                        >
+                            {" "}
+                            Phát hành văn bản
+                        </Button>
+                    </div>
+                </div>
+            </Dialog>
+
+            <Dialog
+                open={constraint}
+                // onClose={() => {
+                //     setOpenApproveDialog(false);
+                // }}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    Duyệt văn bản đi
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Bạn cần thêm công văn vào sổ trước khi phát hành!
+                        <br />
+                        Quay lại sau khi đã thêm vào sổ!
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        onClick={() => {
+                            setConstraint(false);
+                        }}
+                        color="primary"
+                        variant="outlined"
+                    >
+                        Đóng
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            setConstraint(false);
+                            setOpenDialog(true);
+                        }}
+                        color="secondary"
+                        variant="contained"
+                        autoFocus
+                    >
+                        Thêm vào sổ
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </React.Fragment>
     );
 }
@@ -340,18 +583,22 @@ export default function PhatHanhVanBanDi() {
             dispatch(
                 cvDiActions.fetchData({
                     ...filter,
-                    status: "hoanthanhxuly,davaoso",
+                    status: "hoanthanhxuly,davaoso,daphathanh",
                 })
             );
             dispatch(soCVActions.fetchData({}));
         })();
     }, [dispatch, filter]);
-    console.log(dscvdi);
+    console.log(mavbdi);
 
     const soCVOptions: RadioOption[] = dssocv?.map((scv) => ({
         label: `${scv.tensocv} - ${scv.nhomsocv} - ${scv.donvi?.tendv}`,
         value: scv.masocv,
     }));
+
+    const dscvdiFilterByDV = dscvdi.filter(
+        (x) => x.donvi.madv === getDonViFromToken()
+    );
 
     const handleChange = (e: any, page: number) => {
         dispatch(
@@ -408,14 +655,14 @@ export default function PhatHanhVanBanDi() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {dscvdi.map((row, index) => (
+                        {dscvdiFilterByDV.map((row, index) => (
                             <Row
                                 key={index}
                                 row={row}
                                 openDialog={open}
                                 setOpenDialog={setOpen}
                                 soCVOptions={soCVOptions}
-                                mavbdi={mavbdi}
+                                mavbdi={row.cvdi.mavbdi}
                                 setMavbdi={setMavbdi}
                             />
                         ))}

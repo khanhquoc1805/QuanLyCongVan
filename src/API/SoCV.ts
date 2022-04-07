@@ -4,6 +4,7 @@ import { ISoCV } from "../Model/SoCV";
 
 export interface ResponseStatus {
     status: string;
+    massage?: string; 
 }
 
 const soCVApi = {
