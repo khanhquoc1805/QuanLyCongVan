@@ -1,18 +1,30 @@
-import React, { ReactElement, useEffect } from "react";
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Stack,
+} from "@mui/material";
+import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material/styles";
+import React, { useEffect } from "react";
+import cvDenApi from "../../API/CVDen";
 import { useAppDispatch, useAppSelector } from "../../App/hooks";
-import { cvDenActions, selectFilter } from "../../features/CVDen/CVDenSlice";
-import { selectDsCVden } from "../../features/CVDen/CVDenSlice";
-import { convertLength } from "@mui/material/styles/cssUtils";
+import {
+    cvDenActions,
+    selectDsCVden,
+    selectFilter,
+} from "../../features/CVDen/CVDenSlice";
+import { getDateFromString } from "../../Utils/getDateFromString";
 import { getDonViFromToken } from "../../Utils/getValueFormToken";
-import { Stack } from "@mui/material";
 import PreviewDialog from "../PreviewDialog/PreviewDialog";
 
 interface Props {}
@@ -44,6 +56,9 @@ export default function CVCungHeThong() {
     const madv = getDonViFromToken();
     const [openPreview, setOpenPreview] = React.useState<boolean>(false);
     const [url, setUrl] = React.useState<string>("");
+    const [maCvDen, setMaCvDen] = React.useState<number>();
+    const [openApproveDialog, setOpenApproveDialog] =
+        React.useState<boolean>(false);
     useEffect(() => {
         dispatch(
             cvDenActions.fetchData({
@@ -53,7 +68,26 @@ export default function CVCungHeThong() {
             })
         );
     }, [dispatch]);
-    console.log(dsCVDen);
+   
+
+    const handleApproveConfirm = async () => {
+        console.log(maCvDen);
+        const response = await cvDenApi.tiepNhanCvCungHeThong({
+            macvden: maCvDen,
+        });
+        console.log(response);
+        if (response.status === "successfully") {
+            setOpenApproveDialog(false);
+        
+            dispatch(
+                cvDenActions.fetchData({
+                    ...filter,
+                    status: "chotiepnhan",
+                    madv: madv,
+                })
+            );
+        }
+    };
     return (
         <>
             <TableContainer
@@ -91,7 +125,7 @@ export default function CVCungHeThong() {
                                 Tập tin
                             </StyledTableCell>
                             <StyledTableCell align="center">
-                                Không tiếp nhận
+                                Tiếp nhận
                             </StyledTableCell>
                             <StyledTableCell align="right">xóa</StyledTableCell>
                         </TableRow>
@@ -107,10 +141,22 @@ export default function CVCungHeThong() {
                                     {row.cvden.tencvden}
                                 </StyledTableCell>
                                 <StyledTableCell align="center">
-                                    {row.cvden.ngaybanhanh}
+                                    {getDateFromString(
+                                        row.cvden.ngaybanhanh as Date
+                                    )}
                                 </StyledTableCell>
-                                <StyledTableCell align="center"></StyledTableCell>
-                                <StyledTableCell align="center"></StyledTableCell>
+                                <StyledTableCell align="center">
+                                    {row.donvi.tendv}
+                                </StyledTableCell>
+                                <StyledTableCell align="center">
+                                    <span style={{ color: "red" }}>
+                                        {row.cvden.nguoiky?.split("/")[0]}
+                                    </span>
+                                    <br />
+                                    <span style={{ color: "blue" }}>
+                                        {row.cvden.nguoiky?.split("/")[1]}
+                                    </span>
+                                </StyledTableCell>
                                 <StyledTableCell
                                     align="center"
                                     sx={{ maxWidth: "120px" }}
@@ -121,7 +167,9 @@ export default function CVCungHeThong() {
                                     align="right"
                                     sx={{ maxWidth: "20px" }}
                                 >
-                                    {row.cvden.ngaycvden}
+                                    {getDateFromString(
+                                        row.cvden.ngaycvden as Date
+                                    )}
                                 </StyledTableCell>
                                 <StyledTableCell align="center">
                                     <Stack
@@ -161,6 +209,10 @@ export default function CVCungHeThong() {
                                             height: "24px",
                                             cursor: "pointer",
                                         }}
+                                        onClick={() => {
+                                            setMaCvDen(row.cvden.macvden);
+                                            setOpenApproveDialog(true);
+                                        }}
                                     />
                                 </StyledTableCell>
                                 <StyledTableCell align="right">
@@ -184,6 +236,47 @@ export default function CVCungHeThong() {
                 url={url}
                 setOpen={setOpenPreview}
             />
+
+            <Dialog
+                open={openApproveDialog}
+                onClose={() => {
+                    setOpenApproveDialog(false);
+                }}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    Duyệt văn bản đi
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Bạn có chắc chắn muốn tiếp nhận văn bản!
+                        <br /> Thao tác này sẽ không thể hoàn tác nếu bạn đã
+                        chấp thuận!
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        onClick={() => {
+                            setOpenApproveDialog(false);
+                        }}
+                        color="secondary"
+                        variant="outlined"
+                    >
+                        Đóng
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            handleApproveConfirm();
+                        }}
+                        color="primary"
+                        variant="contained"
+                        autoFocus
+                    >
+                        Duyệt
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </>
     );
 }

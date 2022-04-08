@@ -54,6 +54,7 @@ const initCVDenState: ICVDen = {
         malv: 0,
         tenlv: "",
     },
+   
 };
 
 const initialState: CVDenState = {

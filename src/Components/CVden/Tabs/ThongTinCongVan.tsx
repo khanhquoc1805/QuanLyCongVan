@@ -3,6 +3,7 @@ import { Grid, Table, TableRow, TableCell, TableBody } from "@mui/material";
 import React, { ReactElement, useEffect } from "react";
 import cvDenApi from "../../../API/CVDen";
 import { ICVDen } from "../../../Model/CVDenModel";
+import { getProcessState } from "../../../Utils/getProcessState";
 
 interface Props {}
 
@@ -69,7 +70,11 @@ export default function ThongTinCongVan(props: { macvden: string }) {
         "",
         `${data?.cvden.nguoiky}`,
     ];
-    const data4: string[] = [`${data?.cvden.xuly}`, "", `${hanxuly}`];
+    const data4: string[] = [
+        getProcessState(`${data?.cvden.xuly}`),
+        "",
+        `${hanxuly}`,
+    ];
     return (
         <>
             <Grid container spacing={2}>
@@ -87,7 +92,10 @@ export default function ThongTinCongVan(props: { macvden: string }) {
                                     }}
                                 >
                                     <TableCell
-                                        style={{ border: "1px solid #F0F7F7",fontWeight: "bolder" }}
+                                        style={{
+                                            border: "1px solid #F0F7F7",
+                                            fontWeight: "bolder",
+                                        }}
                                     >
                                         {element}
                                     </TableCell>
@@ -116,7 +124,10 @@ export default function ThongTinCongVan(props: { macvden: string }) {
                                     }}
                                 >
                                     <TableCell
-                                        style={{ border: "1px solid #F0F7F7",fontWeight: "bolder" }}
+                                        style={{
+                                            border: "1px solid #F0F7F7",
+                                            fontWeight: "bolder",
+                                        }}
                                     >
                                         {element}
                                     </TableCell>
@@ -149,7 +160,10 @@ export default function ThongTinCongVan(props: { macvden: string }) {
                                     }}
                                 >
                                     <TableCell
-                                        style={{ border: "1px solid #F0F7F7",fontWeight: "bolder" }}
+                                        style={{
+                                            border: "1px solid #F0F7F7",
+                                            fontWeight: "bolder",
+                                        }}
                                     >
                                         {element}
                                     </TableCell>
@@ -178,7 +192,10 @@ export default function ThongTinCongVan(props: { macvden: string }) {
                                     }}
                                 >
                                     <TableCell
-                                        style={{ border: "1px solid #F0F7F7",fontWeight: "bolder" }}
+                                        style={{
+                                            border: "1px solid #F0F7F7",
+                                            fontWeight: "bolder",
+                                        }}
                                     >
                                         {element}
                                     </TableCell>

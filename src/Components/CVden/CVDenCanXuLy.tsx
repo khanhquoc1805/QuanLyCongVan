@@ -221,7 +221,21 @@ export default function CVDenCanXuLy() {
                                             {row.linhvuc.tenlv}
                                         </StyledTableCell>
                                         <StyledTableCell align="right">
-                                            {row.cvden.nguoiky}
+                                            <span style={{ color: "red" }}>
+                                                {
+                                                    row.cvden.nguoiky?.split(
+                                                        "/"
+                                                    )[0]
+                                                }
+                                            </span>
+                                            <br />
+                                            <span style={{ color: "blue" }}>
+                                                {
+                                                    row.cvden.nguoiky?.split(
+                                                        "/"
+                                                    )[1]
+                                                }
+                                            </span>
                                         </StyledTableCell>
                                         <StyledTableCell align="center">
                                             <Stack

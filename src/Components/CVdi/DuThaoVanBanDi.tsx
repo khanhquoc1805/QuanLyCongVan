@@ -65,7 +65,6 @@ export default function DuThaoVanBanDi() {
         defaultValues: initialValue,
         resolver: yupResolver(schema),
     });
-   
 
     const manv = localStorage.getItem("manv");
 
@@ -83,8 +82,6 @@ export default function DuThaoVanBanDi() {
     const [fileUpload, setFileUpload] = useState<File>(
         new File([""], "filename")
     );
-
-    
 
     useEffect(() => {
         (async () => {
@@ -148,184 +145,211 @@ export default function DuThaoVanBanDi() {
     };
 
     return (
-        <form
-            onSubmit={handleSubmit(handleSubmitForm)}
-            style={{ marginTop: "24px" }}
-        >
-            {" "}
-            <div
-                style={{
-                    fontSize: "28px",
-                    textAlign: "center",
-                    color: "blue",
-                    fontFamily: "coiny",
-                }}
+        <>
+            <form
+                onSubmit={handleSubmit(handleSubmitForm)}
+                style={{ marginTop: "24px" }}
             >
-                Dự Thảo Văn Bản Đi
-            </div>
-            {alert && (
-                <Alert
-                    severity="success"
-                    role="alert"
-                    onClose={() => {
-                        setAlert(false);
+                {" "}
+                <div
+                    style={{
+                        fontSize: "28px",
+                        textAlign: "center",
+                        color: "blue",
+                        fontFamily: "coiny",
                     }}
                 >
-                    Văn bản đã được dự thảo!
-                </Alert>
-            )}
-            <Grid container spacing={2} sx={{ width: "80%", margin: "0 auto" }}>
-                <Grid item xs={6}>
-                    <SelectField
-                        name="madv"
-                        selected={donViDefault[0]}
-                        control={control}
-                        label="Đơn Vị"
-                        options={donViDefault}
-                    ></SelectField>
-                    <div
-                        style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems: "center",
+                    Dự Thảo Văn Bản Đi
+                </div>
+                {alert && (
+                    <Alert
+                        severity="success"
+                        role="alert"
+                        onClose={() => {
+                            setAlert(false);
                         }}
                     >
+                        Văn bản đã được dự thảo!
+                    </Alert>
+                )}
+                <Grid
+                    container
+                    spacing={2}
+                    sx={{ width: "80%", margin: "0 auto" }}
+                >
+                    <Grid item xs={6}>
                         <SelectField
-                            name="maloai"
+                            name="madv"
+                            selected={donViDefault[0]}
                             control={control}
-                            label="Loại Công Văn"
-                            options={loaiCVOptions}
+                            label="Đơn Vị"
+                            options={donViDefault}
                         ></SelectField>
-                        <Button
-                            variant="outlined"
-                            color="primary"
-                            size="large"
-                            sx={{ height: "56px", margin: "7px 0px 0px 12px" }}
-                            onClick={() => {
-                                setOpenAddLoaiCV(true);
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                alignItems: "center",
                             }}
                         >
-                            Thêm
-                        </Button>
-                    </div>
-                    <InputField
-                        name="tenvbdi"
-                        control={control}
-                        label="Trích Yếu"
-                    ></InputField>
-                    <InputField
-                        name="ngayravbdi"
-                        control={control}
-                        label="Ngày ra công văn"
-                        type="date"
-                    ></InputField>
-                    {/* <InputField
+                            <SelectField
+                                name="maloai"
+                                control={control}
+                                label="Loại Công Văn"
+                                options={loaiCVOptions}
+                            ></SelectField>
+                            <Button
+                                variant="outlined"
+                                color="primary"
+                                size="large"
+                                sx={{
+                                    height: "56px",
+                                    margin: "7px 0px 0px 12px",
+                                }}
+                                onClick={() => {
+                                    setOpenAddLoaiCV(true);
+                                }}
+                            >
+                                Thêm
+                            </Button>
+                        </div>
+                        <InputField
+                            name="tenvbdi"
+                            control={control}
+                            label="Trích Yếu"
+                        ></InputField>
+                        <InputField
+                            name="ngayravbdi"
+                            control={control}
+                            label="Ngày ra công văn"
+                            type="date"
+                        ></InputField>
+                        {/* <InputField
                         name="dinhkem"
                         control={control}
                         label="Tập Tin Đính Kèm"
                         type="file"
                     ></InputField> */}
-                    <input
-                        type="file"
-                        style={{ display: "none" }}
-                        id="contained-button-file"
-                        onChange={handleChange}
-                    />
-                    <label htmlFor="contained-button-file">
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            component="span"
-                        >
-                            Upload
-                        </Button>
-                    </label>
-                </Grid>
-                <Grid item xs={6}>
-                    <SelectField
-                        name="dokhan"
-                        control={control}
-                        label="Độ Khẩn"
-                        options={[
-                            {
-                                label: "Khẩn",
-                                value: "khan",
-                            },
-                            {
-                                label: "Bình Thường",
-                                value: "bth",
-                            },
-                        ]}
-                    ></SelectField>
-                    <SelectField
-                        name="domat"
-                        control={control}
-                        label="Độ Mật"
-                        options={[
-                            {
-                                label: "Bảo Mật",
-                                value: "bm",
-                            },
-                            {
-                                label: "Bình Thường",
-                                value: "bth",
-                            },
-                        ]}
-                    ></SelectField>
-                    <div
-                        style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems: "center",
-                        }}
-                    >
+                        <div>
+                            <input
+                                type="file"
+                                style={{
+                                    border: "1px solid #c6c6c6",
+                                    width: "100%",
+                                    height: "54px",
+                                    borderRadius: "4px",
+                                    boxSizing: "border-box",
+                                    padding: "12px 0px 0px 44px",
+                                }}
+                                id="contained-button-file"
+                                onChange={handleChange}
+                            />
+                            <label htmlFor="contained-button-file">
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    component="span"
+                                    sx={{
+                                        position: "relative",
+                                        top: "-48px",
+                                        left: "12px",
+                                    }}
+                                >
+                                    Đính kèm
+                                </Button>
+                            </label>
+                        </div>
+                    </Grid>
+                    <Grid item xs={6}>
                         <SelectField
-                            name="malv"
+                            name="dokhan"
                             control={control}
-                            label="Lĩnh vực"
-                            //options={linhVucOption}
-                            options={linhVucOptions}
+                            label="Độ Khẩn"
+                            options={[
+                                {
+                                    label: "Khẩn",
+                                    value: "Khẩn",
+                                },
+                                {
+                                    label: "Bình Thường",
+                                    value: "Bình Thường",
+                                },
+                            ]}
                         ></SelectField>
-
-                        <Button
-                            variant="outlined"
-                            color="primary"
-                            size="large"
-                            sx={{ height: "56px", margin: "7px 0px 0px 12px" }}
-                            onClick={handleClickAddLV}
+                        <SelectField
+                            name="domat"
+                            control={control}
+                            label="Độ Mật"
+                            options={[
+                                {
+                                    label: "Bảo Mật",
+                                    value: "Bảo Mật",
+                                },
+                                {
+                                    label: "Bình Thường",
+                                    value: "Bình Thường",
+                                },
+                            ]}
+                        ></SelectField>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                alignItems: "center",
+                            }}
                         >
-                            Thêm
-                        </Button>
-                    </div>
-                    <InputField
-                        name="sotrang"
-                        control={control}
-                        label="Số Tờ"
-                    ></InputField>
+                            <SelectField
+                                name="malv"
+                                control={control}
+                                label="Lĩnh vực"
+                                //options={linhVucOption}
+                                options={linhVucOptions}
+                            ></SelectField>
 
-                    
+                            <Button
+                                variant="outlined"
+                                color="primary"
+                                size="large"
+                                sx={{
+                                    height: "56px",
+                                    margin: "7px 0px 0px 12px",
+                                }}
+                                onClick={handleClickAddLV}
+                            >
+                                Thêm
+                            </Button>
+                        </div>
+                        <InputField
+                            name="sotrang"
+                            control={control}
+                            label="Số Tờ"
+                        ></InputField>
 
-                    <div
-                        style={{ display: "flex", justifyContent: "flex-end" }}
-                    >
-                        <Button
-                            variant="contained"
-                            color="secondary"
-                            type="submit"
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                            }}
                         >
-                            Tiếp Tục
-                        </Button>
-                    </div>
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                type="submit"
+                            >
+                                Tiếp Tục
+                            </Button>
+                        </div>
+                    </Grid>
                 </Grid>
-            </Grid>
-            <FormAddLinhVuc
-                open={openAddLV}
-                setOpen={setOpenAddLV}
-            ></FormAddLinhVuc>
+            </form>
             <FormAddLoaiCV
                 open={openAddLoaiCV}
                 setOpen={setOpenAddLoaiCV}
             ></FormAddLoaiCV>
-        </form>
+            <FormAddLinhVuc
+                open={openAddLV}
+                setOpen={setOpenAddLV}
+            ></FormAddLinhVuc>
+        </>
     );
 }
