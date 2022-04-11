@@ -39,6 +39,7 @@ export default function Main() {
                         textDecoration: "none",
                         cursor: "pointer",
                         color: "black",
+                        fontSize: '24px',
                     }}
                 >
                     <MenuItem
@@ -52,11 +53,12 @@ export default function Main() {
                         textDecoration: "none",
                         cursor: "pointer",
                         color: "black",
+                        fontSize: '24px',
                     }}
                 >
                     <MenuItem
                         iconURL="/document-svgrepo-com.svg"
-                        title="Quản Lý Công Văn Đến"
+                        title="Công Văn Đến"
                     ></MenuItem>
                 </Link>
                 <Link
@@ -65,24 +67,27 @@ export default function Main() {
                         textDecoration: "none",
                         cursor: "pointer",
                         color: "black",
+                        fontSize: '24px',
                     }}
                 >
                     <MenuItem
                         iconURL="/exit-svgrepo-com.svg"
-                        title="Quản Lý Công Văn Đi"
+                        title="Công Văn Đi"
                     ></MenuItem>
                 </Link>
                 <Link
-                    to="/quanlyluutru"
+                    to="/tracuutimkiem"
                     style={{
                         textDecoration: "none",
                         cursor: "pointer",
                         color: "black",
+                        fontSize: '24px',
+                       
                     }}
                 >
                     <MenuItem
-                        iconURL="/file-storage-svgrepo-com.svg"
-                        title="Quản Lý Lưu Trữ"
+                        iconURL="/search-svgrepo-com.svg"
+                        title="Tra cứu"
                     ></MenuItem>
                 </Link>
             </Stack>

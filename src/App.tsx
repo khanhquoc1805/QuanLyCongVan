@@ -8,6 +8,7 @@ import Main from "./Components/Main";
 import PreviewDialog from "./Components/PreviewDialog/PreviewDialog";
 import QuanLiSo from "./Components/QuanLiSo/QuanLiSo";
 import HomeUser from "./Components/QuanTriNguoiDung/HomeUser";
+import MainTraCuu from "./Components/TraCuu/MainTraCuu";
 import { selectAccessToken } from "./features/Auth/authSlice";
 
 function App() {
@@ -26,6 +27,10 @@ function App() {
                     <Route
                         path="/quantringuoidung/*"
                         element={<HomeUser />}
+                    ></Route>
+                    <Route
+                        path="/tracuutimkiem/*"
+                        element={<MainTraCuu />}
                     ></Route>
                 </Routes>
             </BrowserRouter>

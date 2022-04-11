@@ -27,7 +27,12 @@ export default function TienTrinhXuLy(props: { macvden: string }) {
                     infoXuLy.map((info, index) => (
                         <Step active={true} key={index}>
                             <StepLabel>
-                                <p style={{ color: "#BC05E6", fontSize: "20px" }}>
+                                <p
+                                    style={{
+                                        color: "#BC05E6",
+                                        fontSize: "20px",
+                                    }}
+                                >
                                     {`${info.nv.tennv}`}{" "}
                                     <span
                                         style={{
@@ -81,7 +86,9 @@ export default function TienTrinhXuLy(props: { macvden: string }) {
                                 >
                                     Hạn xử lý:{" "}
                                     {`${info.xuly.hanxuly}` !== "null"
-                                        ? `${info.xuly.hanxuly}`
+                                        ? new Date(
+                                              `${info.xuly.hanxuly}`
+                                          ).toLocaleString()
                                         : "Không giới hạn"}
                                 </Typography>
                             </StepContent>

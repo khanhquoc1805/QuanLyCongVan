@@ -61,6 +61,7 @@ export default function XuLy(props: { macvden: string }) {
         if (value === "phancong") {
             formValues.macvden = macvden;
             const add = await cvDenApi.phanCongXuLyCVDen(formValues);
+          
             if (add.status === "successfully") {
                 setMassage(add.massage);
                 setAlert(true);
