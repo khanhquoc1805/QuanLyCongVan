@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, ChangeEvent } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -95,6 +95,14 @@ export default function CVDenCanXuLy() {
         );
     };
 
+    const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const newFilter = {
+            ...filter,
+            textSearch: e.target.value,
+        };
+        dispatch(cvDenActions.setFilterWithDebounce(newFilter));
+    };
+
     console.log(dscvden);
     return (
         <div>
@@ -112,7 +120,7 @@ export default function CVDenCanXuLy() {
                         label="Search By Name"
                         id="searchByName"
                         //   endAdornment={<SearchIcon />}
-                        //   onChange={handleSearchChange}
+                        onChange={handleSearchChange}
                         inputRef={searchRef}
                     />
                 </FormControl>

@@ -1,5 +1,5 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, debounce, put, takeLatest } from "redux-saga/effects";
 import { ListParams, ListResponse } from "../../Model/Commom";
 import { ICVDen } from "../../Model/CVDenModel";
 import { cvDenActions } from "./CVDenSlice";
@@ -18,6 +18,15 @@ function* fetchCVDen(action: PayloadAction<ListParams>) {
     }
 }
 
+function* handleSearchChange(action: PayloadAction<ListParams>) {
+    yield put(cvDenActions.setFilter(action.payload));
+}
+
 export default function* CVDenSaga() {
     yield takeLatest(cvDenActions.fetchData, fetchCVDen);
+    yield debounce(
+        300,
+        cvDenActions.setFilterWithDebounce.type,
+        handleSearchChange
+    );
 }

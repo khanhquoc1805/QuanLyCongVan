@@ -19,15 +19,16 @@ function* fetchDataTraCuu(action: PayloadAction<ListParams>) {
     }
 }
 
-// function* handleSearchChange(action: PayloadAction<ListParams>) {
-//     yield put(traCuuActions.setFilter(action.payload));
-// }
+function* handleSearchChange(action: PayloadAction<ListParams>) {
+    yield put(traCuuActions.setFilter(action.payload));
+}
 
 export default function* TraCuuSaga() {
     yield takeLatest(traCuuActions.fetchData, fetchDataTraCuu);
-    // yield debounce(
-    //     300,
-    //     cvDiActions.setFilterWithDebounce.type,
-    //     handleSearchChange
-    // );
+    yield debounce(
+        300,
+        traCuuActions.setFilterWithDebounce.type,
+        handleSearchChange
+        
+    );
 }

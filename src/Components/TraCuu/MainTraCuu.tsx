@@ -6,7 +6,7 @@ import {
     Select,
     Stack,
 } from "@mui/material";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 import { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -26,6 +26,7 @@ import {
     traCuuActions,
 } from "../../features/TraCuu/TraCuuSlice";
 import { getDateFromString } from "../../Utils/getDateFromString";
+import PreviewDialog from "../PreviewDialog/PreviewDialog";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -66,7 +67,8 @@ export default function MainTraCuu() {
     const pagination = useAppSelector(selectPaginationTraCuu);
     const filter = useAppSelector(selectFilterTraCuu);
     const searchRef = useRef<HTMLInputElement>();
-
+    const [openPreview, setOpenPreview] = React.useState<boolean>(false);
+    const [url, setUrl] = React.useState<string>("");
     const [month, setMonth] = React.useState<string>("");
     const [year, setYear] = React.useState<string>("");
     const [loaiVB, setLoaiVB] = React.useState<string>("cvden");
@@ -115,6 +117,14 @@ export default function MainTraCuu() {
         );
     };
 
+    const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const newFilter = {
+            ...filter,
+            textSearch: e.target.value,
+        };
+        dispatch(traCuuActions.setFilterWithDebounce(newFilter));
+    };
+
     return token ? (
         <div style={{ margin: "0 40px 0 40px" }}>
             <div>
@@ -130,7 +140,7 @@ export default function MainTraCuu() {
                             fontFamily: "coiny",
                         }}
                     >
-                        QUẢN LÝ SỔ CÔNG VĂN
+                        QUẢN LÝ LƯU TRỮ
                     </div>
                     <Stack
                         direction="row"
@@ -198,7 +208,7 @@ export default function MainTraCuu() {
                                 label="Tìm kiếm"
                                 id="timkiem"
                                 //   endAdornment={<SearchIcon />}
-                                //   onChange={handleSearchChange}
+                                onChange={handleSearchChange}
                                 inputRef={searchRef}
                             />
                         </FormControl>
@@ -282,8 +292,8 @@ export default function MainTraCuu() {
                                 <StyledTableCell align="right">
                                     Ngày Đi/Đến
                                 </StyledTableCell>
-                                <StyledTableCell align="right">
-                                    Xóa
+                                <StyledTableCell align="center">
+                                    Hành động
                                 </StyledTableCell>
                             </TableRow>
                         </TableHead>
@@ -339,10 +349,10 @@ export default function MainTraCuu() {
                                                     height: "24px",
                                                     cursor: "pointer",
                                                 }}
-                                                // onClick={() => {
-                                                //     setOpenPreview(true);
-                                                //     setUrl(row.ttbosung.dinhkem);
-                                                // }}
+                                                onClick={() => {
+                                                    setOpenPreview(true);
+                                                    setUrl(row.ttbosung.dinhkem);
+                                                }}
                                             />
                                         </Stack>
                                     </StyledTableCell>
@@ -362,6 +372,11 @@ export default function MainTraCuu() {
                         onChange={handleChangePagination}
                     />
                 </Stack>
+                <PreviewDialog
+                    open={openPreview}
+                    url={url}
+                    setOpen={setOpenPreview}
+                />
             </div>
         </div>
     ) : (

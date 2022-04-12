@@ -7,7 +7,7 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import React, { useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../App/hooks";
 import {
     cvDenActions,
@@ -65,6 +65,13 @@ export default function CVDenVaoSo() {
             })
         );
     };
+    const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const newFilter = {
+            ...filter,
+            textSearch: e.target.value,
+        };
+        dispatch(cvDenActions.setFilterWithDebounce(newFilter));
+    };
     console.log(dscvden);
     return (
         <>
@@ -80,7 +87,7 @@ export default function CVDenVaoSo() {
                         label="Tìm kiếm"
                         id="timkiem"
                         //   endAdornment={<SearchIcon />}
-                        //   onChange={handleSearchChange}
+                        onChange={handleSearchChange}
                         inputRef={searchRef}
                     />
                 </FormControl>

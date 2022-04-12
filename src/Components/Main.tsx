@@ -24,6 +24,7 @@ export default function Main() {
                             textDecoration: "none",
                             cursor: "pointer",
                             color: "black",
+                            fontSize: "18px",
                         }}
                     >
                         <MenuItem
@@ -39,7 +40,7 @@ export default function Main() {
                         textDecoration: "none",
                         cursor: "pointer",
                         color: "black",
-                        fontSize: '24px',
+                        fontSize: "18px",
                     }}
                 >
                     <MenuItem
@@ -53,7 +54,7 @@ export default function Main() {
                         textDecoration: "none",
                         cursor: "pointer",
                         color: "black",
-                        fontSize: '24px',
+                        fontSize: "18px",
                     }}
                 >
                     <MenuItem
@@ -67,7 +68,7 @@ export default function Main() {
                         textDecoration: "none",
                         cursor: "pointer",
                         color: "black",
-                        fontSize: '24px',
+                        fontSize: "18px",
                     }}
                 >
                     <MenuItem
@@ -81,13 +82,12 @@ export default function Main() {
                         textDecoration: "none",
                         cursor: "pointer",
                         color: "black",
-                        fontSize: '24px',
-                       
+                        fontSize: "18px",
                     }}
                 >
                     <MenuItem
                         iconURL="/search-svgrepo-com.svg"
-                        title="Tra cứu"
+                        title="Tra Cứu"
                     ></MenuItem>
                 </Link>
             </Stack>
