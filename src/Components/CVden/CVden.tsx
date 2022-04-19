@@ -1,6 +1,7 @@
 import { Stack } from "@mui/material";
 import React from "react";
 import { Link, Route, Routes } from "react-router-dom";
+import MyBreadcrumbs from "../Breadcrumbs/MyBreadcrumbs";
 import CVCungHeThong from "./CVCungHeThong";
 import CVDenCanXuLy from "./CVDenCanXuLy";
 import CVDenVaoSo from "./CVDenVaoSo";
@@ -148,6 +149,9 @@ export default function CVden() {
                         </Stack>
                     </Link>
                 </Stack>
+            </div>
+            <div>
+            <MyBreadcrumbs></MyBreadcrumbs>
             </div>
 
             <Stack>

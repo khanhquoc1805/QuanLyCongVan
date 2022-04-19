@@ -6,6 +6,7 @@ import { Routes, Route } from "react-router-dom";
 import XuLiVanBanDi from "./XuLiVanBanDi";
 import PhatHanhVanBanDi from "./PhatHanhVanBanDi";
 import MainXuLyCVDi from "./Tabs/MainXuLyCVDi";
+import MyBreadcrumbs from "../Breadcrumbs/MyBreadcrumbs";
 
 interface Props {}
 
@@ -153,6 +154,10 @@ export default function CVdi() {
                         </Stack>
                     </Link>
                 </Stack>
+            </div>
+
+            <div>
+                <MyBreadcrumbs></MyBreadcrumbs>
             </div>
 
             <Stack>

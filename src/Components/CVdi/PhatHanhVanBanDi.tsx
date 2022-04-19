@@ -171,7 +171,7 @@ function Row(props: {
         if (response.status === "successfully") setOpenDialog(false);
         setOpen(false);
         dispatch(
-            cvDiActions.fetchData({ ...filter, status: "daduyet,davaoso" })
+            cvDiActions.fetchData({ ...filter, status: "daduyet,davaoso,daphathanh,hoanthanhxuly" })
         );
     };
 

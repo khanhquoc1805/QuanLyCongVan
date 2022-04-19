@@ -7,7 +7,7 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import React, { useRef, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as yup from "yup";
 import donViApi, { IDonVi } from "../../API/DonVi";
@@ -15,6 +15,7 @@ import soCVApi from "../../API/SoCV";
 import { useAppDispatch } from "../../App/hooks";
 import { soCVActions } from "../../features/SoCV/SoCVSlice";
 import { ISoCV } from "../../Model/SoCV";
+import MyBreadcrumbs, { IMyBreadcrumbs } from "../Breadcrumbs/MyBreadcrumbs";
 import { InputField, SelectField, SelectOption } from "../FormField";
 import TableManage from "./TableManage";
 
@@ -35,6 +36,16 @@ export default function QuanLiSo() {
     const [open, setOpen] = useState<boolean>(false);
     const [donVi, setDonVi] = useState<[IDonVi]>([{ madv: 1, tendv: "" }]);
     const searchRef = useRef<HTMLInputElement>();
+    const location = useLocation();
+
+    const breadcrumbs: IMyBreadcrumbs[] = location.pathname
+        .split("/")
+        .map((route) => {
+            if (route === "") {
+                return { title: "Home", link: "home" };
+            }
+            return { title: route, link: route };
+        });
 
     const dispatch = useAppDispatch();
     const { control, handleSubmit } = useForm<ISoCV>({
@@ -158,7 +169,11 @@ export default function QuanLiSo() {
                 >
                     Thêm Mới
                 </Button>
-                <Stack sx={{ height: "48px" }}></Stack>
+
+                <Stack sx={{ height: "48px" }}>
+                    <MyBreadcrumbs></MyBreadcrumbs>
+                </Stack>
+
                 <Stack mt={4} mb={3} direction="row" spacing={2}>
                     <FormControl
                         fullWidth
