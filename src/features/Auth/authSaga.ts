@@ -5,6 +5,7 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import authApi from "../../API/auth";
 import { authActions, UserPayload } from "./authSlice";
 import { put } from "redux-saga/effects";
+import { Navigate } from "react-router-dom";
 
 function* handleLogin(payload: Login) {
     try {
@@ -23,8 +24,9 @@ function* handleLogin(payload: Login) {
             };
 
             yield put(authActions.loginSuccess(payload));
-            //yield delay(1500);
-            //window.location.reload();
+
+           yield delay(5);
+            window.location.reload();
         } else {
             yield put(authActions.loginfailed(data.status ?? ""));
         }
@@ -35,12 +37,14 @@ function* handleLogin(payload: Login) {
 
 function* handleLogOut() {
     localStorage.removeItem("access_token");
+    localStorage.removeItem("manv");
     yield put(authActions.logout);
+    
 }
 
 function* watchLoginFlow() {
     while (true) {
-        // yield delay(3000); // waiting for localStorage set
+        yield delay(1000); // waiting for localStorage set
         const isLoggedIn = Boolean(localStorage.getItem("access_token"));
         if (!isLoggedIn) {
             const action: PayloadAction<Login> = yield take(

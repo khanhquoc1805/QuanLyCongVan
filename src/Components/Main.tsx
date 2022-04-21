@@ -1,7 +1,14 @@
-import { Button, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getPermission } from "../Utils/getValueFormToken";
+import AvatarUser from "./AvatarUser";
 import MenuItem from "./MenuItem";
 
 export default function Main() {
@@ -13,9 +20,12 @@ export default function Main() {
             setPermission(permissionUser);
         })();
     }, []);
-
     return token ? (
         <div>
+            <div style={{ margin: "24px 24px 0px 0px" }}>
+                <AvatarUser></AvatarUser>
+            </div>
+
             <Stack direction="row" spacing={8} justifyContent="center" mt={20}>
                 {permission === "admin" && (
                     <Link

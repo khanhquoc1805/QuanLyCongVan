@@ -45,7 +45,9 @@ export default function LoginPage() {
     };
     useEffect(() => {
         if (manv !== undefined && manv !== "") {
+            
             navigate("/home");
+           
         }
     }, [manv]);
 

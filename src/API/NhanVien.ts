@@ -15,6 +15,10 @@ const NhanVienAPI = {
         const url = `/nhanvien/${madv}`;
         return axiosClient.get(url);
     },
+    getNhanVienByManv(manv: string): Promise<NhanVien> {
+        const url = `/nhanvien/thongtin/${manv}`;
+        return axiosClient.get(url);
+    },
 };
 
 export default NhanVienAPI;

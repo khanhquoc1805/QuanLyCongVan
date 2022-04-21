@@ -10,6 +10,7 @@ export interface AuthState {
     access_token: string;
     bophan: string;
     donvi: number;
+    
 }
 
 const initialState: AuthState = {
@@ -20,6 +21,7 @@ const initialState: AuthState = {
     access_token: "",
     bophan: "",
     donvi: 0,
+    
 };
 
 export interface UserPayload {
@@ -29,6 +31,7 @@ export interface UserPayload {
     access_token: string;
     bophan: string;
     donvi: number;
+   
 }
 
 const authSlice = createSlice({
@@ -46,6 +49,7 @@ const authSlice = createSlice({
             state.access_token = action.payload.access_token;
             state.bophan = action.payload.bophan;
             state.donvi = action.payload.donvi;
+           
         },
         loginfailed(state, action: PayloadAction<string>) {
             state.logging = false;
@@ -71,6 +75,7 @@ export const selectQuyen = (state: RootState) => state.auth.quyen;
 export const selectAccessToken = (state: RootState) => state.auth.access_token;
 export const selectBoPhanAuth = (state: RootState) => state.auth.bophan;
 export const selectDonViAuth = (state: RootState) => state.auth.donvi;
+
 
 const authReducer = authSlice.reducer;
 export default authReducer;

@@ -30,3 +30,15 @@ export const getMaNVFromToken = (): string => {
         return "";
     }
 };
+
+export const getTenNVFromToken = (): string => {
+    const token = localStorage.getItem("access_token");
+
+    try {
+        const payload = JSON.parse(atob(token?.split(".")[1] ?? ""));
+        console.log(payload);
+        return payload.tennv;
+    } catch (e) {
+        return "";
+    }
+};

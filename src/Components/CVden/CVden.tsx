@@ -150,8 +150,9 @@ export default function CVden() {
                     </Link>
                 </Stack>
             </div>
-            <div>
-            <MyBreadcrumbs></MyBreadcrumbs>
+            <div style={{display: "flex", flexDirection: "row", justifyContent: 'space-between'}}>
+                <MyBreadcrumbs></MyBreadcrumbs>
+               
             </div>
 
             <Stack>

@@ -55,7 +55,7 @@ export default function MyBreadcrumbs() {
                         onClick={() => {
                             navigate(`${route.link}`);
                         }}
-                        sx={{color: "#1e8eff", fontWeight: 'bolder'}}
+                        sx={{color: "#1e8eff", fontWeight: 'bolder', cursor: 'pointer'}}
                     >
                         {route.title}
                     </Link>
