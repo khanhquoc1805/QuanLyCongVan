@@ -24,7 +24,6 @@ export interface IDuThaoVanBanDi {
     dokhan: string;
     domat: string;
     malv: string;
-    sotrang: number;
     thuchientheovanban: string;
     ngayravbdi: string;
     manv: string;
@@ -38,7 +37,6 @@ const initialValue: IDuThaoVanBanDi = {
     dokhan: "",
     domat: "",
     malv: "",
-    sotrang: 0,
     thuchientheovanban: "",
     ngayravbdi: getCurrentDate(),
     manv: "",
@@ -49,12 +47,6 @@ const schema = yup.object().shape({
     maloai: yup.string().required("Vui lòng chọn loại văn bản."),
     ngayravbdi: yup.date().required("Vui lòng chọn ngày ra văn bản"),
     tenvbdi: yup.string().required("Trích Yếu Văn Bản Không Được Để Trống"),
-    sotrang: yup
-        .number()
-        .min(1, "Số trang không được bằng 0")
-        .max(100)
-        .required()
-        .typeError("Số trang là một số nguyên dương."),
     dokhan: yup.string().required("Vui lòng chọn độ khẩn."),
     domat: yup.string().required("Vui lòng chọn loại độ mật."),
     malv: yup.string().required("Vui lòng chọn lĩnh vực."),
@@ -127,7 +119,6 @@ export default function DuThaoVanBanDi() {
         formData.append("dokhan", formValues.dokhan);
         formData.append("domat", formValues.domat);
         formData.append("malv", formValues.malv);
-        formData.append("sotrang", formValues.sotrang.toString());
         formData.append("thuchientheovanban", formValues.thuchientheovanban);
         formData.append("ngayravbdi", formValues.ngayravbdi);
         formData.append("manv", manv || "");
@@ -319,12 +310,6 @@ export default function DuThaoVanBanDi() {
                                 Thêm
                             </Button>
                         </div>
-                        <InputField
-                            name="sotrang"
-                            control={control}
-                            label="Số Tờ"
-                        ></InputField>
-
                         <div
                             style={{
                                 display: "flex",
