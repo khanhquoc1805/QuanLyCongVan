@@ -39,7 +39,7 @@ export default function AddUserForm(props: AddUserFormProps) {
 
     return (
         <form onSubmit={handleSubmit(handleSubmitForm)}>
-            <InputField name="manv" control={control} label="Mã Người dùng" />
+            <InputField name="email" control={control} label="Email" />
 
             <InputField name="tennv" control={control} label="Tên Người dùng" />
             <InputField

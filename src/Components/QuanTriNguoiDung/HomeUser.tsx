@@ -1,14 +1,16 @@
 import { Button, Pagination, Stack } from "@mui/material";
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material/styles";
+import axios from "axios";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import userApi from "../../API/User";
 import { useAppDispatch, useAppSelector } from "../../App/hooks";
 import {
     selectDsUser,
@@ -17,10 +19,9 @@ import {
     selectUserFilter,
     userActions,
 } from "../../features/User/UserSlice";
-import { BaseNV, IUser } from "../../Model/User";
+import { BaseNV } from "../../Model/User";
+import { getDefaultBirthDay } from "../../Utils/getCurrentDate";
 import AddUserForm from "./AddUserForm";
-import { getCurrentDate, getDefaultBirthDay } from "../../Utils/getCurrentDate";
-import userApi from "../../API/User";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -49,6 +50,10 @@ export default function HomeUser() {
     const loading = useAppSelector(selectLoadingUser);
     const dsnv = useAppSelector(selectDsUser);
 
+    const [fileUpload, setFileUpload] = React.useState<File>(
+        new File([""], "filename")
+    );
+
     useEffect(() => {
         dispatch(userActions.fetchUserList(filter));
     }, [dispatch, filter]);
@@ -63,6 +68,7 @@ export default function HomeUser() {
     };
     const initialValue: BaseNV = {
         manv: "",
+        email: "",
         tennv: "",
         ngaysinh: getDefaultBirthDay(),
         diachi: "",
@@ -81,7 +87,12 @@ export default function HomeUser() {
             dispatch(userActions.fetchUserList({ ...filter }));
         }
     };
-    console.log(getDefaultBirthDay());
+    //console.log(getDefaultBirthDay());
+
+    const handleChangeFile = (event: any) => {
+        setFileUpload(event.target.files[0]);
+    };
+    console.log(fileUpload);
     return (
         <div style={{ margin: "0 40px 0 40px" }}>
             <div>
@@ -132,6 +143,55 @@ export default function HomeUser() {
                             </Stack>
                         </Link>
                     </Stack>
+                </div>
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "flex-end",
+                    }}
+                >
+                    <input
+                        type="file"
+                        name=""
+                        id=""
+                        onChange={handleChangeFile}
+                    />
+                    <Button
+                        variant="outlined"
+                        onClick={async () => {
+                            const formData = new FormData();
+                            formData.append("upload", fileUpload);
+                            // const binaryData = await userApi.addMultiUser(
+                            //     formData
+                            // );
+
+                            const response = await axios({
+                                method: "post",
+                                url: "http://localhost:8080/user/addmulti",
+                                data: formData,
+                                responseType: "blob",
+                                headers: {
+                                    "Content-Type": "multipart/form-data",
+                                },
+                            });
+
+                            const blob = new Blob([response.data], {
+                                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                // type: "application/vnd.ms-excel"
+                            });
+                            const url = window.URL || window.webkitURL;
+                            const link = url.createObjectURL(blob);
+                            const a = document.createElement("a");
+                            a.setAttribute("download", "user.xlsx");
+                            a.setAttribute("href", link);
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                        }}
+                    >
+                        Tạo Tài Khoản
+                    </Button>
                 </div>
                 <div
                     style={{

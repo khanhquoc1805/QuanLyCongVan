@@ -1,7 +1,8 @@
 import { IDonVi } from "../API/DonVi";
 
 export interface BaseNV {
-    manv: string;
+    manv?: string;
+    email? :string;
     tennv: string;
     ngaysinh: string;
     diachi: string;
