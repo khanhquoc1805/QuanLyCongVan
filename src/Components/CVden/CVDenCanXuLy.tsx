@@ -31,7 +31,7 @@ interface Props {}
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: "#673ab7",
         color: theme.palette.common.white,
     },
     [`&.${tableCellClasses.body}`]: {

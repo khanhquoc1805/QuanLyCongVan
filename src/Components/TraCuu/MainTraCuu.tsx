@@ -30,7 +30,7 @@ import PreviewDialog from "../PreviewDialog/PreviewDialog";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.error.main,
+        backgroundColor: "#039be5",
         color: theme.palette.common.white,
     },
     [`&.${tableCellClasses.body}`]: {
@@ -126,56 +126,62 @@ export default function MainTraCuu() {
     };
 
     return token ? (
-        <div style={{ margin: "0 40px 0 40px" }}>
-            <div>
+        <div>
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    backgroundImage:
+                        "linear-gradient(0deg,#ffffff,#81d4fa)",
+                    padding: "0 40px 16px 40px",
+                }}
+            >
                 <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
+                    style={{
+                        margin: "24px 0 0 40px",
+                        fontSize: "36px",
+                        fontWeight: "bold",
+                        color: "#01579b",
+                        fontFamily: "coiny",
+                    }}
                 >
-                    <div
+                    QUẢN LÝ LƯU TRỮ
+                </div>
+                <Stack
+                    direction="row"
+                    spacing={3}
+                    justifyContent="right"
+                    mt={3}
+                >
+                    <Link
+                        to="/home"
                         style={{
-                            margin: "24px 0 0 40px",
-                            fontSize: "36px",
-                            fontWeight: "bold",
-                            color: "#F73B07",
-                            fontFamily: "coiny",
+                            textDecoration: "none",
+                            cursor: "pointer",
+                            color: "black",
                         }}
                     >
-                        QUẢN LÝ LƯU TRỮ
-                    </div>
-                    <Stack
-                        direction="row"
-                        spacing={3}
-                        justifyContent="right"
-                        mt={3}
-                    >
-                        <Link
-                            to="/home"
-                            style={{
-                                textDecoration: "none",
-                                cursor: "pointer",
-                                color: "black",
-                            }}
+                        <Stack
+                            direction="row"
+                            spacing={1}
+                            sx={{ cursor: "pointer" }}
                         >
-                            <Stack
-                                direction="row"
-                                spacing={1}
-                                sx={{ cursor: "pointer" }}
-                            >
-                                <div>
-                                    <img
-                                        src="home-svgrepo-com.svg"
-                                        alt=""
-                                        style={{
-                                            width: "20px",
-                                            height: "20px",
-                                        }}
-                                    />
-                                </div>
-                                <p>Trang Chủ</p>
-                            </Stack>
-                        </Link>
-                    </Stack>
-                </div>
+                            <div>
+                                <img
+                                    src="home-svgrepo-com.svg"
+                                    alt=""
+                                    style={{
+                                        width: "20px",
+                                        height: "20px",
+                                    }}
+                                />
+                            </div>
+                            <p>Trang Chủ</p>
+                        </Stack>
+                    </Link>
+                </Stack>
+            </div>
+            <div style={{ margin: "0px 40px 0px 80px" }}>
                 <div
                     style={{
                         display: "flex",
@@ -187,7 +193,7 @@ export default function MainTraCuu() {
                         style={{
                             textAlign: "center",
                             fontSize: "24px",
-                            color: "#035C20",
+                            color: "#01579b",
                             fontWeight: "bolder",
                         }}
                     >
@@ -351,7 +357,9 @@ export default function MainTraCuu() {
                                                 }}
                                                 onClick={() => {
                                                     setOpenPreview(true);
-                                                    setUrl(row.ttbosung.dinhkem);
+                                                    setUrl(
+                                                        row.ttbosung.dinhkem
+                                                    );
                                                 }}
                                             />
                                         </Stack>

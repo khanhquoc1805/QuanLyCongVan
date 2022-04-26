@@ -11,14 +11,22 @@ import XuLyVanBanDen from "./XuLyVanBanDen";
 export default function CVden() {
     const token = localStorage.getItem("access_token");
     return token ? (
-        <div style={{ margin: "0 40px 0 40px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div>
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    backgroundImage:
+                        "linear-gradient(0deg,rgb(255,255,255),#b39ddb)",
+                    padding: "0 40px 16px 40px",
+                }}
+            >
                 <div
                     style={{
                         margin: "24px 0 0 40px",
                         fontSize: "36px",
                         fontWeight: "bold",
-                        color: "#236E08",
+                        color: "#5e35b1",
                         fontFamily: "coiny",
                     }}
                 >
@@ -150,12 +158,17 @@ export default function CVden() {
                     </Link>
                 </Stack>
             </div>
-            <div style={{display: "flex", flexDirection: "row", justifyContent: 'space-between'}}>
-                <MyBreadcrumbs></MyBreadcrumbs>
-               
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                }}
+            >
+                <MyBreadcrumbs color="#236E08"></MyBreadcrumbs>
             </div>
 
-            <Stack>
+            <Stack style={{ margin: "0 60px 0 80px" }}>
                 <Routes>
                     <Route path="/" element={<CVDenCanXuLy />}></Route>
                     <Route

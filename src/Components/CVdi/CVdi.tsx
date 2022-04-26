@@ -13,8 +13,16 @@ interface Props {}
 export default function CVdi() {
     const token = localStorage.getItem("access_token");
     return token ? (
-        <div style={{ margin: "0 40px 0 40px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div>
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    backgroundImage:
+                        "linear-gradient(0deg,rgb(255,255,255),rgb(224,119,229))",
+                        padding: "0 40px 16px 40px"
+                }}
+            >
                 <div
                     style={{
                         margin: "24px 0 0 40px",
@@ -157,10 +165,10 @@ export default function CVdi() {
             </div>
 
             <div>
-                <MyBreadcrumbs></MyBreadcrumbs>
+                <MyBreadcrumbs color="#990599"></MyBreadcrumbs>
             </div>
 
-            <Stack>
+            <Stack style={{ margin: "0 60px 0 80px" }}>
                 <Routes>
                     <Route
                         path="/duthaovanbandi"

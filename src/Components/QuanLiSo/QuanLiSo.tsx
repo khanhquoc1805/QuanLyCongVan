@@ -78,102 +78,107 @@ export default function QuanLiSo() {
     };
 
     return token ? (
-        <div style={{ margin: "0 40px 0 40px" }}>
-            <div>
+        <div>
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    backgroundImage:
+                        "linear-gradient(0deg,rgb(255,255,255),#90a4ae)",
+                    padding: "0 40px 16px 40px",
+                }}
+            >
                 <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                    <div
-                        style={{
-                            margin: "24px 0 0 40px",
-                            fontSize: "36px",
-                            fontWeight: "bold",
-                            color: "#F73B07",
-                            fontFamily: "coiny",
-                        }}
-                    >
-                        QUẢN LÝ SỔ CÔNG VĂN
-                    </div>
-                    <Stack
-                        direction="row"
-                        spacing={3}
-                        justifyContent="right"
-                        mt={3}
-                    >
-                        <Link
-                            to="/home"
-                            style={{
-                                textDecoration: "none",
-                                cursor: "pointer",
-                                color: "black",
-                            }}
-                        >
-                            <Stack
-                                direction="row"
-                                spacing={1}
-                                sx={{ cursor: "pointer" }}
-                            >
-                                <div>
-                                    <img
-                                        src="home-svgrepo-com.svg"
-                                        alt=""
-                                        style={{
-                                            width: "20px",
-                                            height: "20px",
-                                        }}
-                                    />
-                                </div>
-                                <p>Trang Chủ</p>
-                            </Stack>
-                        </Link>
-                        <Stack
-                            direction="row"
-                            spacing={1}
-                            sx={{ cursor: "pointer" }}
-                        >
-                            <div>
-                                <img
-                                    src="urgent-svgrepo-com.svg"
-                                    alt=""
-                                    style={{ width: "20px", height: "20px" }}
-                                />
-                            </div>
-                            <p>Độ khẩn</p>
-                        </Stack>
-                        <Stack
-                            direction="row"
-                            spacing={1}
-                            sx={{ cursor: "pointer" }}
-                        >
-                            <div>
-                                <img
-                                    src="security-lock-svgrepo-com.svg"
-                                    alt=""
-                                    style={{ width: "20px", height: "20px" }}
-                                />
-                            </div>
-                            <p>Độ Mật</p>
-                        </Stack>
-
-                        <div style={{ cursor: "pointer" }}>Sổ Công Văn</div>
-                    </Stack>
-                </div>
-
-                <Button
-                    variant="contained"
-                    color="secondary"
-                    sx={{ position: "absolute", right: "40px", top: "72px" }}
-                    onClick={() => {
-                        setOpen(true);
+                    style={{
+                        margin: "24px 0 0 40px",
+                        fontSize: "36px",
+                        fontWeight: "bold",
+                        color: "#37474f",
+                        fontFamily: "coiny",
                     }}
                 >
-                    Thêm Mới
-                </Button>
+                    QUẢN LÝ SỔ CÔNG VĂN
+                </div>
+                <Stack
+                    direction="row"
+                    spacing={3}
+                    justifyContent="right"
+                    mt={3}
+                >
+                    <Link
+                        to="/home"
+                        style={{
+                            textDecoration: "none",
+                            cursor: "pointer",
+                            color: "black",
+                        }}
+                    >
+                        <Stack
+                            direction="row"
+                            spacing={1}
+                            sx={{ cursor: "pointer" }}
+                        >
+                            <div>
+                                <img
+                                    src="home-svgrepo-com.svg"
+                                    alt=""
+                                    style={{
+                                        width: "20px",
+                                        height: "20px",
+                                    }}
+                                />
+                            </div>
+                            <p>Trang Chủ</p>
+                        </Stack>
+                    </Link>
 
-                <Stack sx={{ height: "48px" }}>
-                    <MyBreadcrumbs></MyBreadcrumbs>
+                    <Stack
+                        direction="row"
+                        spacing={1}
+                        sx={{ cursor: "pointer" }}
+                    >
+                        <div>
+                            <img
+                                src="urgent-svgrepo-com.svg"
+                                alt=""
+                                style={{ width: "20px", height: "20px" }}
+                            />
+                        </div>
+                        <p>Độ khẩn</p>
+                    </Stack>
+                    <Stack
+                        direction="row"
+                        spacing={1}
+                        sx={{ cursor: "pointer" }}
+                    >
+                        <div>
+                            <img
+                                src="security-lock-svgrepo-com.svg"
+                                alt=""
+                                style={{ width: "20px", height: "20px" }}
+                            />
+                        </div>
+                        <p>Độ Mật</p>
+                    </Stack>
+
+                    <div style={{ cursor: "pointer" }}>Sổ Công Văn</div>
                 </Stack>
+            </div>
+            <Button
+                variant="contained"
+                color="secondary"
+                sx={{ position: "absolute", right: "40px", top: "72px" }}
+                onClick={() => {
+                    setOpen(true);
+                }}
+            >
+                Thêm Mới
+            </Button>
 
+            <Stack sx={{ height: "48px" }}>
+                <MyBreadcrumbs color="#607d8b"></MyBreadcrumbs>
+            </Stack>
+            <div style={{ padding: "0px 40px 0px 80px" }}>
                 <Stack mt={4} mb={3} direction="row" spacing={2}>
                     <FormControl
                         fullWidth

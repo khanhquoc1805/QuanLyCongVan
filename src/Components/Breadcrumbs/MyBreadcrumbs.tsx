@@ -31,7 +31,8 @@ breadcrumbMap.set('xulivanbandi', 'Xử lý văn bản đi')
 breadcrumbMap.set('phathanhvanbandi', 'Phát hành văn bản đi')
 
 
-export default function MyBreadcrumbs() {
+export default function MyBreadcrumbs(props: {color: string}) {
+    const {color} = props;
     let url = "";
     const navigate = useNavigate();
     const location = useLocation();
@@ -46,7 +47,7 @@ export default function MyBreadcrumbs() {
         });
 
     return (
-        <div role="presentation" onClick={handleClick} style={{marginTop: '16px'}}>
+        <div role="presentation" onClick={handleClick} style={{margin: '16px 0px 0px 80px'}}>
             <Breadcrumbs aria-label="breadcrumb">
                 {breadcrumbs.map((route, index) => (
                     <Link
@@ -55,7 +56,7 @@ export default function MyBreadcrumbs() {
                         onClick={() => {
                             navigate(`${route.link}`);
                         }}
-                        sx={{color: "#1e8eff", fontWeight: 'bolder', cursor: 'pointer'}}
+                        sx={{color: color, fontWeight: 'bolder', cursor: 'pointer'}}
                     >
                         {route.title}
                     </Link>

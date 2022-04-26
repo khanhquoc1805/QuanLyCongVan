@@ -221,35 +221,7 @@ export default function DuThaoVanBanDi() {
                         label="Tập Tin Đính Kèm"
                         type="file"
                     ></InputField> */}
-                        <div>
-                            <input
-                                type="file"
-                                style={{
-                                    border: "1px solid #c6c6c6",
-                                    width: "100%",
-                                    height: "54px",
-                                    borderRadius: "4px",
-                                    boxSizing: "border-box",
-                                    padding: "12px 0px 0px 44px",
-                                }}
-                                id="contained-button-file"
-                                onChange={handleChange}
-                            />
-                            <label htmlFor="contained-button-file">
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    component="span"
-                                    sx={{
-                                        position: "relative",
-                                        top: "-48px",
-                                        left: "12px",
-                                    }}
-                                >
-                                    Đính kèm
-                                </Button>
-                            </label>
-                        </div>
+                        
                     </Grid>
                     <Grid item xs={6}>
                         <SelectField
@@ -309,6 +281,36 @@ export default function DuThaoVanBanDi() {
                             >
                                 Thêm
                             </Button>
+                        </div>
+                        <div>
+                            <input
+                                type="file"
+                                style={{
+                                    border: "1px solid #c6c6c6",
+                                    width: "100%",
+                                    height: "54px",
+                                    borderRadius: "4px",
+                                    boxSizing: "border-box",
+                                    padding: "12px 0px 0px 44px",
+                                    marginTop: "14px"
+                                }}
+                                id="contained-button-file"
+                                onChange={handleChange}
+                            />
+                            <label htmlFor="contained-button-file">
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    component="span"
+                                    sx={{
+                                        position: "relative",
+                                        top: "-48px",
+                                        left: "12px",
+                                    }}
+                                >
+                                    Đính kèm
+                                </Button>
+                            </label>
                         </div>
                         <div
                             style={{

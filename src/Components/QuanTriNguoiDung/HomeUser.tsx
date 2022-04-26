@@ -94,178 +94,187 @@ export default function HomeUser() {
     };
     console.log(fileUpload);
     return (
-        <div style={{ margin: "0 40px 0 40px" }}>
-            <div>
+        <div style={{ height: "100vh", boxSizing: "border-box" }}>
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    backgroundImage:
+                        "linear-gradient(0deg,rgb(255,255,255),#ffcdd2)",
+                    padding: "0 40px 16px 40px",
+                }}
+            >
                 <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
+                    style={{
+                        margin: "24px 0 0 40px",
+                        fontSize: "36px",
+                        fontWeight: "bold",
+                        color: "#F73B07",
+                        fontFamily: "coiny",
+                    }}
                 >
-                    <div
+                    QUẢN LÝ NGƯỜI DÙNG
+                </div>
+                <Stack
+                    direction="row"
+                    spacing={3}
+                    justifyContent="right"
+
+                     mt={3}
+                >
+                    <Link
+                        to="/home"
                         style={{
-                            margin: "24px 0 0 40px",
-                            fontSize: "36px",
-                            fontWeight: "bold",
-                            color: "#F73B07",
-                            fontFamily: "coiny",
+                            textDecoration: "none",
+                            cursor: "pointer",
+                            color: "black",
                         }}
                     >
-                        QUẢN LÝ NGƯỜI DÙNG
-                    </div>
-                    <Stack
-                        direction="row"
-                        spacing={3}
-                        justifyContent="right"
-                        mt={3}
-                    >
-                        <Link
-                            to="/home"
-                            style={{
-                                textDecoration: "none",
-                                cursor: "pointer",
-                                color: "black",
-                            }}
+                        <Stack
+                            direction="row"
+                            spacing={1}
+                            sx={{ cursor: "pointer" }}
                         >
-                            <Stack
-                                direction="row"
-                                spacing={1}
-                                sx={{ cursor: "pointer" }}
-                            >
-                                <div>
-                                    <img
-                                        src="home-svgrepo-com.svg"
-                                        alt=""
-                                        style={{
-                                            width: "20px",
-                                            height: "20px",
-                                        }}
-                                    />
-                                </div>
-                                <p>Trang Chủ</p>
-                            </Stack>
-                        </Link>
+                            <div>
+                                <img
+                                    src="home-svgrepo-com.svg"
+                                    alt=""
+                                    style={{
+                                        width: "20px",
+                                        height: "20px",
+                                    }}
+                                />
+                            </div>
+                            <p>Trang Chủ</p>
+                        </Stack>
+                    </Link>
+                </Stack>
+            </div>
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                    marginRight: "40px",
+                }}
+            >
+                <input type="file" name="" id="" onChange={handleChangeFile} />
+                <Button
+                    variant="outlined"
+                    onClick={async () => {
+                        const formData = new FormData();
+                        formData.append("upload", fileUpload);
+                        // const binaryData = await userApi.addMultiUser(
+                        //     formData
+                        // );
+
+                        const response = await axios({
+                            method: "post",
+                            url: "http://localhost:8080/user/addmulti",
+                            data: formData,
+                            responseType: "blob",
+                            headers: {
+                                "Content-Type": "multipart/form-data",
+                            },
+                        });
+
+                        const blob = new Blob([response.data], {
+                            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                            // type: "application/vnd.ms-excel"
+                        });
+                        const url = window.URL || window.webkitURL;
+                        const link = url.createObjectURL(blob);
+                        const a = document.createElement("a");
+                        a.setAttribute("download", "user.xlsx");
+                        a.setAttribute("href", link);
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+
+                        dispatch(userActions.fetchUserList(filter));
+                    }}
+                >
+                    Tạo Tài Khoản
+                </Button>
+            </div>
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-evenly",
+                    padding: "0px 40px 0px 40px",
+                }}
+            >
+                <div style={{ marginTop: "28px" }}>
+                    <TableContainer component={Paper} sx={{}}>
+                        <Table aria-label="customized table">
+                            <TableHead>
+                                <TableRow>
+                                    <StyledTableCell sx={{ maxWidth: "20px" }}>
+                                        STT
+                                    </StyledTableCell>
+                                    <StyledTableCell align="center">
+                                        Mã cán bộ
+                                    </StyledTableCell>
+                                    <StyledTableCell align="center">
+                                        Tên cán bộ
+                                    </StyledTableCell>
+                                    <StyledTableCell align="center">
+                                        Đơn vị
+                                    </StyledTableCell>
+                                    <StyledTableCell align="center">
+                                        Chức vụ
+                                    </StyledTableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {dsnv.map((row, index) => (
+                                    <StyledTableRow key={index}>
+                                        <StyledTableCell>
+                                            {index + 1}
+                                        </StyledTableCell>
+                                        <StyledTableCell align="center">
+                                            {row.nv.manv}
+                                        </StyledTableCell>
+                                        <StyledTableCell align="center">
+                                            {row.nv.tennv}
+                                        </StyledTableCell>
+                                        <StyledTableCell align="center">
+                                            {row.donvi.tendv}
+                                        </StyledTableCell>
+                                        <StyledTableCell align="center">
+                                            {row.nv?.chucvu}
+                                        </StyledTableCell>
+                                    </StyledTableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <Stack justifyContent="center" mt={5} direction="row">
+                        <Pagination
+                            variant="outlined"
+                            color="secondary"
+                            count={Math.ceil(
+                                pagination.totalRows / pagination.limit
+                            )}
+                            page={pagination.page}
+                            onChange={handleChange}
+                        />
                     </Stack>
                 </div>
-                <div
+                <Paper
                     style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "flex-end",
+                        maxWidth: "40%",
+                        marginTop: "12px",
+                        boxSizing: "border-box",
+                        padding: "12px 32px 12px 32px",
                     }}
                 >
-                    <input
-                        type="file"
-                        name=""
-                        id=""
-                        onChange={handleChangeFile}
-                    />
-                    <Button
-                        variant="outlined"
-                        onClick={async () => {
-                            const formData = new FormData();
-                            formData.append("upload", fileUpload);
-                            // const binaryData = await userApi.addMultiUser(
-                            //     formData
-                            // );
-
-                            const response = await axios({
-                                method: "post",
-                                url: "http://localhost:8080/user/addmulti",
-                                data: formData,
-                                responseType: "blob",
-                                headers: {
-                                    "Content-Type": "multipart/form-data",
-                                },
-                            });
-
-                            const blob = new Blob([response.data], {
-                                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                                // type: "application/vnd.ms-excel"
-                            });
-                            const url = window.URL || window.webkitURL;
-                            const link = url.createObjectURL(blob);
-                            const a = document.createElement("a");
-                            a.setAttribute("download", "user.xlsx");
-                            a.setAttribute("href", link);
-                            document.body.appendChild(a);
-                            a.click();
-                            document.body.removeChild(a);
-                        }}
-                    >
-                        Tạo Tài Khoản
-                    </Button>
-                </div>
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-evenly",
-                    }}
-                >
-                    <div style={{ marginTop: "64px" }}>
-                        <TableContainer component={Paper} sx={{}}>
-                            <Table aria-label="customized table">
-                                <TableHead>
-                                    <TableRow>
-                                        <StyledTableCell
-                                            sx={{ maxWidth: "20px" }}
-                                        >
-                                            STT
-                                        </StyledTableCell>
-                                        <StyledTableCell align="center">
-                                            Mã cán bộ
-                                        </StyledTableCell>
-                                        <StyledTableCell align="center">
-                                            Tên cán bộ
-                                        </StyledTableCell>
-                                        <StyledTableCell align="center">
-                                            Đơn vị
-                                        </StyledTableCell>
-                                        <StyledTableCell align="center">
-                                            Chức vụ
-                                        </StyledTableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {dsnv.map((row, index) => (
-                                        <StyledTableRow key={index}>
-                                            <StyledTableCell>
-                                                {index + 1}
-                                            </StyledTableCell>
-                                            <StyledTableCell align="center">
-                                                {row.nv.manv}
-                                            </StyledTableCell>
-                                            <StyledTableCell align="center">
-                                                {row.nv.tennv}
-                                            </StyledTableCell>
-                                            <StyledTableCell align="center">
-                                                {row.donvi.tendv}
-                                            </StyledTableCell>
-                                            <StyledTableCell align="center">
-                                                {row.nv?.chucvu}
-                                            </StyledTableCell>
-                                        </StyledTableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                        <Stack justifyContent="center" mt={5} direction="row">
-                            <Pagination
-                                variant="outlined"
-                                color="secondary"
-                                count={Math.ceil(
-                                    pagination.totalRows / pagination.limit
-                                )}
-                                page={pagination.page}
-                                onChange={handleChange}
-                            />
-                        </Stack>
-                    </div>
-                    <div style={{ marginTop: "44px", maxWidth: "40%" }}>
-                        <AddUserForm
-                            initialValue={initialValue}
-                            onSubmit={handleStudentFormSubmit}
-                        ></AddUserForm>
-                    </div>
-                </div>
+                    <AddUserForm
+                        initialValue={initialValue}
+                        onSubmit={handleStudentFormSubmit}
+                    ></AddUserForm>
+                </Paper>
             </div>
         </div>
     );
