@@ -15,6 +15,7 @@ interface SelectProps {
     disable?: boolean;
     options: SelectOption[];
     selected?: SelectOption;
+    onChanged?: any;
 }
 
 export interface SelectOption {
@@ -23,8 +24,9 @@ export interface SelectOption {
 }
 
 export function SelectField(props: SelectProps) {
-    const { name, control, label, disable, options, selected } = props;
-   
+    const { name, control, label, disable, options, selected, onChanged } =
+        props;
+
     const {
         field: { value, onChange, onBlur },
         fieldState: { invalid, error },

@@ -3,7 +3,7 @@ import CommentIcon from "@mui/icons-material/Comment";
 import { Button, Grid } from "@mui/material";
 import Alert from "@mui/material/Alert";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, RefObject } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import cvDiApi from "../../API/CVdi";
@@ -15,6 +15,18 @@ import { getDonViFromToken } from "../../Utils/getValueFormToken";
 import { InputField, SelectField, SelectOption } from "../FormField";
 import FormAddLinhVuc from "./FormAdd/FormAddLinhVuc";
 import FormAddLoaiCV from "./FormAdd/FormAddLoaiCV";
+
+export interface DraftState {
+    madv?: string;
+    maloai?: string;
+    tenvbdi?: string;
+    ngayravbdi?: string;
+    dokhan?: string;
+    domat?: string;
+    malv?: string;
+    dinhkem?: File;
+    manv?: string;
+}
 
 export interface IDuThaoVanBanDi {
     madv: string;
@@ -52,11 +64,30 @@ const schema = yup.object().shape({
     malv: yup.string().required("Vui lòng chọn lĩnh vực."),
 });
 
+const schema1 = yup.object().shape({
+    madv: yup.string(),
+    maloai: yup.string(),
+    ngayravbdi: yup.date(),
+    tenvbdi: yup.string(),
+    dokhan: yup.string(),
+    domat: yup.string(),
+    malv: yup.string(),
+});
+
 export default function DuThaoVanBanDi() {
-    const { control, handleSubmit } = useForm<IDuThaoVanBanDi>({
-        defaultValues: initialValue,
-        resolver: yupResolver(schema),
-    });
+    const [draft, setDraft] = useState<DraftState>({});
+    const [isDraft, setIsDraft] = useState<boolean>(false);
+    const buttonRef: RefObject<HTMLButtonElement> = useRef(null);
+    // const formRef =  useRef<HTMLFormElement | undefined>();
+    const { control, handleSubmit, formState } = isDraft
+        ? useForm<IDuThaoVanBanDi>({
+              defaultValues: initialValue,
+              resolver: yupResolver(schema1),
+          })
+        : useForm<IDuThaoVanBanDi>({
+              defaultValues: initialValue,
+              resolver: yupResolver(schema),
+          });
 
     const manv = localStorage.getItem("manv");
 
@@ -109,25 +140,32 @@ export default function DuThaoVanBanDi() {
     };
 
     const handleSubmitForm = async (formValues: IDuThaoVanBanDi) => {
-        formValues.dinhkem = fileUpload;
-        //console.log(formValues);
-        const formData = new FormData();
-        formData.append("madv", formValues.madv);
-        formData.append("maloai", formValues.maloai);
-        formData.append("tenvbdi", formValues.tenvbdi);
-        formData.append("dinhkem", formValues.dinhkem);
-        formData.append("dokhan", formValues.dokhan);
-        formData.append("domat", formValues.domat);
-        formData.append("malv", formValues.malv);
-        formData.append("thuchientheovanban", formValues.thuchientheovanban);
-        formData.append("ngayravbdi", formValues.ngayravbdi);
-        formData.append("manv", manv || "");
-        console.log(manv);
+        if (isDraft === false) {
+            formValues.dinhkem = fileUpload;
+            console.log(formValues);
+            const formData = new FormData();
+            formData.append("madv", formValues.madv);
+            formData.append("maloai", formValues.maloai);
+            formData.append("tenvbdi", formValues.tenvbdi);
+            formData.append("dinhkem", formValues.dinhkem);
+            formData.append("dokhan", formValues.dokhan);
+            formData.append("domat", formValues.domat);
+            formData.append("malv", formValues.malv);
+            formData.append(
+                "thuchientheovanban",
+                formValues.thuchientheovanban
+            );
+            formData.append("ngayravbdi", formValues.ngayravbdi);
+            formData.append("manv", manv || "");
+            console.log(manv);
 
-        const response = await cvDiApi.add(formData);
+            const response = await cvDiApi.add(formData);
 
-        if (response.status === "successfully") {
-            setAlert(true);
+            if (response.status === "successfully") {
+                setAlert(true);
+            }
+        } else {
+            console.log(isDraft);
         }
     };
 
@@ -221,7 +259,6 @@ export default function DuThaoVanBanDi() {
                         label="Tập Tin Đính Kèm"
                         type="file"
                     ></InputField> */}
-                        
                     </Grid>
                     <Grid item xs={6}>
                         <SelectField
@@ -292,7 +329,7 @@ export default function DuThaoVanBanDi() {
                                     borderRadius: "4px",
                                     boxSizing: "border-box",
                                     padding: "12px 0px 0px 44px",
-                                    marginTop: "14px"
+                                    marginTop: "14px",
                                 }}
                                 id="contained-button-file"
                                 onChange={handleChange}
@@ -321,12 +358,54 @@ export default function DuThaoVanBanDi() {
                             <Button
                                 variant="contained"
                                 color="secondary"
-                                type="submit"
+                                // type="submit"
+                                onClick={(e) => {
+                                    setIsDraft(false);
+                                    setTimeout(() => {
+                                        buttonRef.current!.click();
+                                    }, 1);
+                                }}
                             >
                                 Tiếp Tục
                             </Button>
                         </div>
+
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                            }}
+                        >
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                onClick={(e) => {
+                                    setIsDraft(true);
+                                    setTimeout(() => {
+                                        buttonRef.current!.click();
+                                    }, 1);
+                                }}
+                            >
+                                Save draft
+                            </Button>
+                        </div>
                     </Grid>
+
+                    <div
+                        style={{
+                            display: "none",
+                            justifyContent: "flex-end",
+                        }}
+                    >
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            type="submit"
+                            ref={buttonRef}
+                        >
+                            Real submit
+                        </Button>
+                    </div>
                 </Grid>
             </form>
             <FormAddLoaiCV

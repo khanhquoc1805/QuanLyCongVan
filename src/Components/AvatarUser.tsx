@@ -1,3 +1,4 @@
+import { Paper } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
@@ -58,11 +59,13 @@ export default function AvatarUser() {
         })();
     }, []);
     return (
-        <Box
+        <Paper
             sx={{
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "flex-end",
+                padding: "6px 24px 6px 32px",
+                borderRadius: "12px"
             }}
         >
             <p style={{ marginRight: "12px" }}>{nv?.tennv}</p>
@@ -94,6 +97,6 @@ export default function AvatarUser() {
                     <Typography textAlign="center">Đăng xuất</Typography>
                 </MenuItem>
             </Menu>
-        </Box>
+        </Paper>
     );
 }

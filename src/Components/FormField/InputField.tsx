@@ -14,7 +14,7 @@ export function InputField(props: InputFieldProps) {
     const {
         field: { value, onChange, onBlur, ref },
         fieldState: { invalid, error },
-    } = useController({ name, control });
+    } = useController({ name, control, });
     return (
         <TextField
             label={label}

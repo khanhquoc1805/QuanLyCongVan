@@ -22,7 +22,7 @@ export default function Main() {
     }, []);
     return token ? (
         <div>
-            <div style={{ margin: "24px 24px 0px 0px" }}>
+            <div style={{ margin: "24px 24px 0px 0px", display : 'flex', justifyContent: 'flex-end' }}>
                 <AvatarUser></AvatarUser>
             </div>
 
