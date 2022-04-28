@@ -5,28 +5,31 @@ import Alert from "@mui/material/Alert";
 
 import React, { useEffect, useState, useRef, RefObject } from "react";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
 import * as yup from "yup";
 import cvDiApi from "../../API/CVdi";
 import donViApi, { IDonVi } from "../../API/DonVi";
+import draftCVDi from "../../API/DraftCVDi";
 import linhVucApi, { ILinhVuc } from "../../API/LinhVuc";
 import loaiCVApi, { ILoaiCV } from "../../API/LoaiCV";
+import { BaseDraftCVDi } from "../../Model/Draft";
 import { getCurrentDate } from "../../Utils/getCurrentDate";
 import { getDonViFromToken } from "../../Utils/getValueFormToken";
 import { InputField, SelectField, SelectOption } from "../FormField";
 import FormAddLinhVuc from "./FormAdd/FormAddLinhVuc";
 import FormAddLoaiCV from "./FormAdd/FormAddLoaiCV";
 
-export interface DraftState {
-    madv?: string;
-    maloai?: string;
-    tenvbdi?: string;
-    ngayravbdi?: string;
-    dokhan?: string;
-    domat?: string;
-    malv?: string;
-    dinhkem?: File;
-    manv?: string;
-}
+// export interface DraftState {
+//     madv?: string;
+//     maloai?: string;
+//     tenvbdi?: string;
+//     ngayravbdi?: string;
+//     dokhan?: string;
+//     domat?: string;
+//     malv?: string;
+//     dinhkem?: File;
+//     manv?: string;
+// }
 
 export interface IDuThaoVanBanDi {
     madv: string;
@@ -39,20 +42,8 @@ export interface IDuThaoVanBanDi {
     thuchientheovanban: string;
     ngayravbdi: string;
     manv: string;
+    iddraft: string;
 }
-
-const initialValue: IDuThaoVanBanDi = {
-    madv: "",
-    maloai: "",
-    tenvbdi: "",
-    dinhkem: new File([""], "filename"),
-    dokhan: "",
-    domat: "",
-    malv: "",
-    thuchientheovanban: "",
-    ngayravbdi: getCurrentDate(),
-    manv: "",
-};
 
 const schema = yup.object().shape({
     madv: yup.string().required("Vui lòng chọn đơn vị."),
@@ -74,12 +65,44 @@ const schema1 = yup.object().shape({
     malv: yup.string(),
 });
 
+const initialValue: IDuThaoVanBanDi = {
+    madv: "",
+    maloai: "",
+    tenvbdi: "",
+    dinhkem: new File([""], "filename"),
+    dokhan: "",
+    domat: "",
+    malv: "",
+    thuchientheovanban: "",
+    ngayravbdi: getCurrentDate(),
+    manv: "",
+    iddraft: "",
+};
+
 export default function DuThaoVanBanDi() {
-    const [draft, setDraft] = useState<DraftState>({});
     const [isDraft, setIsDraft] = useState<boolean>(false);
     const buttonRef: RefObject<HTMLButtonElement> = useRef(null);
-    // const formRef =  useRef<HTMLFormElement | undefined>();
-    const { control, handleSubmit, formState } = isDraft
+    const { iddraft } = useParams<{ iddraft: string }>();
+    const is_draft = Boolean(iddraft);
+
+    const [draft, setDraft] = useState<BaseDraftCVDi>();
+
+    useEffect(() => {
+        if (!iddraft) return;
+
+        (async () => {
+            try {
+                const data: BaseDraftCVDi = await draftCVDi.getById(iddraft);
+                setDraft(data);
+            } catch (error) {
+                console.log("Failed to fetch", error);
+            }
+        })();
+    }, [iddraft]);
+
+    //console.log(initialValue);
+
+    const { control, handleSubmit, formState, setValue } = isDraft
         ? useForm<IDuThaoVanBanDi>({
               defaultValues: initialValue,
               resolver: yupResolver(schema1),
@@ -88,6 +111,16 @@ export default function DuThaoVanBanDi() {
               defaultValues: initialValue,
               resolver: yupResolver(schema),
           });
+
+    useEffect(() => {
+        // console.log(draft);
+        setValue("malv", draft?.malv?.toString() || "");
+        setValue("madv", draft?.madv?.toString() || "");
+        setValue("maloai", draft?.maloai?.toString() || "");
+        setValue("dokhan", draft?.dokhan?.toString() || "");
+        setValue("domat", draft?.domat?.toString() || "");
+        setValue("tenvbdi", draft?.trichyeu?.toString() || "");
+    }, [draft, iddraft]);
 
     const manv = localStorage.getItem("manv");
 
@@ -131,6 +164,8 @@ export default function DuThaoVanBanDi() {
         label: dv.tendv,
         value: dv.madv,
     }));
+
+    //console.log(donViOptions);
     const donViDefault = donViOptions.filter(
         (x) => x.value === getDonViFromToken()
     );
@@ -140,32 +175,32 @@ export default function DuThaoVanBanDi() {
     };
 
     const handleSubmitForm = async (formValues: IDuThaoVanBanDi) => {
-        if (isDraft === false) {
-            formValues.dinhkem = fileUpload;
-            console.log(formValues);
-            const formData = new FormData();
-            formData.append("madv", formValues.madv);
-            formData.append("maloai", formValues.maloai);
-            formData.append("tenvbdi", formValues.tenvbdi);
-            formData.append("dinhkem", formValues.dinhkem);
-            formData.append("dokhan", formValues.dokhan);
-            formData.append("domat", formValues.domat);
-            formData.append("malv", formValues.malv);
-            formData.append(
-                "thuchientheovanban",
-                formValues.thuchientheovanban
-            );
-            formData.append("ngayravbdi", formValues.ngayravbdi);
-            formData.append("manv", manv || "");
-            console.log(manv);
+        formValues.dinhkem = fileUpload;
+        // console.log(formValues);
+        const formData = new FormData();
+        formData.append("madv", formValues.madv);
+        formData.append("maloai", formValues.maloai);
+        formData.append("tenvbdi", formValues.tenvbdi);
+        formData.append("dinhkem", formValues.dinhkem);
+        formData.append("dokhan", formValues.dokhan);
+        formData.append("domat", formValues.domat);
+        formData.append("malv", formValues.malv);
+        formData.append("thuchientheovanban", formValues.thuchientheovanban);
+        formData.append("ngayravbdi", formValues.ngayravbdi);
+        formData.append("manv", manv || "");
 
+        if (isDraft === false) {
             const response = await cvDiApi.add(formData);
 
             if (response.status === "successfully") {
                 setAlert(true);
             }
         } else {
-            console.log(isDraft);
+            formData.append("iddraft", iddraft || "");
+            console.log(formData.get("iddraft"));
+            // console.log(iddraft);
+            // const response = await draftCVDi.add(formData);
+            // console.log(response);
         }
     };
 

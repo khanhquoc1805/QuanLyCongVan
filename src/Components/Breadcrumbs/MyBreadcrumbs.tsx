@@ -29,6 +29,7 @@ breadcrumbMap.set('quanlycongvandi', 'Quản lý văn bản đi')
 breadcrumbMap.set('duthaovanbandi', 'Dự thảo văn bản đi')
 breadcrumbMap.set('xulivanbandi', 'Xử lý văn bản đi')
 breadcrumbMap.set('phathanhvanbandi', 'Phát hành văn bản đi')
+breadcrumbMap.set('duthaovanbannhap', 'Văn bản nháp')
 
 
 export default function MyBreadcrumbs(props: {color: string}) {
