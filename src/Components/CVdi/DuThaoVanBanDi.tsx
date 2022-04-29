@@ -188,6 +188,7 @@ export default function DuThaoVanBanDi() {
         formData.append("thuchientheovanban", formValues.thuchientheovanban);
         formData.append("ngayravbdi", formValues.ngayravbdi);
         formData.append("manv", manv || "");
+        formData.append("iddraft", iddraft || "");
 
         if (isDraft === false) {
             const response = await cvDiApi.add(formData);
@@ -198,9 +199,9 @@ export default function DuThaoVanBanDi() {
         } else {
             formData.append("iddraft", iddraft || "");
             console.log(formData.get("iddraft"));
-            // console.log(iddraft);
-            // const response = await draftCVDi.add(formData);
-            // console.log(response);
+            console.log(iddraft);
+            const response = await draftCVDi.add(formData);
+            console.log(response);
         }
     };
 
@@ -387,42 +388,50 @@ export default function DuThaoVanBanDi() {
                         <div
                             style={{
                                 display: "flex",
+                                flexDirection: "row",
+                                gridGap: "12px",
                                 justifyContent: "flex-end",
                             }}
                         >
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                // type="submit"
-                                onClick={(e) => {
-                                    setIsDraft(false);
-                                    setTimeout(() => {
-                                        buttonRef.current!.click();
-                                    }, 1);
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "flex-end",
                                 }}
                             >
-                                Tiếp Tục
-                            </Button>
-                        </div>
-
-                        <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "flex-end",
-                            }}
-                        >
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                onClick={(e) => {
-                                    setIsDraft(true);
-                                    setTimeout(() => {
-                                        buttonRef.current!.click();
-                                    }, 1);
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={(e) => {
+                                        setIsDraft(true);
+                                        setTimeout(() => {
+                                            buttonRef.current!.click();
+                                        }, 1);
+                                    }}
+                                >
+                                    Lưu lại
+                                </Button>
+                            </div>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "flex-end",
                                 }}
                             >
-                                Save draft
-                            </Button>
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    // type="submit"
+                                    onClick={(e) => {
+                                        setIsDraft(false);
+                                        setTimeout(() => {
+                                            buttonRef.current!.click();
+                                        }, 1);
+                                    }}
+                                >
+                                    Tiếp Tục
+                                </Button>
+                            </div>
                         </div>
                     </Grid>
 

@@ -91,17 +91,26 @@ export default function XuLiVanBanDi() {
         dispatch(cvDiActions.setFilterWithDebounce(newFilter));
     };
 
-    const handleApproveConfirm = async (mavbdi: number) => {
+    // const handleApproveConfirm = async (mavbdi: number) => {
+    //     try {
+    //         const response = await cvDiApi.xulytt(mavbdi);
+    //         if (response.status === "successfully") {
+    //             toast.success("Approve SuccessFully!", {
+    //                 position: "top-center",
+    //                 autoClose: 2000,
+    //             });
+    //             dispatch(cvDiActions.setFilter({ ...filter }));
+    //         }
+    //         setOpenApproveDialog(false);
+    //     } catch (error) {}
+    // };
+
+    const handleApproveConfirm = async () => {
         try {
-            const response = await cvDiApi.xulytt(mavbdi);
-            if (response.status === "successfully") {
-                toast.success("Approve SuccessFully!", {
-                    position: "top-center",
-                    autoClose: 2000,
-                });
-                dispatch(cvDiActions.setFilter({ ...filter }));
-            }
+            const response = await cvDiApi.deleteCVDi(mavbdi);
             setOpenApproveDialog(false);
+            dispatch(cvDiActions.setFilter({ ...filter }));
+            
         } catch (error) {}
     };
     return (
@@ -280,26 +289,6 @@ export default function XuLiVanBanDi() {
                                                     justifyContent="space-evenly"
                                                 >
                                                     {" "}
-                                                    <div>
-                                                        <img
-                                                            onClick={() => {
-                                                                setMavbdi(
-                                                                    row.cvdi
-                                                                        .mavbdi
-                                                                );
-                                                                setOpenApproveDialog(
-                                                                    true
-                                                                );
-                                                            }}
-                                                            src="/forward-svgrepo-com.svg"
-                                                            alt=""
-                                                            style={{
-                                                                width: "24px",
-                                                                height: "24px",
-                                                                cursor: "pointer",
-                                                            }}
-                                                        />
-                                                    </div>
                                                     <Link
                                                         to={`${row.cvdi.mavbdi}`}
                                                         style={{
@@ -327,23 +316,32 @@ export default function XuLiVanBanDi() {
                                                             />
                                                         </Stack>
                                                     </Link>
-                                                </Stack>
-                                                <div
-                                                    style={{
-                                                        textAlign: "center",
-                                                        marginTop: "4px",
-                                                    }}
-                                                >
-                                                    <img
-                                                        src="/delete-svgrepo-com.svg"
-                                                        alt=""
+                                                    <div
                                                         style={{
-                                                            width: "24px",
-                                                            height: "24px",
-                                                            cursor: "pointer",
+                                                            textAlign: "center",
+                                                            marginTop: "4px",
                                                         }}
-                                                    />
-                                                </div>
+                                                    >
+                                                        <img
+                                                            src="/delete-svgrepo-com.svg"
+                                                            alt=""
+                                                            style={{
+                                                                width: "24px",
+                                                                height: "24px",
+                                                                cursor: "pointer",
+                                                            }}
+                                                            onClick={() => {
+                                                                setMavbdi(
+                                                                    row.cvdi
+                                                                        .mavbdi
+                                                                );
+                                                                setOpenApproveDialog(
+                                                                    true
+                                                                );
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </Stack>
                                             </StyledTableCell>
                                         </StyledTableRow>
                                     )
@@ -361,7 +359,7 @@ export default function XuLiVanBanDi() {
                 />
             </Stack>
 
-            <Dialog
+            {/* <Dialog
                 open={openApproveDialog}
                 // onClose={() => {
                 //     setOpenApproveDialog(false);
@@ -400,12 +398,53 @@ export default function XuLiVanBanDi() {
                         Duyệt
                     </Button>
                 </DialogActions>
-            </Dialog>
+            </Dialog> */}
             <PreviewDialog
                 open={openPreview}
                 url={url}
                 setOpen={setOpenPreview}
             />
+
+            <Dialog
+                open={openApproveDialog}
+                // onClose={() => {
+                //     setOpenApproveDialog(false);
+                // }}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    Xóa văn bản đi
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Bạn có chắc chắn muốn xóa văn bản này!
+                        <br /> Thao tác này sẽ không thể hoàn tác nếu bạn đã
+                        chấp thuận!
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        onClick={() => {
+                            setOpenApproveDialog(false);
+                        }}
+                        color="primary"
+                        variant="outlined"
+                    >
+                        Đóng
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            handleApproveConfirm();
+                        }}
+                        color="secondary"
+                        variant="contained"
+                        autoFocus
+                    >
+                        Duyệt
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 }

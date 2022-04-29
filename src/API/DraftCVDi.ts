@@ -18,6 +18,10 @@ const draftCVDi = {
         const url = `/draftcvdi/${iddraft}`;
         return axiosClient.get(url);
     },
+    delete(iddraft: string): Promise<any> {
+        const url = `/draftcvdi/delete/${iddraft}`;
+        return axiosClient.post(url);
+    },
 };
 
 export default draftCVDi;

@@ -1,17 +1,24 @@
-import React, { ReactElement, useEffect } from "react";
-
+import DeleteIcon from "@mui/icons-material/Delete";
+import DetailsIcon from "@mui/icons-material/Details";
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+} from "@mui/material";
+import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+import React, { ReactElement, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import draftCVDi from "../../API/DraftCVDi";
 import { DraftCVDi } from "../../Model/Draft";
-import DeleteIcon from "@mui/icons-material/Delete";
-import DetailsIcon from "@mui/icons-material/Details";
-import { useNavigate } from "react-router-dom";
 
 function createData(
     name: string,
@@ -32,6 +39,9 @@ const rows = [
 export default function BanNhapCVDi(): ReactElement {
     const navigate = useNavigate();
     const [dsDraft, setDsDraft] = React.useState<[DraftCVDi]>();
+    const [openApproveDialog, setOpenApproveDialog] =
+        React.useState<boolean>(false);
+    const [iddraft, setIddraft] = React.useState<string>("");
     useEffect(() => {
         (async () => {
             const response = await draftCVDi.get("00001");
@@ -39,6 +49,15 @@ export default function BanNhapCVDi(): ReactElement {
             setDsDraft(response);
         })();
     }, []);
+
+    const handleClickDelete = async () => {
+        const response = await draftCVDi.delete(iddraft);
+        if (response.status === "successfully") {
+            setOpenApproveDialog(false);
+            const response = await draftCVDi.get("00001");
+            setDsDraft(response);
+        }
+    };
     return (
         <div>
             <h2 style={{ textAlign: "center" }}>Bản nháp dự thảo</h2>
@@ -124,6 +143,10 @@ export default function BanNhapCVDi(): ReactElement {
                                                 color: "red",
                                                 cursor: "pointer",
                                             }}
+                                            onClick={() => {
+                                                setIddraft(row.data.iddraft);
+                                                setOpenApproveDialog(true);
+                                            }}
                                         ></DeleteIcon>
                                     </div>
                                 </TableCell>
@@ -132,6 +155,46 @@ export default function BanNhapCVDi(): ReactElement {
                     </TableBody>
                 </Table>
             </TableContainer>
+
+            <Dialog
+                open={openApproveDialog}
+                // onClose={() => {
+                //     setOpenApproveDialog(false);
+                // }}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    Xóa dự thảo nháp
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Bạn có chắc chắn muốn xóa bản nháp này!
+                        <br /> Thao tác này sẽ không thể hoàn tác và dữ liệu sẽ biến mất!
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        onClick={() => {
+                            setOpenApproveDialog(false);
+                        }}
+                        color="primary"
+                        variant="outlined"
+                    >
+                        Đóng
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            handleClickDelete();
+                        }}
+                        color="secondary"
+                        variant="contained"
+                        autoFocus
+                    >
+                        Duyệt
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 }

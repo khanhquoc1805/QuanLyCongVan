@@ -57,6 +57,10 @@ const cvDiApi = {
         const url = "/cvdi/themnoinhan";
         return axiosClient.post(url, formValues);
     },
+    deleteCVDi(mavbdi: number): Promise<any> {
+        const url = `cvdi/delete/${mavbdi}`;
+        return axiosClient.post(url);
+    },
 };
 
 export default cvDiApi;
