@@ -25,13 +25,11 @@ interface TiepNhanCVDen {
     sotrang: string;
     dinhkem: File;
     masocv: string;
-    soden: string;
     ngayden: string;
     dokhan: string;
     domat: string;
     malv: string;
     hanxuli: string;
-    noinhan: string;
     [index: string]: any;
 }
 
@@ -48,13 +46,11 @@ const initialValue: TiepNhanCVDen = {
     sotrang: "",
     dinhkem: new File([""], ""),
     masocv: "",
-    soden: "",
     ngayden: getCurrentDate(),
     dokhan: "",
     domat: "",
     malv: "",
     hanxuli: getCurrentDate(),
-    noinhan: "",
 };
 
 const schema = yup.object().shape({
@@ -144,7 +140,6 @@ export default function TiepNhanCVDen() {
             "domat",
             "malv",
             "hanxuli",
-            "noinhan",
         ];
 
         keys.forEach((key) => formData.append(key, formValues[key]));
@@ -156,7 +151,7 @@ export default function TiepNhanCVDen() {
     return (
         <form
             onSubmit={handleSubmit(handleSubmitForm)}
-            style={{ marginTop: "24px" }}
+            style={{ marginTop: "24px", marginBottom: "48px" }}
         >
             <div
                 style={{
@@ -233,33 +228,6 @@ export default function TiepNhanCVDen() {
                                 type="date"
                             ></InputField>
                         </Stack>
-                        <Stack direction="row">
-                            <InputField
-                                name="nguoiky"
-                                control={control}
-                                label="Người Ký"
-                            ></InputField>
-                            <InputField
-                                name="sotrang"
-                                control={control}
-                                label="Số Tờ"
-                            ></InputField>
-                        </Stack>
-                        <input
-                            type="file"
-                            style={{ display: "none" }}
-                            id="contained-button-file"
-                            onChange={handleChange}
-                        />
-                        <label htmlFor="contained-button-file">
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                component="span"
-                            >
-                                Upload
-                            </Button>
-                        </label>
                     </Stack>
                 </Grid>
                 <Grid item xs={6}>
@@ -269,11 +237,7 @@ export default function TiepNhanCVDen() {
                         label="Sổ Công Văn"
                         options={soCVOptions}
                     ></SelectField>
-                    <InputField
-                        name="soden"
-                        control={control}
-                        label="Số Đến"
-                    ></InputField>
+
                     <InputField
                         name="ngayden"
                         control={control}
@@ -288,11 +252,11 @@ export default function TiepNhanCVDen() {
                             options={[
                                 {
                                     label: "Khẩn",
-                                    value: "khan",
+                                    value: "Khẩn",
                                 },
                                 {
                                     label: "Bình Thường",
-                                    value: "bth",
+                                    value: "Bình Thường",
                                 },
                             ]}
                         ></SelectField>
@@ -303,15 +267,16 @@ export default function TiepNhanCVDen() {
                             options={[
                                 {
                                     label: "Bảo Mật",
-                                    value: "bm",
+                                    value: "Bảo Mật",
                                 },
                                 {
                                     label: "Bình Thường",
-                                    value: "bth",
+                                    value: "Bình Thường",
                                 },
                             ]}
                         ></SelectField>
                     </Stack>
+
                     <div
                         style={{
                             display: "flex",
@@ -334,17 +299,72 @@ export default function TiepNhanCVDen() {
                             Thêm
                         </Button>
                     </div>
-                    <InputField
-                        name="hanxuli"
-                        control={control}
-                        label="Hạn Xử Lí"
-                        type="date"
-                    ></InputField>
-                    <InputField
-                        name="noinhan"
-                        control={control}
-                        label="Nơi Nhận"
-                    ></InputField>
+
+                    <Stack direction="row">
+                        <InputField
+                            name="nguoiky"
+                            control={control}
+                            label="Người Ký"
+                        ></InputField>
+                        {/* <InputField
+                            name="sotrang"
+                            control={control}
+                            label="Số Tờ"
+                        ></InputField> */}
+                        <InputField
+                            name="hanxuli"
+                            control={control}
+                            label="Hạn Xử Lí"
+                            type="date"
+                        ></InputField>
+                    </Stack>
+                    {/* <input
+                        type="file"
+                        style={{ display: "none" }}
+                        id="contained-button-file"
+                        onChange={handleChange}
+                    />
+                    <label htmlFor="contained-button-file">
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            component="span"
+                        >
+                            Upload
+                        </Button>
+                    </label> */}
+
+                    <div>
+                        <input
+                            type="file"
+                            style={{
+                                border: "1px solid #c6c6c6",
+                                width: "100%",
+                                height: "54px",
+                                borderRadius: "4px",
+                                boxSizing: "border-box",
+                                padding: "12px 0px 0px 44px",
+                                marginTop: "14px",
+                            }}
+                            id="contained-button-file"
+                            onChange={handleChange}
+                        />
+                        <label htmlFor="contained-button-file">
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                component="span"
+                                sx={{
+                                    position: "relative",
+                                    top: "-48px",
+                                    left: "12px",
+                                }}
+                            >
+                                Đính kèm
+                            </Button>
+                        </label>
+                    </div>
+
                     <div
                         style={{ display: "flex", justifyContent: "flex-end" }}
                     >

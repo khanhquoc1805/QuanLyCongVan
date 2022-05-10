@@ -11,8 +11,7 @@ function* fetchCVDi(action: PayloadAction<ListParams>) {
             cvDiApi.getCVDi,
             action.payload
         );
-
-        // console.log(response);
+        console.log(response.data);
         yield put(cvDiActions.fetchDataSuccess(response));
     } catch (e) {
         yield put({ type: "USER_FETCH_FAILED", message: "" });

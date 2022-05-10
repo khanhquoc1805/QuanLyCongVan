@@ -1,15 +1,28 @@
-import { Stack } from "@mui/material";
+import { Menu, Stack } from "@mui/material";
 import React from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes,useNavigate} from "react-router-dom";
 import MyBreadcrumbs from "../Breadcrumbs/MyBreadcrumbs";
 import CVCungHeThong from "./CVCungHeThong";
 import CVDenCanXuLy from "./CVDenCanXuLy";
 import CVDenVaoSo from "./CVDenVaoSo";
 import TiepNhanCVDen from "./TiepNhanCVDen";
 import XuLyVanBanDen from "./XuLyVanBanDen";
+import Fade from "@mui/material/Fade";
+import MenuItem from "@mui/material/MenuItem";
+import BanNhapCVDi from "../CVdi/BanNhapCVDi";
 
 export default function CVden() {
     const token = localStorage.getItem("access_token");
+
+    const navigate = useNavigate();
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
     return token ? (
         <div>
             <div
@@ -61,7 +74,83 @@ export default function CVden() {
                             <p>Trang Chủ</p>
                         </Stack>
                     </Link>
-                    <Link
+
+                    <div
+                        style={{
+                            textDecoration: "none",
+                            cursor: "pointer",
+                            color: "black",
+                        }}
+                    >
+                        <Stack
+                            direction="row"
+                            spacing={1}
+                            sx={{ cursor: "pointer" }}
+                            id="fade-button"
+                            aria-controls={open ? "fade-menu" : undefined}
+                            aria-haspopup="true"
+                            aria-expanded={open ? "true" : undefined}
+                            onClick={handleClick}
+                            style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                            }}
+                        >
+                            <img
+                                src="/add-svgrepo-com.svg"
+                                alt=""
+                                style={{
+                                    width: "20px",
+                                    height: "20px",
+                                }}
+                            />
+                            <p>Tiếp nhận văn bản đến</p>
+                        </Stack>
+
+                        <Menu
+                            id="fade-menu"
+                            MenuListProps={{
+                                "aria-labelledby": "fade-button",
+                            }}
+                            anchorEl={anchorEl}
+                            open={open}
+                            onClose={handleClose}
+                            TransitionComponent={Fade}
+                        >
+                            <MenuItem
+                                onClick={() => {
+                                    setAnchorEl(null);
+                                    navigate("./tiepnhanvanbanden");
+                                }}
+                            >
+                                Thêm dự thảo
+                            </MenuItem>
+                            <MenuItem
+                                onClick={() => {
+                                    setAnchorEl(null);
+                                    navigate("./tiepnhanvanbannhap");
+                                }}
+                            >
+                                Dự thảo nháp
+                            </MenuItem>
+                        </Menu>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    {/* <Link
                         to="tiepnhanvanbanden"
                         style={{
                             textDecoration: "none",
@@ -83,7 +172,7 @@ export default function CVden() {
                             </div>
                             <p>Tiếp nhận văn bản đến</p>
                         </Stack>
-                    </Link>
+                    </Link> */}
 
                     <Link
                         to="vanbancunghethong"
@@ -190,6 +279,10 @@ export default function CVden() {
                     <Route
                         path="/vanbancanxuly/:macvden"
                         element={<XuLyVanBanDen />}
+                    ></Route>
+                    <Route
+                        path="/tiepnhanvanbannhap"
+                        element={<BanNhapCVDi />}
                     ></Route>
                 </Routes>
             </Stack>

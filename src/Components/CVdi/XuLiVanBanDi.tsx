@@ -86,6 +86,7 @@ export default function XuLiVanBanDi() {
     const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
         const newFilter = {
             ...filter,
+            page: 1,
             textSearch: e.target.value,
         };
         dispatch(cvDiActions.setFilterWithDebounce(newFilter));
@@ -110,7 +111,6 @@ export default function XuLiVanBanDi() {
             const response = await cvDiApi.deleteCVDi(mavbdi);
             setOpenApproveDialog(false);
             dispatch(cvDiActions.setFilter({ ...filter }));
-            
         } catch (error) {}
     };
     return (
