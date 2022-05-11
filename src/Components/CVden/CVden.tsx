@@ -1,6 +1,6 @@
 import { Menu, Stack } from "@mui/material";
 import React from "react";
-import { Link, Route, Routes,useNavigate} from "react-router-dom";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import MyBreadcrumbs from "../Breadcrumbs/MyBreadcrumbs";
 import CVCungHeThong from "./CVCungHeThong";
 import CVDenCanXuLy from "./CVDenCanXuLy";
@@ -10,6 +10,7 @@ import XuLyVanBanDen from "./XuLyVanBanDen";
 import Fade from "@mui/material/Fade";
 import MenuItem from "@mui/material/MenuItem";
 import BanNhapCVDi from "../CVdi/BanNhapCVDi";
+import BanNhapCVDen from "./BanNhapCVDen";
 
 export default function CVden() {
     const token = localStorage.getItem("access_token");
@@ -120,7 +121,10 @@ export default function CVden() {
                             <MenuItem
                                 onClick={() => {
                                     setAnchorEl(null);
-                                    navigate("./tiepnhanvanbanden");
+                                    //  navigate("./tiepnhanvanbanden");
+                                    //  window.location.reload();
+                                    window.location.href =
+                                        "/quanlycongvanden/tiepnhanvanbanden";
                                 }}
                             >
                                 Thêm dự thảo
@@ -135,20 +139,6 @@ export default function CVden() {
                             </MenuItem>
                         </Menu>
                     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                     {/* <Link
                         to="tiepnhanvanbanden"
@@ -277,12 +267,16 @@ export default function CVden() {
                         element={<TiepNhanCVDen />}
                     ></Route>
                     <Route
+                        path="/tiepnhanvanbanden/:iddraft"
+                        element={<TiepNhanCVDen />}
+                    ></Route>
+                    <Route
                         path="/vanbancanxuly/:macvden"
                         element={<XuLyVanBanDen />}
                     ></Route>
                     <Route
                         path="/tiepnhanvanbannhap"
-                        element={<BanNhapCVDi />}
+                        element={<BanNhapCVDen />}
                     ></Route>
                 </Routes>
             </Stack>

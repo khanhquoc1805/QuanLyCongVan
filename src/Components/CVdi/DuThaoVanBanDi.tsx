@@ -100,6 +100,8 @@ export default function DuThaoVanBanDi() {
         })();
     }, [iddraft]);
 
+    console.log(draft);
+
     //console.log(initialValue);
 
     const { control, handleSubmit, formState, setValue } = isDraft
@@ -120,6 +122,7 @@ export default function DuThaoVanBanDi() {
         setValue("dokhan", draft?.dokhan?.toString() || "");
         setValue("domat", draft?.domat?.toString() || "");
         setValue("tenvbdi", draft?.trichyeu?.toString() || "");
+        
     }, [draft, iddraft]);
 
     const manv = localStorage.getItem("manv");
@@ -198,10 +201,10 @@ export default function DuThaoVanBanDi() {
             }
         } else {
             formData.append("iddraft", iddraft || "");
-            console.log(formData.get("iddraft"));
-            console.log(iddraft);
+            // console.log(formData.get("iddraft"));
+            // console.log(iddraft);
             const response = await draftCVDi.add(formData);
-            console.log(response);
+            // console.log(response);
         }
     };
 

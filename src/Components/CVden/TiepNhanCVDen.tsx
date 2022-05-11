@@ -1,6 +1,7 @@
 import { Button, Grid, Stack } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, RefObject, useRef } from "react";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
 import { InputField, SelectField, SelectOption } from "../FormField";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -12,6 +13,11 @@ import linhVucApi, { ILinhVuc } from "../../API/LinhVuc";
 import { getCurrentDate } from "../../Utils/getCurrentDate";
 import cvDenApi from "../../API/CVDen";
 import Alert from "@mui/material/Alert";
+import draftCVDen from "../../API/DraftCVDen";
+import {
+    changeDateFromString,
+    getDateFromString,
+} from "../../Utils/getDateFromString";
 interface TiepNhanCVDen {
     madv: string;
     maloai: string;
@@ -22,7 +28,6 @@ interface TiepNhanCVDen {
     ngaycohieuluc: string;
     ngayhethieuluc: string;
     nguoiky: string;
-    sotrang: string;
     dinhkem: File;
     masocv: string;
     ngayden: string;
@@ -43,7 +48,6 @@ const initialValue: TiepNhanCVDen = {
     ngaycohieuluc: getCurrentDate(),
     ngayhethieuluc: getCurrentDate(),
     nguoiky: "",
-    sotrang: "",
     dinhkem: new File([""], ""),
     masocv: "",
     ngayden: getCurrentDate(),
@@ -67,13 +71,37 @@ const schema = yup.object().shape({
         .min(getCurrentDate(), "Hạn xử lí phải sau ngày hiện tại"),
 });
 
+const schema1 = yup.object().shape({
+    madv: yup.string(),
+    maloai: yup.string(),
+    coquanbanhanh: yup.string(),
+    trichyeu: yup.string(),
+    malv: yup.string(),
+    masocv: yup.string(),
+    dokhan: yup.string(),
+    domat: yup.string(),
+    hanxuli: yup.date(),
+});
+
 export default function TiepNhanCVDen() {
     const dispatch = useAppDispatch();
     const dssocv = useAppSelector(selectDsSoCV);
-    const { control, handleSubmit } = useForm<TiepNhanCVDen>({
-        defaultValues: initialValue,
-        resolver: yupResolver(schema),
-    });
+    const { iddraft } = useParams<{ iddraft: string }>();
+    const is_draft = Boolean(iddraft);
+
+    const buttonRef: RefObject<HTMLButtonElement> = useRef(null);
+    const [isDraft, setIsDraft] = useState<boolean>(false);
+
+    const { control, handleSubmit, setValue } = isDraft
+        ? useForm<TiepNhanCVDen>({
+              defaultValues: initialValue,
+              resolver: yupResolver(schema1),
+          })
+        : useForm<TiepNhanCVDen>({
+              defaultValues: initialValue,
+              resolver: yupResolver(schema),
+          });
+
     const [alert, setAlert] = useState<boolean>(false);
 
     const [linhVuc, setLinhVuc] = useState<[ILinhVuc]>([
@@ -84,6 +112,56 @@ export default function TiepNhanCVDen() {
         { maloai: 1, tenloai: "" },
     ]);
     const [fileUpload, setFileUpload] = useState<File>(new File([""], ""));
+    const [draft, setDraft] = useState<TiepNhanCVDen>();
+
+    const manv = localStorage.getItem("manv");
+
+    useEffect(() => {
+        if (!iddraft) return;
+
+        (async () => {
+            try {
+                const data: TiepNhanCVDen = await draftCVDen.getById(iddraft);
+                setDraft(data);
+            } catch (error) {
+                console.log("Failed to fetch", error);
+            }
+        })();
+    }, [iddraft]);
+
+    useEffect(() => {
+        // console.log(draft);
+        setValue("malv", draft?.malv?.toString() || "");
+        setValue("madv", draft?.madv?.toString() || "");
+        setValue("maloai", draft?.maloai?.toString() || "");
+        setValue("dokhan", draft?.dokhan?.toString() || "");
+        setValue("domat", draft?.domat?.toString() || "");
+        setValue("trichyeu", draft?.trichyeu?.toString() || "");
+        setValue("sohieugoc", draft?.sohieugoc?.toString() || "");
+        setValue("coquanbanhanh", draft?.coquanbanhanh?.toString() || "");
+        setValue("nguoiky", draft?.nguoiky?.toString() || "");
+        setValue("masocv", draft?.masocv?.toString() || "");
+        setValue(
+            "hanxuli",
+            changeDateFromString(draft?.hanxuli?.toString() || "")
+        );
+        setValue(
+            "ngaybanhanh",
+            changeDateFromString(draft?.ngaybanhanh?.toString() || "")
+        );
+        setValue(
+            "ngaycohieuluc",
+            changeDateFromString(draft?.ngaycohieuluc?.toString() || "")
+        );
+        setValue(
+            "ngayhethieuluc",
+            changeDateFromString(draft?.ngayhethieuluc?.toString() || "")
+        );
+        setValue(
+            "ngayden",
+            changeDateFromString(draft?.ngayden?.toString() || "")
+        );
+    }, [draft, iddraft]);
 
     useEffect(() => {
         (async () => {
@@ -95,6 +173,23 @@ export default function TiepNhanCVDen() {
             setDonVi(donvi);
             dispatch(soCVActions.fetchData({}));
         })();
+       
+
+        // setValue("malv", "");
+        // setValue("madv", "");
+        // setValue("maloai", "");
+        // setValue("dokhan", "");
+        // setValue("domat", "");
+        // setValue("trichyeu", "");
+        // setValue("sohieugoc", "");
+        // setValue("coquanbanhanh", "");
+        // setValue("nguoiky", "");
+        // setValue("masocv", "");
+        setValue("hanxuli", getCurrentDate());
+        setValue("ngaybanhanh", getCurrentDate());
+        setValue("ngaycohieuluc", getCurrentDate());
+        setValue("ngayhethieuluc", getCurrentDate());
+        setValue("ngayden", getCurrentDate());
     }, []);
 
     const linhVucOptions: SelectOption[] = linhVuc?.map((lv) => ({
@@ -131,10 +226,8 @@ export default function TiepNhanCVDen() {
             "ngaycohieuluc",
             "ngayhethieuluc",
             "nguoiky",
-            "sotrang",
             "dinhkem",
             "masocv",
-            "soden",
             "ngayden",
             "dokhan",
             "domat",
@@ -143,9 +236,18 @@ export default function TiepNhanCVDen() {
         ];
 
         keys.forEach((key) => formData.append(key, formValues[key]));
-        const response = await cvDenApi.add(formData);
-        console.log(response);
-        if (response.status === "successfully") setAlert(true);
+        if (isDraft === false) {
+            const response = await cvDenApi.add(formData);
+            console.log(response);
+            if (response.status === "successfully") setAlert(true);
+        } else {
+            formData.append("manv", manv || "");
+            formData.append("iddraft", iddraft || "");
+            //for (const v of formData.values()) console.log(v);
+
+            const response = await draftCVDen.add(formData);
+            console.log(response);
+        }
     };
 
     return (
@@ -158,10 +260,10 @@ export default function TiepNhanCVDen() {
                     fontSize: "28px",
                     textAlign: "center",
                     color: "blue",
-                    fontFamily: "coiny",
+                    fontFamily: "Roboto,Helvetica,Arialsans-serif",
                 }}
             >
-                Tiếp Nhận Văn Bản
+                Tiếp nhận văn bản
             </div>
             {alert && (
                 <Alert
@@ -366,6 +468,55 @@ export default function TiepNhanCVDen() {
                     </div>
 
                     <div
+                        style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            gridGap: "12px",
+                            justifyContent: "flex-end",
+                        }}
+                    >
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                            }}
+                        >
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                onClick={(e) => {
+                                    setIsDraft(true);
+                                    setTimeout(() => {
+                                        buttonRef.current!.click();
+                                    }, 1);
+                                }}
+                            >
+                                Lưu lại
+                            </Button>
+                        </div>
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                            }}
+                        >
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                // type="submit"
+                                onClick={(e) => {
+                                    setIsDraft(false);
+                                    setTimeout(() => {
+                                        buttonRef.current!.click();
+                                    }, 1);
+                                }}
+                            >
+                                Tiếp Tục
+                            </Button>
+                        </div>
+                    </div>
+
+                    {/* <div
                         style={{ display: "flex", justifyContent: "flex-end" }}
                     >
                         <Button
@@ -375,8 +526,24 @@ export default function TiepNhanCVDen() {
                         >
                             Tiếp Tục
                         </Button>
-                    </div>
+                    </div> */}
                 </Grid>
+
+                <div
+                    style={{
+                        display: "none",
+                        justifyContent: "flex-end",
+                    }}
+                >
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        type="submit"
+                        ref={buttonRef}
+                    >
+                        Real submit
+                    </Button>
+                </div>
             </Grid>
         </form>
     );

@@ -54,6 +54,7 @@ export default function MyBreadcrumbs(props: {color: string}) {
                     <Link
                         underline="hover"
                         color="inherit"
+                        key={index}
                         onClick={() => {
                             navigate(`${route.link}`);
                         }}

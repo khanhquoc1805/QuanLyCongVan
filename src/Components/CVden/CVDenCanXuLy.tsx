@@ -307,33 +307,23 @@ export default function CVDenCanXuLy() {
                                                         />
                                                     </Stack>
                                                 </Link>
-
-                                                <img
-                                                    src="/medical-records-svgrepo-com.svg"
-                                                    alt=""
+                                                <div
                                                     style={{
-                                                        width: "24px",
-                                                        height: "24px",
-                                                        cursor: "pointer",
+                                                        textAlign: "center",
+                                                        marginTop: "4px",
                                                     }}
-                                                />
+                                                >
+                                                    <img
+                                                        src="/delete-svgrepo-com.svg"
+                                                        alt=""
+                                                        style={{
+                                                            width: "24px",
+                                                            height: "24px",
+                                                            cursor: "pointer",
+                                                        }}
+                                                    />
+                                                </div>
                                             </Stack>
-                                            <div
-                                                style={{
-                                                    textAlign: "center",
-                                                    marginTop: "4px",
-                                                }}
-                                            >
-                                                <img
-                                                    src="/delete-svgrepo-com.svg"
-                                                    alt=""
-                                                    style={{
-                                                        width: "24px",
-                                                        height: "24px",
-                                                        cursor: "pointer",
-                                                    }}
-                                                />
-                                            </div>
                                         </StyledTableCell>
                                     </StyledTableRow>
                                 )

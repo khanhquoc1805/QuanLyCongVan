@@ -12,9 +12,11 @@ export interface BaseDraftCVDi {
 }
 
 export interface DraftCVDi {
-    data : BaseDraftCVDi;
-    loaicv? : string;
+    data: BaseDraftCVDi;
+    loaicv?: string;
     donvi: string;
-    lv : string;
-
+    lv: string;
+    socv?: string;
 }
+
+export interface BaseDraftCVDen {}
