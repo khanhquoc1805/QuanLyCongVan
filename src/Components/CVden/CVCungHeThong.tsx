@@ -56,9 +56,10 @@ export default function CVCungHeThong() {
     const madv = getDonViFromToken();
     const [openPreview, setOpenPreview] = React.useState<boolean>(false);
     const [url, setUrl] = React.useState<string>("");
-    const [maCvDen, setMaCvDen] = React.useState<number>();
+    const [maCvDen, setMaCvDen] = React.useState<number>(0);
     const [openApproveDialog, setOpenApproveDialog] =
         React.useState<boolean>(false);
+    const [openRemove, setOpenRemove] = React.useState<boolean>(false);
     useEffect(() => {
         dispatch(
             cvDenActions.fetchData({
@@ -68,7 +69,6 @@ export default function CVCungHeThong() {
             })
         );
     }, [dispatch]);
-   
 
     const handleApproveConfirm = async () => {
         console.log(maCvDen);
@@ -78,7 +78,7 @@ export default function CVCungHeThong() {
         console.log(response);
         if (response.status === "successfully") {
             setOpenApproveDialog(false);
-        
+
             dispatch(
                 cvDenActions.fetchData({
                     ...filter,
@@ -87,6 +87,19 @@ export default function CVCungHeThong() {
                 })
             );
         }
+    };
+
+    const handleRemoveConfirm = async () => {
+        console.log(maCvDen);
+        const response = await cvDenApi.delete(maCvDen);
+        setOpenRemove(false);
+        dispatch(
+            cvDenActions.fetchData({
+                ...filter,
+                status: "chotiepnhan",
+                madv: madv,
+            })
+        );
     };
     return (
         <>
@@ -224,6 +237,10 @@ export default function CVCungHeThong() {
                                             height: "24px",
                                             cursor: "pointer",
                                         }}
+                                        onClick={() => {
+                                            setMaCvDen(row.cvden.macvden);
+                                            setOpenRemove(true);
+                                        }}
                                     />
                                 </StyledTableCell>
                             </StyledTableRow>
@@ -274,6 +291,48 @@ export default function CVCungHeThong() {
                         autoFocus
                     >
                         Duyệt
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog
+                open={openRemove}
+                onClose={() => {
+                    setOpenRemove(false);
+                }}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    Không tiếp nhận văn bản đến
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Bạn có chắc chắn muốn xóa văn bản này!
+                        <br /> Thao tác này sẽ không thể hoàn tác nếu bạn đã
+                        chấp thuận!
+                        <br /> Nếu bạn xóa sẽ coi như là không tiếp nhận.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        onClick={() => {
+                            setOpenRemove(false);
+                        }}
+                        color="primary"
+                        variant="outlined"
+                    >
+                        Đóng
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            handleRemoveConfirm();
+                        }}
+                        color="secondary"
+                        variant="contained"
+                        autoFocus
+                    >
+                        Xóa
                     </Button>
                 </DialogActions>
             </Dialog>

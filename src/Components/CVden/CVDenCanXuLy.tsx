@@ -1,21 +1,27 @@
-import React, { useRef, useEffect, useState, ChangeEvent } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material/styles";
-import { Link, useLocation } from "react-router-dom";
 import {
     Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
     FormControl,
     InputLabel,
     OutlinedInput,
     Stack,
 } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
+import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import cvDenApi from "../../API/CVDen";
 import { useAppDispatch, useAppSelector } from "../../App/hooks";
 import {
     cvDenActions,
@@ -24,8 +30,8 @@ import {
     selectPagination,
 } from "../../features/CVDen/CVDenSlice";
 import { getDateFromString } from "../../Utils/getDateFromString";
-import PreviewDialog from "../PreviewDialog/PreviewDialog";
 import { getDonViFromToken } from "../../Utils/getValueFormToken";
+import PreviewDialog from "../PreviewDialog/PreviewDialog";
 
 interface Props {}
 
@@ -69,6 +75,8 @@ export default function CVDenCanXuLy() {
     const pagination = useAppSelector(selectPagination);
     const filter = useAppSelector(selectFilter);
     const dscvden = useAppSelector(selectDsCVden);
+    const [openApproveDialog, setOpenApproveDialog] = useState<boolean>(false);
+    const [maCvDen, setMaCvDen] = useState<number>(0);
 
     useEffect(() => {
         (() => {
@@ -101,6 +109,14 @@ export default function CVDenCanXuLy() {
             textSearch: e.target.value,
         };
         dispatch(cvDenActions.setFilterWithDebounce(newFilter));
+    };
+
+    const handleApproveConfirm = async () => {
+        try {
+            const response = await cvDenApi.delete(maCvDen);
+            setOpenApproveDialog(false);
+            dispatch(cvDenActions.setFilter({ ...filter }));
+        } catch (error) {}
     };
 
     console.log(dscvden);
@@ -321,6 +337,15 @@ export default function CVDenCanXuLy() {
                                                             height: "24px",
                                                             cursor: "pointer",
                                                         }}
+                                                        onClick={() => {
+                                                            setMaCvDen(
+                                                                row.cvden
+                                                                    .macvden
+                                                            );
+                                                            setOpenApproveDialog(
+                                                                true
+                                                            );
+                                                        }}
                                                     />
                                                 </div>
                                             </Stack>
@@ -345,6 +370,47 @@ export default function CVDenCanXuLy() {
                 url={url}
                 setOpen={setOpenPreview}
             />
+
+            <Dialog
+                open={openApproveDialog}
+                onClose={() => {
+                    setOpenApproveDialog(false);
+                }}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    Xóa văn bản đến
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Bạn có chắc chắn muốn xóa văn bản này!
+                        <br /> Thao tác này sẽ không thể hoàn tác nếu bạn đã
+                        chấp thuận!
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        onClick={() => {
+                            setOpenApproveDialog(false);
+                        }}
+                        color="primary"
+                        variant="outlined"
+                    >
+                        Đóng
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            handleApproveConfirm();
+                        }}
+                        color="secondary"
+                        variant="contained"
+                        autoFocus
+                    >
+                        Xóa
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 }

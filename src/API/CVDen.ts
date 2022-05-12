@@ -40,10 +40,16 @@ const cvDenApi = {
         const url = "/xuly/thongtinxuly/xacnhanquyenxuly";
         return axiosClient.post(url, formvalue);
     },
-    tiepNhanCvCungHeThong(formValue : {macvden : number | undefined}) : Promise<any> {
+    tiepNhanCvCungHeThong(formValue: {
+        macvden: number | undefined;
+    }): Promise<any> {
         const url = "/cvden/tiepnhanvanbancunghethong";
-        return axiosClient.post(url,formValue);
-    } 
+        return axiosClient.post(url, formValue);
+    },
+    delete(macvden: number): Promise<any> {
+        const url = `/cvden/delete/${macvden}`;
+        return axiosClient.post(url);
+    },
 };
 
 export default cvDenApi;

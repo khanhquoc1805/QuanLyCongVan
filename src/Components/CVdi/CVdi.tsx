@@ -124,7 +124,8 @@ export default function CVdi() {
                             <MenuItem
                                 onClick={() => {
                                     setAnchorEl(null);
-                                    navigate("./duthaovanbandi");
+                                    // navigate("./duthaovanbandi");
+                                    window.location.href = "/quanlycongvandi/duthaovanbandi"
                                 }}
                             >
                                 Thêm dự thảo
