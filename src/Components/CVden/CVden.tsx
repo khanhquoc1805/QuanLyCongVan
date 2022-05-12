@@ -48,7 +48,7 @@ export default function CVden() {
                 </div>
                 <Stack
                     direction="row"
-                    spacing={3}
+                    spacing={2}
                     justifyContent="right"
                     mt={3}
                 >
@@ -69,10 +69,10 @@ export default function CVden() {
                                 <img
                                     src="/home-svgrepo-com.svg"
                                     alt=""
-                                    style={{ width: "20px", height: "20px" }}
+                                    style={{ width: "24px", height: "24px" }}
                                 />
                             </div>
-                            <p>Trang Chủ</p>
+                            <p style={{fontSize: "18px"}}>Trang Chủ</p>
                         </Stack>
                     </Link>
 
@@ -101,11 +101,11 @@ export default function CVden() {
                                 src="/add-svgrepo-com.svg"
                                 alt=""
                                 style={{
-                                    width: "20px",
-                                    height: "20px",
+                                    width: "24px",
+                                    height: "24px",
                                 }}
                             />
-                            <p>Tiếp nhận văn bản đến</p>
+                            <p style={{fontSize: "18px"}}>Tiếp nhận văn bản đến</p>
                         </Stack>
 
                         <Menu
@@ -181,10 +181,10 @@ export default function CVden() {
                                 <img
                                     src="/system-svgrepo-com.svg"
                                     alt=""
-                                    style={{ width: "20px", height: "20px" }}
+                                    style={{ width: "24px", height: "24px" }}
                                 />
                             </div>
-                            <p>Văn bản cùng hệ thống</p>
+                            <p style={{fontSize: "18px"}}>Văn bản cùng hệ thống</p>
                         </Stack>
                     </Link>
 
@@ -205,10 +205,10 @@ export default function CVden() {
                                 <img
                                     src="/reload-svgrepo-com.svg"
                                     alt=""
-                                    style={{ width: "20px", height: "20px" }}
+                                    style={{ width: "24px", height: "24px" }}
                                 />
                             </div>
-                            <p>Văn bản cần xử lý</p>
+                            <p style={{fontSize: "18px"}}>Văn bản cần xử lý</p>
                         </Stack>
                     </Link>
 
@@ -229,10 +229,10 @@ export default function CVden() {
                                 <img
                                     src="/all-application-svgrepo-com.svg"
                                     alt=""
-                                    style={{ width: "20px", height: "20px" }}
+                                    style={{ width: "24px", height: "24px" }}
                                 />
                             </div>
-                            <p>Văn bản đã vào sổ</p>
+                            <p style={{fontSize: "18px"}}>Văn bản đã vào sổ</p>
                         </Stack>
                     </Link>
                 </Stack>

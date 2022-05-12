@@ -9,6 +9,7 @@ export interface BaseNV {
     sdt: string;
     chucvu: string;
     matkhau: string;
+    nhaplaimatkhau? : string;
     quyen?: string;
     mabp?: string;
     madv: string;

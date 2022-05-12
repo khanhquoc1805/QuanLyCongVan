@@ -5,17 +5,43 @@ import { useForm } from "react-hook-form";
 import donViApi, { IDonVi } from "../../API/DonVi";
 import { BaseNV, IUser } from "../../Model/User";
 import { InputField, SelectField, SelectOption } from "../FormField";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { YouTube } from "@mui/icons-material";
 
 interface AddUserFormProps {
     initialValue?: BaseNV;
     onSubmit?: (formValues: BaseNV) => void;
 }
+
+const schema = yup.object().shape({
+    email: yup.string().required("Vui lòng nhập email"),
+    tennv: yup.string().required("Vui lòng nhập tên người dùng"),
+    matkhau: yup
+        .string()
+        .required("Vui lòng nhập nhập mật khẩu")
+        .min(8, "Mật khẩu phải từ 8 kí tự"),
+    nhaplaimatkhau: yup
+        .string()
+        .oneOf([yup.ref("matkhau"), null], "Mật khẩu không trùng khớp"),
+    sdt: yup
+        .string()
+        .required("Vui lòng nhập số điện thoại")
+        .matches(
+            /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/,
+            "Số điện thoại không hợp lệ"
+        ),
+    diachi: yup.string().required("Vui lòng nhập địa chỉ"),
+    madv: yup.string().required("Vui lòng chọn đơn vị."),
+    chucvu: yup.string().required("Vui lòng chọn chức vụ."),
+    quyen: yup.string().required("Vui lòng chọn quyền."),
+});
 export default function AddUserForm(props: AddUserFormProps) {
     const { initialValue, onSubmit } = props;
     const [donVi, setDonVi] = useState<[IDonVi]>([{ madv: 1, tendv: "" }]);
     const { control, handleSubmit } = useForm<BaseNV>({
         defaultValues: initialValue,
-        // resolver: yupResolver(schema),
+        resolver: yupResolver(schema),
     });
 
     useEffect(() => {
@@ -46,6 +72,12 @@ export default function AddUserForm(props: AddUserFormProps) {
                 name="matkhau"
                 control={control}
                 label="Mật khẩu"
+                type="password"
+            />
+            <InputField
+                name="nhaplaimatkhau"
+                control={control}
+                label="Nhập lại Mật khẩu"
                 type="password"
             />
 

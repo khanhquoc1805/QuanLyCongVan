@@ -115,7 +115,20 @@ export default function CVDenCanXuLy() {
         try {
             const response = await cvDenApi.delete(maCvDen);
             setOpenApproveDialog(false);
-            dispatch(cvDenActions.setFilter({ ...filter }));
+            if (pagination.totalRows % pagination.limit === 1) {
+                dispatch(
+                    cvDenActions.setFilter({
+                        ...filter,
+                        page: pagination.page - 1,
+                    })
+                );
+            } else {
+                dispatch(
+                    cvDenActions.setFilter({
+                        ...filter,
+                    })
+                );
+            }
         } catch (error) {}
     };
 

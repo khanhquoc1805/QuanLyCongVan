@@ -21,12 +21,41 @@ export default function Main() {
         })();
     }, []);
     return token ? (
-        <div>
-            <div style={{ margin: "24px 24px 0px 0px", display : 'flex', justifyContent: 'flex-end' }}>
+        <div
+            style={{
+                // backgroundColor: "#e8f4ff",
+                //height: "100vh",
+                background:
+                    "-webkit-radial-gradient(center, ellipse cover,  #e8f4ff 1%,#5FAAE8 100%)" /* Chrome10+,Safari5.1+ */,
+                filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#D378E2', endColorstr='#460253',GradientType=1 )" /* IE6-9 fallback on horizontal gradient */,
+                height: "calc(100vh)",
+                width: "100%",
+            }}
+        >
+            <div
+                style={{
+                    padding: "24px 24px 0px 0px",
+                    display: "flex",
+                    justifyContent: "flex-end",
+                }}
+            >
                 <AvatarUser></AvatarUser>
             </div>
 
-            <Stack direction="row" spacing={8} justifyContent="center" mt={20}>
+            <div
+                style={{
+                    textAlign: "center",
+                    fontSize: "40px",
+                    marginTop: "12px",
+                    color: "#B52881",
+                    fontFamily: "coiny",
+                    fontWeight: "bolder",
+                }}
+            >
+                HỆ THỐNG QUẢN LÝ CÔNG VĂN
+            </div>
+
+            <Stack direction="row" spacing={4} justifyContent="center" mt={15}>
                 {permission === "admin" && (
                     <Link
                         to="/quantringuoidung"

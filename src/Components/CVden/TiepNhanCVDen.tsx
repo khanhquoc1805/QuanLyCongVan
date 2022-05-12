@@ -35,6 +35,7 @@ interface TiepNhanCVDen {
     domat: string;
     malv: string;
     hanxuli: string;
+    iddraft: string;
     [index: string]: any;
 }
 
@@ -55,6 +56,7 @@ const initialValue: TiepNhanCVDen = {
     domat: "",
     malv: "",
     hanxuli: getCurrentDate(),
+    iddraft: "",
 };
 
 const schema = yup.object().shape({
@@ -69,6 +71,7 @@ const schema = yup.object().shape({
     hanxuli: yup
         .date()
         .min(getCurrentDate(), "Hạn xử lí phải sau ngày hiện tại"),
+    sohieugoc: yup.string().required("Vui lòng thêm số hiệu gốc")
 });
 
 const schema1 = yup.object().shape({
@@ -173,7 +176,6 @@ export default function TiepNhanCVDen() {
             setDonVi(donvi);
             dispatch(soCVActions.fetchData({}));
         })();
-       
 
         // setValue("malv", "");
         // setValue("madv", "");
@@ -236,13 +238,14 @@ export default function TiepNhanCVDen() {
         ];
 
         keys.forEach((key) => formData.append(key, formValues[key]));
+        formData.append("iddraft", iddraft || "");
         if (isDraft === false) {
             const response = await cvDenApi.add(formData);
             console.log(response);
             if (response.status === "successfully") setAlert(true);
         } else {
             formData.append("manv", manv || "");
-            formData.append("iddraft", iddraft || "");
+
             //for (const v of formData.values()) console.log(v);
 
             const response = await draftCVDen.add(formData);

@@ -18,10 +18,12 @@ import TableRow from "@mui/material/TableRow";
 import React, { useEffect } from "react";
 import cvDenApi from "../../API/CVDen";
 import { useAppDispatch, useAppSelector } from "../../App/hooks";
+import Pagination from "@mui/material/Pagination";
 import {
     cvDenActions,
     selectDsCVden,
     selectFilter,
+    selectPagination,
 } from "../../features/CVDen/CVDenSlice";
 import { getDateFromString } from "../../Utils/getDateFromString";
 import { getDonViFromToken } from "../../Utils/getValueFormToken";
@@ -54,6 +56,7 @@ export default function CVCungHeThong() {
     const filter = useAppSelector(selectFilter);
     const dsCVDen = useAppSelector(selectDsCVden);
     const madv = getDonViFromToken();
+    const pagination = useAppSelector(selectPagination);
     const [openPreview, setOpenPreview] = React.useState<boolean>(false);
     const [url, setUrl] = React.useState<string>("");
     const [maCvDen, setMaCvDen] = React.useState<number>(0);
@@ -69,6 +72,15 @@ export default function CVCungHeThong() {
             })
         );
     }, [dispatch]);
+
+    const handleChange = (e: any, page: number) => {
+        dispatch(
+            cvDenActions.setFilter({
+                ...filter,
+                page: page,
+            })
+        );
+    };
 
     const handleApproveConfirm = async () => {
         console.log(maCvDen);
@@ -253,6 +265,15 @@ export default function CVCungHeThong() {
                 url={url}
                 setOpen={setOpenPreview}
             />
+            <Stack direction="row" justifyContent="center" mt={3}>
+                <Pagination
+                    variant="outlined"
+                    shape="rounded"
+                    count={Math.ceil(pagination.totalRows / pagination.limit)}
+                    page={pagination.page}
+                    onChange={handleChange}
+                />
+            </Stack>
 
             <Dialog
                 open={openApproveDialog}

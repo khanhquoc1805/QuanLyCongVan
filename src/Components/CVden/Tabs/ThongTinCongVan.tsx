@@ -24,7 +24,6 @@ const title2: string[] = [
     "Độ mật",
     "Độ khẩn",
     "Lĩnh vực",
-    "Thực hiện theo văn bản",
     "Ý kiến bút phê",
     "Văn bản đến cùng hệ thống",
 ];
@@ -54,7 +53,7 @@ export default function ThongTinCongVan(props: { macvden: string }) {
         `${data?.loaicv.tenloai}`,
         `${data?.cvden.coquanbanhanh}`,
         `${ngaybanhanh}`,
-        `${data?.ttbosung.dinhkem}`,
+        `${data?.ttbosung.dinhkem}`.split("/").pop() || "",
     ];
     const data2: string[] = [
         `${data?.cvden.soden}`,
@@ -127,6 +126,7 @@ export default function ThongTinCongVan(props: { macvden: string }) {
                                         style={{
                                             border: "1px solid #F0F7F7",
                                             fontWeight: "bolder",
+                                            width: "200px",
                                         }}
                                     >
                                         {element}
@@ -163,6 +163,7 @@ export default function ThongTinCongVan(props: { macvden: string }) {
                                         style={{
                                             border: "1px solid #F0F7F7",
                                             fontWeight: "bolder",
+                                           
                                         }}
                                     >
                                         {element}
@@ -195,6 +196,7 @@ export default function ThongTinCongVan(props: { macvden: string }) {
                                         style={{
                                             border: "1px solid #F0F7F7",
                                             fontWeight: "bolder",
+                                            width: "200px"
                                         }}
                                     >
                                         {element}

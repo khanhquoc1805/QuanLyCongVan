@@ -33,7 +33,7 @@ export default function CVdi() {
                     justifyContent: "space-between",
                     backgroundImage:
                         "linear-gradient(0deg,rgb(255,255,255),rgb(224,119,229))",
-                    padding: "0 40px 16px 40px",
+                    padding: "4px 40px 16px 40px",
                 }}
             >
                 <div
@@ -71,12 +71,12 @@ export default function CVdi() {
                                     src="/home-svgrepo-com.svg"
                                     alt=""
                                     style={{
-                                        width: "20px",
-                                        height: "20px",
+                                        width: "24px",
+                                        height: "24px",
                                     }}
                                 />
                             </div>
-                            <p>Trang Chủ</p>
+                            <p style={{fontSize: '20px'}}>Trang Chủ</p>
                         </Stack>
                     </Link>
                     <div
@@ -104,11 +104,11 @@ export default function CVdi() {
                                 src="/add-svgrepo-com.svg"
                                 alt=""
                                 style={{
-                                    width: "20px",
-                                    height: "20px",
+                                    width: "28px",
+                                    height: "28px",
                                 }}
                             />
-                            <p>Dự thảo văn bản</p>
+                            <p style={{fontSize: '20px'}}>Dự thảo văn bản</p>
                         </Stack>
 
                         <Menu
@@ -125,7 +125,8 @@ export default function CVdi() {
                                 onClick={() => {
                                     setAnchorEl(null);
                                     // navigate("./duthaovanbandi");
-                                    window.location.href = "/quanlycongvandi/duthaovanbandi"
+                                    window.location.href =
+                                        "/quanlycongvandi/duthaovanbandi";
                                 }}
                             >
                                 Thêm dự thảo
@@ -159,12 +160,12 @@ export default function CVdi() {
                                     src="/process-svgrepo-com.svg"
                                     alt=""
                                     style={{
-                                        width: "20px",
-                                        height: "20px",
+                                        width: "28px",
+                                        height: "28px",
                                     }}
                                 />
                             </div>
-                            <p>Xử lí văn bản đi</p>
+                            <p style={{fontSize: '20px'}}>Xử lí văn bản đi</p>
                         </Stack>
                     </Link>
                     {/*  */}
@@ -201,12 +202,12 @@ export default function CVdi() {
                                     src="/send-svgrepo-com.svg"
                                     alt=""
                                     style={{
-                                        width: "20px",
-                                        height: "20px",
+                                        width: "24px",
+                                        height: "24px",
                                     }}
                                 />
                             </div>
-                            <p>Phát hành văn bản đi</p>
+                            <p style={{fontSize: '20px'}}>Phát hành văn bản đi</p>
                         </Stack>
                     </Link>
                 </Stack>
