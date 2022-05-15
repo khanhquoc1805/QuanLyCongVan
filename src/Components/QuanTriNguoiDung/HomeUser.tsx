@@ -119,8 +119,7 @@ export default function HomeUser() {
                     direction="row"
                     spacing={3}
                     justifyContent="right"
-
-                     mt={3}
+                    mt={3}
                 >
                     <Link
                         to="/home"
@@ -158,9 +157,41 @@ export default function HomeUser() {
                     marginRight: "40px",
                 }}
             >
-                <input type="file" name="" id="" onChange={handleChangeFile} />
+                <div>
+                    <input
+                        type="file"
+                        style={{
+                            border: "1px solid #c6c6c6",
+                            width: "100%",
+                            height: "54px",
+                            borderRadius: "4px",
+                            boxSizing: "border-box",
+                            padding: "12px 0px 0px 44px",
+                            
+                        }}
+                        id="contained-button-file"
+                        onChange={handleChangeFile}
+                    />
+                    <label htmlFor="contained-button-file">
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            component="span"
+                            sx={{
+                                position: "relative",
+                                top: "-48px",
+                                left: "12px",
+                            }}
+                        >
+                            Đính kèm
+                        </Button>
+                    </label>
+                </div>
+
+                {/* <input type="file" name="" id="" onChange={handleChangeFile} /> */}
                 <Button
                     variant="outlined"
+                    style={{height: "52px",marginLeft: "12px"}}
                     onClick={async () => {
                         const formData = new FormData();
                         formData.append("upload", fileUpload);

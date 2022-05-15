@@ -197,7 +197,7 @@ export default function TableManage() {
                             setOpen(false);
                         }}
                     >
-                        Cancel
+                        Đóng 
                     </Button>
                     <Button
                         color="secondary"
@@ -205,7 +205,7 @@ export default function TableManage() {
                         autoFocus
                         onClick={() => handleRemoveConfirm(masocv)}
                     >
-                        Remove
+                        Xóa
                     </Button>
                 </DialogActions>
             </Dialog>

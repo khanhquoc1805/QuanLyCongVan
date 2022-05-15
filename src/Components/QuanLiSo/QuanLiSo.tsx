@@ -78,7 +78,17 @@ export default function QuanLiSo() {
     };
 
     return token ? (
-        <div>
+        <div
+            style={
+                {
+                    // background:
+                    //     "-webkit-radial-gradient(center, ellipse cover,  rgba(16, 0, 36, 0.03) 1%,rgba(98, 108, 166, 0.2) 100%)" /* Chrome10+,Safari5.1+ */,
+                    // filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#D378E2', endColorstr='#460253',GradientType=1 )" /* IE6-9 fallback on horizontal gradient */,
+                    // height: "calc(100vh)",
+                    // width: "100%",
+                }
+            }
+        >
             <div
                 style={{
                     display: "flex",
@@ -123,12 +133,12 @@ export default function QuanLiSo() {
                                     src="home-svgrepo-com.svg"
                                     alt=""
                                     style={{
-                                        width: "20px",
-                                        height: "20px",
+                                        width: "26px",
+                                        height: "26px",
                                     }}
                                 />
                             </div>
-                            <p>Trang Chủ</p>
+                            <p style={{ fontSize: "20px" }}>Trang Chủ</p>
                         </Stack>
                     </Link>
 
@@ -141,10 +151,10 @@ export default function QuanLiSo() {
                             <img
                                 src="urgent-svgrepo-com.svg"
                                 alt=""
-                                style={{ width: "20px", height: "20px" }}
+                                style={{ width: "26px", height: "26px" }}
                             />
                         </div>
-                        <p>Độ khẩn</p>
+                        <p style={{ fontSize: "20px" }}>Độ khẩn</p>
                     </Stack>
                     <Stack
                         direction="row"
@@ -155,13 +165,15 @@ export default function QuanLiSo() {
                             <img
                                 src="security-lock-svgrepo-com.svg"
                                 alt=""
-                                style={{ width: "20px", height: "20px" }}
+                                style={{ width: "26px", height: "26px" }}
                             />
                         </div>
-                        <p>Độ Mật</p>
+                        <p style={{ fontSize: "20px" }}>Độ Mật</p>
                     </Stack>
 
-                    <div style={{ cursor: "pointer" }}>Sổ Công Văn</div>
+                    <div style={{ cursor: "pointer", fontSize: "20px" }}>
+                        Sổ Công Văn
+                    </div>
                 </Stack>
             </div>
             <Button
@@ -178,7 +190,11 @@ export default function QuanLiSo() {
             <Stack sx={{ height: "48px" }}>
                 <MyBreadcrumbs color="#607d8b"></MyBreadcrumbs>
             </Stack>
-            <div style={{ padding: "0px 40px 0px 80px" }}>
+            <div
+                style={{
+                    padding: "0px 40px 0px 80px",
+                }}
+            >
                 <Stack mt={4} mb={3} direction="row" spacing={2}>
                     <FormControl
                         fullWidth
@@ -208,7 +224,11 @@ export default function QuanLiSo() {
                 <TableManage></TableManage>
 
                 <Dialog open={open} fullWidth>
-                    <Stack direction="row" justifyContent="space-between">
+                    <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                       
+                    >
                         <DialogTitle>Thêm Sổ Công Văn</DialogTitle>
                         <Button
                             onClick={() => {
@@ -222,7 +242,10 @@ export default function QuanLiSo() {
                             />
                         </Button>
                     </Stack>
-                    <form onSubmit={handleSubmit(handleSubmitForm)}>
+                    <form
+                        onSubmit={handleSubmit(handleSubmitForm)}
+                        
+                    >
                         <Stack
                             direction="column"
                             spacing={3}

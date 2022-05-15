@@ -105,7 +105,7 @@ export default function CVden() {
                                     height: "24px",
                                 }}
                             />
-                            <p style={{fontSize: "18px"}}>Tiếp nhận văn bản đến</p>
+                            <p style={{fontSize: "18px"}}>Tiếp nhận công văn đến</p>
                         </Stack>
 
                         <Menu
@@ -124,7 +124,7 @@ export default function CVden() {
                                     //  navigate("./tiepnhanvanbanden");
                                     //  window.location.reload();
                                     window.location.href =
-                                        "/quanlycongvanden/tiepnhanvanbanden";
+                                        "/quanlycongvanden/tiepnhancongvanden";
                                 }}
                             >
                                 Thêm dự thảo
@@ -132,7 +132,7 @@ export default function CVden() {
                             <MenuItem
                                 onClick={() => {
                                     setAnchorEl(null);
-                                    navigate("./tiepnhanvanbannhap");
+                                    navigate("./tiepnhancongvannhap");
                                 }}
                             >
                                 Dự thảo nháp
@@ -165,7 +165,7 @@ export default function CVden() {
                     </Link> */}
 
                     <Link
-                        to="vanbancunghethong"
+                        to="congvancunghethong"
                         style={{
                             textDecoration: "none",
                             cursor: "pointer",
@@ -184,12 +184,12 @@ export default function CVden() {
                                     style={{ width: "24px", height: "24px" }}
                                 />
                             </div>
-                            <p style={{fontSize: "18px"}}>Văn bản cùng hệ thống</p>
+                            <p style={{fontSize: "18px"}}>Công văn cùng hệ thống</p>
                         </Stack>
                     </Link>
 
                     <Link
-                        to="vanbancanxuly"
+                        to="congvancanxuly"
                         style={{
                             textDecoration: "none",
                             cursor: "pointer",
@@ -208,12 +208,12 @@ export default function CVden() {
                                     style={{ width: "24px", height: "24px" }}
                                 />
                             </div>
-                            <p style={{fontSize: "18px"}}>Văn bản cần xử lý</p>
+                            <p style={{fontSize: "18px"}}>Công văn cần xử lý</p>
                         </Stack>
                     </Link>
 
                     <Link
-                        to="vanbandavaoso"
+                        to="congvanluutru"
                         style={{
                             textDecoration: "none",
                             cursor: "pointer",
@@ -232,7 +232,7 @@ export default function CVden() {
                                     style={{ width: "24px", height: "24px" }}
                                 />
                             </div>
-                            <p style={{fontSize: "18px"}}>Văn bản đã vào sổ</p>
+                            <p style={{fontSize: "18px"}}>Công văn lưu trữ</p>
                         </Stack>
                     </Link>
                 </Stack>
@@ -251,31 +251,31 @@ export default function CVden() {
                 <Routes>
                     <Route path="/" element={<CVDenCanXuLy />}></Route>
                     <Route
-                        path="/vanbancunghethong"
+                        path="/congvancunghethong"
                         element={<CVCungHeThong />}
                     ></Route>
                     <Route
-                        path="/vanbancanxuly"
+                        path="/congvancanxuly"
                         element={<CVDenCanXuLy />}
                     ></Route>
                     <Route
-                        path="/vanbandavaoso"
+                        path="/congvanluutru"
                         element={<CVDenVaoSo />}
                     ></Route>
                     <Route
-                        path="/tiepnhanvanbanden"
+                        path="/tiepnhancongvanden"
                         element={<TiepNhanCVDen />}
                     ></Route>
                     <Route
-                        path="/tiepnhanvanbanden/:iddraft"
+                        path="/tiepnhancongvanden/:iddraft"
                         element={<TiepNhanCVDen />}
                     ></Route>
                     <Route
-                        path="/vanbancanxuly/:macvden"
+                        path="/congvancanxuly/:macvden"
                         element={<XuLyVanBanDen />}
                     ></Route>
                     <Route
-                        path="/tiepnhanvanbannhap"
+                        path="/tiepnhancongvannhap"
                         element={<BanNhapCVDen />}
                     ></Route>
                 </Routes>

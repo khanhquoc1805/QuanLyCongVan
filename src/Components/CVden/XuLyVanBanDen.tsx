@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import ThongTinCongVan from "./Tabs/ThongTinCongVan";
 import TienTrinhXuLy from "./Tabs/TienTrinhXuLy";
 import XuLy from "./Tabs/XuLy";
+import { Paper } from "@mui/material";
 
 //import { makeStyles } from "@mui/styles";
 
@@ -63,7 +64,10 @@ export default function XuLyVanBanDen() {
     };
 
     return (
-        <Box sx={{ width: "100%" }} mt={5}>
+        <Paper
+            sx={{ width: "100%", backgroundColor: "rgba(232, 229, 231, 0.47)", margin: "40px 0px 40px 0px" }}
+            //mt={5}
+        >
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                 <Tabs
                     value={value}
@@ -97,15 +101,6 @@ export default function XuLyVanBanDen() {
                         label="Tiến trình xử lý"
                         {...a11yProps(2)}
                     />
-                    <Tab
-                        sx={{
-                            fontFamily: "sans-serif",
-                            textTransform: "none",
-                            fontSize: "20px",
-                        }}
-                        label="Thông tin đơn vị"
-                        {...a11yProps(3)}
-                    />
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
@@ -117,9 +112,6 @@ export default function XuLyVanBanDen() {
             <TabPanel value={value} index={2}>
                 <TienTrinhXuLy macvden={macvden}></TienTrinhXuLy>
             </TabPanel>
-            <TabPanel value={value} index={3}>
-                đơn vị
-            </TabPanel>
-        </Box>
+        </Paper>
     );
 }

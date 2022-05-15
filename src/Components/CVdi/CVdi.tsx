@@ -108,7 +108,7 @@ export default function CVdi() {
                                     height: "28px",
                                 }}
                             />
-                            <p style={{fontSize: '20px'}}>Dự thảo văn bản</p>
+                            <p style={{fontSize: '20px'}}>Dự thảo công văn bản</p>
                         </Stack>
 
                         <Menu
@@ -126,7 +126,7 @@ export default function CVdi() {
                                     setAnchorEl(null);
                                     // navigate("./duthaovanbandi");
                                     window.location.href =
-                                        "/quanlycongvandi/duthaovanbandi";
+                                        "/quanlycongvandi/duthaocongvandi";
                                 }}
                             >
                                 Thêm dự thảo
@@ -134,7 +134,7 @@ export default function CVdi() {
                             <MenuItem
                                 onClick={() => {
                                     setAnchorEl(null);
-                                    navigate("./duthaovanbannhap");
+                                    navigate("./duthaocongvannhap");
                                 }}
                             >
                                 Dự thảo nháp
@@ -143,7 +143,7 @@ export default function CVdi() {
                     </div>
 
                     <Link
-                        to="xulivanbandi"
+                        to="xulicongvandi"
                         style={{
                             textDecoration: "none",
                             cursor: "pointer",
@@ -165,7 +165,7 @@ export default function CVdi() {
                                     }}
                                 />
                             </div>
-                            <p style={{fontSize: '20px'}}>Xử lí văn bản đi</p>
+                            <p style={{fontSize: '20px'}}>Xử lí công văn đi</p>
                         </Stack>
                     </Link>
                     {/*  */}
@@ -185,7 +185,7 @@ export default function CVdi() {
             </Stack> */}
 
                     <Link
-                        to="phathanhvanbandi"
+                        to="phathanhcongvandi"
                         style={{
                             textDecoration: "none",
                             cursor: "pointer",
@@ -207,7 +207,7 @@ export default function CVdi() {
                                     }}
                                 />
                             </div>
-                            <p style={{fontSize: '20px'}}>Phát hành văn bản đi</p>
+                            <p style={{fontSize: '20px'}}>Phát hành công văn đi</p>
                         </Stack>
                     </Link>
                 </Stack>
@@ -220,27 +220,27 @@ export default function CVdi() {
             <Stack style={{ margin: "0 60px 0 80px" }}>
                 <Routes>
                     <Route
-                        path="/duthaovanbandi/"
+                        path="/duthaocongvandi/"
                         element={<DuThaoVanBanDi />}
                     ></Route>
                     <Route
-                        path="/duthaovanbandi/:iddraft"
+                        path="/duthaocongvandi/:iddraft"
                         element={<DuThaoVanBanDi />}
                     ></Route>
                     <Route
-                        path="/xulivanbandi"
+                        path="/xulicongvandi"
                         element={<XuLiVanBanDi />}
                     ></Route>
                     <Route
-                        path="/phathanhvanbandi"
+                        path="/phathanhcongvandi"
                         element={<PhatHanhVanBanDi />}
                     ></Route>
                     <Route
-                        path="/xulivanbandi/:mavbdi"
+                        path="/xulicongvandi/:mavbdi"
                         element={<MainXuLyCVDi />}
                     ></Route>
                     <Route
-                        path="/duthaovanbannhap"
+                        path="/duthaocongvannhap"
                         element={<BanNhapCVDi />}
                     ></Route>
                 </Routes>

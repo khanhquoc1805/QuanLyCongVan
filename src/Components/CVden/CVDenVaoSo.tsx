@@ -52,7 +52,11 @@ export default function CVDenVaoSo() {
     useEffect(() => {
         (() => {
             dispatch(
-                cvDenActions.fetchData({ ...filter, status: "hoanthanhxuly" })
+                cvDenActions.fetchData({
+                    ...filter,
+                    status: "hoanthanhxuly",
+                    limit: 5,
+                })
             );
         })();
     }, [dispatch, filter]);

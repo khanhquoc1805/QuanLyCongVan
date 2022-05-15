@@ -18,22 +18,22 @@ interface MyBreadcrumbsProps {
 }
 
 const breadcrumbMap = new Map();
-breadcrumbMap.set('quanlyso', 'Quản lý sổ')
-breadcrumbMap.set('quanlycongvanden', 'Văn bản đến')
-breadcrumbMap.set('tiepnhanvanbanden', 'Tiếp nhận văn bản đến')
-breadcrumbMap.set('vanbancunghethong', 'Văn bản cùng hệ thống')
-breadcrumbMap.set('vanbancanxuly', 'Văn bản cần xử lý')
-breadcrumbMap.set('vanbandavaoso', 'Văn bản đã vào sổ')
+breadcrumbMap.set("quanlyso", "Quản lý sổ");
+breadcrumbMap.set("quanlycongvanden", "Công văn đến");
+breadcrumbMap.set("tiepnhancongvanden", "Tiếp công văn bản đến");
+breadcrumbMap.set("congvancunghethong", "Công văn cùng hệ thống");
+breadcrumbMap.set("congvancanxuly", "Công văn cần xử lý");
+breadcrumbMap.set("congvanluutru", "Công văn lưu trữ");
+breadcrumbMap.set("tiepnhancongvannhap", "Nháp tiếp nhận");
 
-breadcrumbMap.set('quanlycongvandi', 'Quản lý văn bản đi')
-breadcrumbMap.set('duthaovanbandi', 'Dự thảo văn bản đi')
-breadcrumbMap.set('xulivanbandi', 'Xử lý văn bản đi')
-breadcrumbMap.set('phathanhvanbandi', 'Phát hành văn bản đi')
-breadcrumbMap.set('duthaovanbannhap', 'Văn bản nháp')
+breadcrumbMap.set("quanlycongvandi", "Quản lý công văn đi");
+breadcrumbMap.set("duthaocongvandi", "Dự thảo công văn đi");
+breadcrumbMap.set("xulicongvandi", "Xử lý công văn đi");
+breadcrumbMap.set("phathanhcongvandi", "Phát hành công văn đi");
+breadcrumbMap.set("duthaocongvannhap", "Nháp dự thảo");
 
-
-export default function MyBreadcrumbs(props: {color: string}) {
-    const {color} = props;
+export default function MyBreadcrumbs(props: { color: string }) {
+    const { color } = props;
     let url = "";
     const navigate = useNavigate();
     const location = useLocation();
@@ -48,7 +48,11 @@ export default function MyBreadcrumbs(props: {color: string}) {
         });
 
     return (
-        <div role="presentation" onClick={handleClick} style={{margin: '16px 0px 0px 80px'}}>
+        <div
+            role="presentation"
+            onClick={handleClick}
+            style={{ margin: "16px 0px 0px 80px" }}
+        >
             <Breadcrumbs aria-label="breadcrumb">
                 {breadcrumbs.map((route, index) => (
                     <Link
@@ -58,7 +62,12 @@ export default function MyBreadcrumbs(props: {color: string}) {
                         onClick={() => {
                             navigate(`${route.link}`);
                         }}
-                        sx={{color: color, fontWeight: 'bolder', cursor: 'pointer'}}
+                        sx={{
+                            color: color,
+                            fontWeight: "bolder",
+                            cursor: "pointer",
+                            fontSize: "22px",
+                        }}
                     >
                         {route.title}
                     </Link>

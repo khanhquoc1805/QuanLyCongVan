@@ -4,3 +4,6 @@ export const getRoleProcess = (str: string): string => {
     return "";
 };
 
+export const xulystring = (index: number, str: string): string => {
+    return `${str}${index}`;
+};

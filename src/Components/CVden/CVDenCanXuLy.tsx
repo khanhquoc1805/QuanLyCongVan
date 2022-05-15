@@ -326,7 +326,7 @@ export default function CVDenCanXuLy() {
                                                         }}
                                                     >
                                                         <img
-                                                            src="/forward-svgrepo-com.svg"
+                                                            src="/process-svgrepo-com.svg"
                                                             alt=""
                                                             style={{
                                                                 width: "24px",

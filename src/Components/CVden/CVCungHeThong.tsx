@@ -311,7 +311,7 @@ export default function CVCungHeThong() {
                         variant="contained"
                         autoFocus
                     >
-                        Duyệt
+                        Tiếp Nhận
                     </Button>
                 </DialogActions>
             </Dialog>

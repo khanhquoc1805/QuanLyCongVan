@@ -1,9 +1,16 @@
 import {
-    Button, Dialog,
+    Button,
+    Dialog,
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup
+    DialogTitle,
+    FormControl,
+    FormControlLabel,
+    FormLabel,
+    Grid,
+    Radio,
+    RadioGroup,
 } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import React, { useEffect } from "react";
@@ -14,29 +21,76 @@ import { getCurrentDate } from "../../../Utils/getCurrentDate";
 import {
     getDonViFromToken,
     getMaNVFromToken,
-    getPermission
+    getPermission,
 } from "../../../Utils/getValueFormToken";
 import { InputField, SelectField, SelectOption } from "../../FormField";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import { xulystring } from "../../../Utils/getRoleFormString";
 
+// export interface IXuly {
+//     macvden?: number | string;
+//     maxulychinh?: string;
+//     maxulykethop?: string;
+//     butphexulychinh?: string;
+//     butphexulykethop?: string;
+//     hanxulychinh?: string;
+//     hanxulykethop?: string;
+//     hanchuyenxuly?: string;
+// }
 export interface IXuly {
     macvden?: number | string;
-    maxulychinh?: string;
-    maxulykethop?: string;
-    butphexulychinh?: string;
-    butphexulykethop?: string;
-    hanxulychinh?: string;
-    hanxulykethop?: string;
-    hanchuyenxuly?: string;
+    xuly1: string;
+    xuly2: string;
+    xuly3: string;
+    xuly4: string;
+    xuly5: string;
+    butphe1: string;
+    butphe2: string;
+    butphe3: string;
+    butphe4: string;
+    butphe5: string;
+    hanxuli1: string;
+    hanxuli2: string;
+    hanxuli3: string;
+    hanxuli4: string;
+    hanxuli5: string;
+    vaitro1: string;
+    vaitro2: string;
+    vaitro3: string;
+    vaitro4: string;
+    vaitro5: string;
 }
 
 const initialValue: IXuly = {
-    maxulychinh: "",
-    maxulykethop: "",
-    butphexulychinh: "",
-    butphexulykethop: "",
-    hanxulychinh: getCurrentDate(),
-    hanxulykethop: getCurrentDate(),
-    hanchuyenxuly: getCurrentDate(),
+    // maxulychinh: "",
+    // maxulykethop: "",
+    // butphexulychinh: "",
+    // butphexulykethop: "",
+    // hanxulychinh: getCurrentDate(),
+    // hanxulykethop: getCurrentDate(),
+    // hanchuyenxuly:getCurrentDate(),
+    xuly1: "",
+    xuly2: "",
+    xuly3: "",
+    xuly4: "",
+    xuly5: "",
+    butphe1: "",
+    butphe2: "",
+    butphe3: "",
+    butphe4: "",
+    butphe5: "",
+    hanxuli1: getCurrentDate(),
+    hanxuli2: getCurrentDate(),
+    hanxuli3: getCurrentDate(),
+    hanxuli4: getCurrentDate(),
+    hanxuli5: getCurrentDate(),
+    vaitro1: "",
+    vaitro2: "",
+    vaitro3: "",
+    vaitro4: "",
+    vaitro5: "",
 };
 export default function XuLy(props: { macvden: string }) {
     const { macvden } = props;
@@ -49,19 +103,54 @@ export default function XuLy(props: { macvden: string }) {
     const [openApproveDialog, setOpenApproveDialog] =
         React.useState<boolean>(false);
     const [alert, setAlert] = React.useState<boolean>(false);
-    const { control, handleSubmit } = useForm<IXuly>({
+    const { control, handleSubmit, setValue } = useForm<IXuly>({
         defaultValues: initialValue,
     });
-    const [value, setValue] = React.useState("phancong");
+    const [value, setValues] = React.useState("phancong");
+    const [num, setNum] = React.useState("");
+    const handleChangeNum = (event: SelectChangeEvent) => {
+        setNum(event.target.value as string);
+    };
+
+    let indexs = [];
+
+    for (var i = 1; i <= parseInt(num); i++) {
+        indexs.push(i);
+    }
+    useEffect(() => {
+        setValue("xuly1", "");
+        setValue("xuly2", "");
+        setValue("xuly3", "");
+        setValue("xuly4", "");
+        setValue("xuly5", "");
+        setValue("butphe1", "");
+        setValue("butphe2", "");
+        setValue("butphe3", "");
+        setValue("butphe4", "");
+        setValue("butphe5", "");
+        setValue("hanxuli1", getCurrentDate());
+        setValue("hanxuli2", getCurrentDate());
+        setValue("hanxuli3", getCurrentDate());
+        setValue("hanxuli4", getCurrentDate());
+        setValue("hanxuli5", getCurrentDate());
+        setValue("vaitro1", "");
+        setValue("vaitro2", "");
+        setValue("vaitro3", "");
+        setValue("vaitro4", "");
+        setValue("vaitro5", "");
+    }, [num]);
+
+    console.log(indexs);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue((event.target as HTMLInputElement).value);
+        setValues((event.target as HTMLInputElement).value);
     };
     const handleSubmitForm = async (formValues: IXuly) => {
         if (value === "phancong") {
             formValues.macvden = macvden;
             const add = await cvDenApi.phanCongXuLyCVDen(formValues);
-          
+            //console.log(formValues);
+
             if (add.status === "successfully") {
                 setMassage(add.massage);
                 setAlert(true);
@@ -70,6 +159,7 @@ export default function XuLy(props: { macvden: string }) {
     };
 
     const madv = getDonViFromToken();
+    const macb = getMaNVFromToken();
 
     useEffect(() => {
         (async () => {
@@ -84,7 +174,7 @@ export default function XuLy(props: { macvden: string }) {
             setRole(quyen.status);
         })();
     }, []);
-    console.log(role);
+    //console.log(role);
     const xuLyChinhOptions: SelectOption[] = nhanvien?.map((nv) => ({
         label: nv.tennv,
         value: nv.manv,
@@ -142,52 +232,80 @@ export default function XuLy(props: { macvden: string }) {
             </FormControl>
             {value === "phancong" && permission === "lanhdao" && (
                 <div style={{ width: "90%" }}>
-                    <Grid container spacing={2}>
-                        <Grid item lg={4}>
-                            <SelectField
-                                name="maxulychinh"
-                                control={control}
-                                label="Xử lý chính"
-                                options={xuLyChinhOptions}
-                            ></SelectField>
-                            <SelectField
-                                name="maxulykethop"
-                                control={control}
-                                label="Xử lý kết hợp"
-                                options={xuLyChinhOptions}
-                            ></SelectField>
-                        </Grid>
-                        <Grid item lg={4}>
-                            <InputField
-                                name="butphexulychinh"
-                                control={control}
-                                label="Bút Phê"
-                            ></InputField>
-                            <InputField
-                                name="butphexulykethop"
-                                control={control}
-                                label="Bút Phê"
-                            ></InputField>
-                        </Grid>
-                        <Grid item lg={4}>
-                            <InputField
-                                name="hanxulychinh"
-                                control={control}
-                                label="Hạn xử lý"
-                                type="date"
-                            ></InputField>
-                            <InputField
-                                name="hanxulykethop"
-                                control={control}
-                                label="Hạn xử lý"
-                                type="date"
-                            ></InputField>
-                        </Grid>
-                    </Grid>
+                    <FormControl sx={{ width: "20%" }}>
+                        <InputLabel id="demo-simple-select-label">
+                            Chọn số lượng cán bộ
+                        </InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={num}
+                            label="Chọn số lượng cán bộ"
+                            onChange={handleChangeNum}
+                        >
+                            <MenuItem value={1}>1</MenuItem>
+                            <MenuItem value={2}>2</MenuItem>
+                            <MenuItem value={3}>3</MenuItem>
+                            <MenuItem value={4}>4</MenuItem>
+                            <MenuItem value={5}>5</MenuItem>
+                        </Select>
+                    </FormControl>
 
-                    <Button type="submit" variant="outlined" color="primary">
-                        Xác nhận
-                    </Button>
+                    <div>
+                        {indexs.map((index) => (
+                            <Grid container spacing={2} key={index}>
+                                <Grid item lg={3}>
+                                    <SelectField
+                                        name={xulystring(index, "xuly")}
+                                        control={control}
+                                        label="Xử lý chính"
+                                        options={xuLyChinhOptions}
+                                    ></SelectField>
+                                </Grid>
+                                <Grid item lg={3}>
+                                    <InputField
+                                        name={xulystring(index, "butphe")}
+                                        control={control}
+                                        label="Bút Phê"
+                                    ></InputField>
+                                </Grid>
+                                <Grid item lg={3}>
+                                    <InputField
+                                        name={xulystring(index, "hanxuli")}
+                                        control={control}
+                                        label="Hạn xử lý"
+                                        type="date"
+                                    ></InputField>
+                                </Grid>
+                                <Grid item lg={3}>
+                                    <SelectField
+                                        name={xulystring(index, "vaitro")}
+                                        control={control}
+                                        label="Vai trò"
+                                        options={[
+                                            {
+                                                label: "Xử lý chính",
+                                                value: "xulychinh",
+                                            },
+                                            {
+                                                label: "Xử lý kết hợp",
+                                                value: "xulykethop",
+                                            },
+                                        ]}
+                                    ></SelectField>
+                                </Grid>
+                            </Grid>
+                        ))}
+                    </div>
+                    {num !== "" && (
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                        >
+                            Xác nhận
+                        </Button>
+                    )}
                 </div>
             )}
             {value === "hoanthanh" && (
