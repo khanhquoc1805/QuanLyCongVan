@@ -76,7 +76,7 @@ const initialState: TraCuuState = {
     },
     filter: {
         page: 1,
-        limit: 8,
+        limit: 6,
         textSearch: "",
         loaicv: "cvden",
         madv: getDonViFromToken(),

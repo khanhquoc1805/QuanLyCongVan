@@ -14,7 +14,7 @@ const title1: string[] = [
     "Đính kèm",
 ];
 
-const title3: string[] = ["Đơn vị tiếp nhận"];
+const title3: string[] = ["Đơn vị tiếp nhận", "Hạn xử lý toàn văn bản",];
 
 const title2: string[] = [
     "Độ mật",
@@ -27,7 +27,7 @@ const title2: string[] = [
 const title4: string[] = [
     "Trạng thái xử lý",
     "Hạn xử lý của tôi",
-    "Hạn xử lý toàn văn bản",
+   
 ];
 export default function ThongTinCVDi(props: { mavbdi: string }) {
     const { mavbdi } = props;
@@ -48,7 +48,7 @@ export default function ThongTinCVDi(props: { mavbdi: string }) {
         `${ngayravbdi}`,
         `${data?.loaicv.tenloai}`,
         `${data?.donvi.tendv}`,
-        `${data?.ttbosung.dinhkem}`,
+        `${data?.ttbosung.dinhkem}`.split("/").pop() || "",
     ];
     const data2: string[] = [
         `${data?.ttbosung.domat}`,
@@ -59,8 +59,8 @@ export default function ThongTinCVDi(props: { mavbdi: string }) {
         "",
     ];
     const data3: string[] = [
-        "Khoa CNTT,Khoa KT",
-        "Khoa KT",
+        // "Khoa CNTT,Khoa KT",
+        // "Khoa KT",
         "",
     ];
     const data4: string[] = [getProcessState(`${data?.cvdi.ttxuly}`), "", ""];
@@ -82,7 +82,7 @@ export default function ThongTinCVDi(props: { mavbdi: string }) {
                                 >
                                     <TableCell
                                         style={{
-                                            border: "1px solid #F0F7F7",
+                                            border: "1px solid #98A7B8",
                                             fontWeight: "bolder",
                                         }}
                                     >
@@ -90,7 +90,7 @@ export default function ThongTinCVDi(props: { mavbdi: string }) {
                                     </TableCell>
                                     <TableCell
                                         sx={{ maxWidth: "240px" }}
-                                        style={{ border: "1px solid #F0F7F7" }}
+                                        style={{ border: "1px solid #98A7B8" }}
                                     >
                                         {data1[index]}
                                     </TableCell>
@@ -114,7 +114,7 @@ export default function ThongTinCVDi(props: { mavbdi: string }) {
                                 >
                                     <TableCell
                                         style={{
-                                            border: "1px solid #F0F7F7",
+                                            border: "1px solid #98A7B8",
                                             fontWeight: "bolder",
                                         }}
                                     >
@@ -122,7 +122,7 @@ export default function ThongTinCVDi(props: { mavbdi: string }) {
                                     </TableCell>
                                     <TableCell
                                         sx={{ maxWidth: "240px" }}
-                                        style={{ border: "1px solid #F0F7F7" }}
+                                        style={{ border: "1px solid #98A7B8" }}
                                     >
                                         {data2[index]}
                                     </TableCell>
@@ -150,7 +150,7 @@ export default function ThongTinCVDi(props: { mavbdi: string }) {
                                 >
                                     <TableCell
                                         style={{
-                                            border: "1px solid #F0F7F7",
+                                            border: "1px solid #98A7B8",
                                             fontWeight: "bolder",
                                         }}
                                     >
@@ -158,7 +158,7 @@ export default function ThongTinCVDi(props: { mavbdi: string }) {
                                     </TableCell>
                                     <TableCell
                                         sx={{ maxWidth: "240px" }}
-                                        style={{ border: "1px solid #F0F7F7" }}
+                                        style={{ border: "1px solid #98A7B8" }}
                                     >
                                         {data3[index]}
                                     </TableCell>
@@ -182,7 +182,7 @@ export default function ThongTinCVDi(props: { mavbdi: string }) {
                                 >
                                     <TableCell
                                         style={{
-                                            border: "1px solid #F0F7F7",
+                                            border: "1px solid #98A7B8",
                                             fontWeight: "bolder",
                                         }}
                                     >
@@ -190,7 +190,7 @@ export default function ThongTinCVDi(props: { mavbdi: string }) {
                                     </TableCell>
                                     <TableCell
                                         sx={{ maxWidth: "240px" }}
-                                        style={{ border: "1px solid #F0F7F7" }}
+                                        style={{ border: "1px solid #98A7B8" }}
                                     >
                                         {data4[index]}
                                     </TableCell>

@@ -23,6 +23,7 @@ import NhanVienAPI, { NhanVien } from "../../../API/NhanVien";
 import { getCurrentDate } from "../../../Utils/getCurrentDate";
 import Alert from "@mui/material/Alert";
 import {
+    getDonViFromToken,
     getMaNVFromToken,
     getPermission,
 } from "../../../Utils/getValueFormToken";
@@ -72,6 +73,10 @@ export default function XuLyCVDi(props: { mavbdi: string }) {
                 mavbdi: mavbdi,
             });
             setRole(per.status);
+            const data = await NhanVienAPI.getNhanVienByMadv(
+                getDonViFromToken()
+            );
+            setNhanVien(data);
         })();
     }, []);
     console.log(role);
@@ -91,6 +96,8 @@ export default function XuLyCVDi(props: { mavbdi: string }) {
         }));
     }
 
+    console.log(nhanvien);
+
     const permission = getPermission();
 
     const handleSubmitForm = async (formValues: IXuLyCVDi) => {
@@ -99,7 +106,8 @@ export default function XuLyCVDi(props: { mavbdi: string }) {
             console.log(formValues);
             const response = await cvDiApi.chuyenXuLy(formValues);
             if (response.status === "successfully")
-                console.log(response.massage);
+                setMassage(response.massage);
+                setAlert(true);
         }
     };
 
@@ -170,9 +178,9 @@ export default function XuLyCVDi(props: { mavbdi: string }) {
             {value === "chuyen" && (
                 <div style={{ width: "50%" }}>
                     <Box sx={{ minWidth: 120 }}>
-                        <FormControl fullWidth>
+                        {/* <FormControl fullWidth>
                             <InputLabel id="demo-simple-select-label">
-                                Age
+                                Cán bộ xử lý
                             </InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
@@ -187,14 +195,14 @@ export default function XuLyCVDi(props: { mavbdi: string }) {
                                     </MenuItem>
                                 ))}
                             </Select>
-                        </FormControl>
+                        </FormControl> */}
                     </Box>
 
                     {/* {nhanVienOptions.length > 0 && ( */}
                     <SelectField
                         name="nguoinhan"
                         control={control}
-                        label="Nhận xử lý"
+                        label="Cán bộ nhận xử lý"
                         options={nhanVienOptions}
                     ></SelectField>
                     {/* )} */}

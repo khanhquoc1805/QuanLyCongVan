@@ -135,7 +135,7 @@ export default function BanNhapCVDen(): ReactElement {
                                             }}
                                             onClick={() => {
                                                 navigate(
-                                                    `/quanlycongvanden/tiepnhanvanbanden/${row.data.iddraft}`
+                                                    `/quanlycongvanden/tiepnhancongvanden/${row.data.iddraft}`
                                                 );
                                             }}
                                         ></DetailsIcon>

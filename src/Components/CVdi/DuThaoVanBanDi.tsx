@@ -18,6 +18,7 @@ import { getDonViFromToken } from "../../Utils/getValueFormToken";
 import { InputField, SelectField, SelectOption } from "../FormField";
 import FormAddLinhVuc from "./FormAdd/FormAddLinhVuc";
 import FormAddLoaiCV from "./FormAdd/FormAddLoaiCV";
+import { toast } from "react-toastify";
 
 // export interface DraftState {
 //     madv?: string;
@@ -204,7 +205,13 @@ export default function DuThaoVanBanDi() {
             // console.log(formData.get("iddraft"));
             // console.log(iddraft);
             const response = await draftCVDi.add(formData);
-            // console.log(response);
+            console.log(response);
+            if (response.status === "add" || response.status === "update") {
+                toast.success("Lưu lại thành công!", {
+                    position: "top-center",
+                    autoClose: 2000,
+                });
+            }
         }
     };
 

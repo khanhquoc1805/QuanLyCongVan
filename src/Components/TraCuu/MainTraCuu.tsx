@@ -7,7 +7,7 @@ import {
     Stack,
 } from "@mui/material";
 import React, { useRef, useEffect, ChangeEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Table from "@mui/material/Table";
@@ -27,6 +27,7 @@ import {
 } from "../../features/TraCuu/TraCuuSlice";
 import { getDateFromString } from "../../Utils/getDateFromString";
 import PreviewDialog from "../PreviewDialog/PreviewDialog";
+import DuThaoVanBanDi from "../CVdi/DuThaoVanBanDi";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -131,8 +132,7 @@ export default function MainTraCuu() {
                 style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    backgroundImage:
-                        "linear-gradient(0deg,#ffffff,#81d4fa)",
+                    backgroundImage: "linear-gradient(0deg,#ffffff,#81d4fa)",
                     padding: "0 40px 16px 40px",
                 }}
             >
@@ -385,6 +385,12 @@ export default function MainTraCuu() {
                     url={url}
                     setOpen={setOpenPreview}
                 />
+            </div>
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <Link to="/truyenthong">Truyền thống</Link>
+                <Link to="/elastic">Elastic</Link>
+
+               
             </div>
         </div>
     ) : (

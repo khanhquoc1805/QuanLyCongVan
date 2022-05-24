@@ -19,22 +19,23 @@ import React, { ReactElement, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import draftCVDi from "../../API/DraftCVDi";
 import { DraftCVDi } from "../../Model/Draft";
+import { getMaNVFromToken } from "../../Utils/getValueFormToken";
 
-function createData(
-    name: string,
-    calories: number,
-    fat: number,
-    carbs: number,
-    protein: number
-) {
-    return { name, calories, fat, carbs, protein };
-}
+// function createData(
+//     name: string,
+//     calories: number,
+//     fat: number,
+//     carbs: number,
+//     protein: number
+// ) {
+//     return { name, calories, fat, carbs, protein };
+// }
 
-const rows = [
-    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-    createData("Eclair", 262, 16.0, 24, 6.0),
-];
+// const rows = [
+//     createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
+//     createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
+//     createData("Eclair", 262, 16.0, 24, 6.0),
+// ];
 
 export default function BanNhapCVDi(): ReactElement {
     const navigate = useNavigate();
@@ -42,9 +43,10 @@ export default function BanNhapCVDi(): ReactElement {
     const [openApproveDialog, setOpenApproveDialog] =
         React.useState<boolean>(false);
     const [iddraft, setIddraft] = React.useState<string>("");
+    const manv = getMaNVFromToken()
     useEffect(() => {
         (async () => {
-            const response = await draftCVDi.get("00001");
+            const response = await draftCVDi.get(manv);
             console.log(response);
             setDsDraft(response);
         })();
@@ -54,7 +56,7 @@ export default function BanNhapCVDi(): ReactElement {
         const response = await draftCVDi.delete(iddraft);
         if (response.status === "successfully") {
             setOpenApproveDialog(false);
-            const response = await draftCVDi.get("00001");
+            const response = await draftCVDi.get(manv);
             setDsDraft(response);
         }
     };
@@ -134,7 +136,7 @@ export default function BanNhapCVDi(): ReactElement {
                                             }}
                                             onClick={() => {
                                                 navigate(
-                                                    `/quanlycongvandi/duthaovanbandi/${row.data.iddraft}`
+                                                    `/quanlycongvandi/duthaocongvandi/${row.data.iddraft}`
                                                 );
                                             }}
                                         ></DetailsIcon>

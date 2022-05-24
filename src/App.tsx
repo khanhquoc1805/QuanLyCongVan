@@ -9,6 +9,7 @@ import PreviewDialog from "./Components/PreviewDialog/PreviewDialog";
 import QuanLiSo from "./Components/QuanLiSo/QuanLiSo";
 import HomeUser from "./Components/QuanTriNguoiDung/HomeUser";
 import MainTraCuu from "./Components/TraCuu/MainTraCuu";
+import TruyenThong from "./Components/TraCuu/TruyenThong";
 import { selectAccessToken } from "./features/Auth/authSlice";
 
 function App() {
@@ -32,6 +33,18 @@ function App() {
                         path="/tracuutimkiem/*"
                         element={<MainTraCuu />}
                     ></Route>
+
+
+
+                     <Route
+                        path="/truyenthong"
+                        element={<TruyenThong />}
+                    ></Route>
+                     <Route
+                        path="/elastic"
+                        element={<HomeUser />}
+                    ></Route>
+                    
                 </Routes>
             </BrowserRouter>
         </div>

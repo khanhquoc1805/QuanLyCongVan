@@ -76,7 +76,7 @@ export default function CVdi() {
                                     }}
                                 />
                             </div>
-                            <p style={{fontSize: '20px'}}>Trang Chủ</p>
+                            <p style={{ fontSize: "20px" }}>Trang Chủ</p>
                         </Stack>
                     </Link>
                     <div
@@ -108,7 +108,9 @@ export default function CVdi() {
                                     height: "28px",
                                 }}
                             />
-                            <p style={{fontSize: '20px'}}>Dự thảo công văn bản</p>
+                            <p style={{ fontSize: "20px" }}>
+                                Dự thảo công văn đi
+                            </p>
                         </Stack>
 
                         <Menu
@@ -165,7 +167,9 @@ export default function CVdi() {
                                     }}
                                 />
                             </div>
-                            <p style={{fontSize: '20px'}}>Xử lí công văn đi</p>
+                            <p style={{ fontSize: "20px" }}>
+                                Xử lí công văn đi
+                            </p>
                         </Stack>
                     </Link>
                     {/*  */}
@@ -207,7 +211,9 @@ export default function CVdi() {
                                     }}
                                 />
                             </div>
-                            <p style={{fontSize: '20px'}}>Phát hành công văn đi</p>
+                            <p style={{ fontSize: "20px" }}>
+                                Phát hành công văn đi
+                            </p>
                         </Stack>
                     </Link>
                 </Stack>
@@ -219,6 +225,7 @@ export default function CVdi() {
 
             <Stack style={{ margin: "0 60px 0 80px" }}>
                 <Routes>
+                    <Route path="/" element={<XuLiVanBanDi />}></Route>
                     <Route
                         path="/duthaocongvandi/"
                         element={<DuThaoVanBanDi />}

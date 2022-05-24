@@ -61,6 +61,7 @@ export interface IXuly {
     vaitro3: string;
     vaitro4: string;
     vaitro5: string;
+	hanchuyenxuly?: string;
 }
 
 const initialValue: IXuly = {
@@ -91,6 +92,7 @@ const initialValue: IXuly = {
     vaitro3: "",
     vaitro4: "",
     vaitro5: "",
+	hanchuyenxuly:getCurrentDate(),
 };
 export default function XuLy(props: { macvden: string }) {
     const { macvden } = props;
@@ -258,7 +260,7 @@ export default function XuLy(props: { macvden: string }) {
                                     <SelectField
                                         name={xulystring(index, "xuly")}
                                         control={control}
-                                        label="Xử lý chính"
+                                        label="Cán bộ xử lý"
                                         options={xuLyChinhOptions}
                                     ></SelectField>
                                 </Grid>

@@ -185,7 +185,7 @@ export default function TableManage() {
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         Bạn có chắc chắn muốn xóa sổ công văn
-                        <br /> Hành động này sẽ làm mất dữ liệu liên qua vĩnh
+                        <br /> Hành động này sẽ làm mất dữ liệu liên quan vĩnh
                         viễn và không thể quay lại!
                     </DialogContentText>
                 </DialogContent>

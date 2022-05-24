@@ -1,3 +1,4 @@
+import { Paper } from "@mui/material";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
@@ -63,7 +64,7 @@ export default function MainXuLyCVDi() {
     };
 
     return (
-        <Box sx={{ width: "100%" }} mt={5}>
+        <Paper sx={{ width: "100%",backgroundColor: "rgba(232, 229, 231, 0.47)", marginTop: "40px"}}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                 <Tabs
                     value={value}
@@ -97,15 +98,7 @@ export default function MainXuLyCVDi() {
                         label="Tiến trình xử lý"
                         {...a11yProps(2)}
                     />
-                    <Tab
-                        sx={{
-                            fontFamily: "sans-serif",
-                            textTransform: "none",
-                            fontSize: "20px",
-                        }}
-                        label="Thông tin đơn vị"
-                        {...a11yProps(3)}
-                    />
+                   
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
@@ -117,9 +110,7 @@ export default function MainXuLyCVDi() {
             <TabPanel value={value} index={2}>
                 <TienTrinhXuLyCVDi mavbdi={mavbdi}></TienTrinhXuLyCVDi>
             </TabPanel>
-            <TabPanel value={value} index={3}>
-                đơn vị
-            </TabPanel>
-        </Box>
+            
+        </Paper>
     );
 }

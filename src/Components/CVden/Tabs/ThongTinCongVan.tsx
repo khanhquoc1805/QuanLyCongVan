@@ -45,7 +45,11 @@ export default function ThongTinCongVan(props: { macvden: string }) {
     }, []);
     const ngayden = new Date(`${data?.cvden.ngaycvden}`).toLocaleString();
     const ngaybanhanh = new Date(`${data?.cvden.ngaybanhanh}`).toLocaleString();
-    const hanxuly = new Date(`${data?.cvden.hanxuli}`).toLocaleString();
+
+    const hanxuly = data?.cvden.hanxuli
+        ? new Date(`${data?.cvden.hanxuli}`).toLocaleString()
+        : "";
+
     const data1: string[] = [
         `${data?.cvden.sohieugoc}`,
         `${data?.cvden.tencvden}`,
@@ -92,7 +96,7 @@ export default function ThongTinCongVan(props: { macvden: string }) {
                                 >
                                     <TableCell
                                         style={{
-                                            border: "1px solid #F0F7F7",
+                                            border: "1px solid #98A7B8",
                                             fontWeight: "bolder",
                                         }}
                                     >
@@ -100,7 +104,7 @@ export default function ThongTinCongVan(props: { macvden: string }) {
                                     </TableCell>
                                     <TableCell
                                         sx={{ maxWidth: "240px" }}
-                                        style={{ border: "1px solid #F0F7F7" }}
+                                        style={{ border: "1px solid #98A7B8" }}
                                     >
                                         {data1[index]}
                                     </TableCell>
@@ -124,7 +128,7 @@ export default function ThongTinCongVan(props: { macvden: string }) {
                                 >
                                     <TableCell
                                         style={{
-                                            border: "1px solid #F0F7F7",
+                                            border: "1px solid #98A7B8",
                                             fontWeight: "bolder",
                                             width: "200px",
                                         }}
@@ -133,7 +137,7 @@ export default function ThongTinCongVan(props: { macvden: string }) {
                                     </TableCell>
                                     <TableCell
                                         sx={{ maxWidth: "240px" }}
-                                        style={{ border: "1px solid #F0F7F7" }}
+                                        style={{ border: "1px solid #98A7B8" }}
                                     >
                                         {data2[index]}
                                     </TableCell>
@@ -161,16 +165,15 @@ export default function ThongTinCongVan(props: { macvden: string }) {
                                 >
                                     <TableCell
                                         style={{
-                                            border: "1px solid #F0F7F7",
+                                            border: "1px solid #98A7B8",
                                             fontWeight: "bolder",
-                                           
                                         }}
                                     >
                                         {element}
                                     </TableCell>
                                     <TableCell
                                         sx={{ maxWidth: "240px" }}
-                                        style={{ border: "1px solid #F0F7F7" }}
+                                        style={{ border: "1px solid #98A7B8" }}
                                     >
                                         {data3[index]}
                                     </TableCell>
@@ -194,16 +197,16 @@ export default function ThongTinCongVan(props: { macvden: string }) {
                                 >
                                     <TableCell
                                         style={{
-                                            border: "1px solid #F0F7F7",
+                                            border: "1px solid #98A7B8",
                                             fontWeight: "bolder",
-                                            width: "200px"
+                                            width: "200px",
                                         }}
                                     >
                                         {element}
                                     </TableCell>
                                     <TableCell
                                         sx={{ maxWidth: "240px" }}
-                                        style={{ border: "1px solid #F0F7F7" }}
+                                        style={{ border: "1px solid #98A7B8" }}
                                     >
                                         {data4[index]}
                                     </TableCell>

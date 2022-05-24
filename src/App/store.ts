@@ -12,6 +12,7 @@ import authReducer from "../features/Auth/authSlice";
 import cvDiReducer from "../features/CVDi/CVDiSlice";
 import userReducer from "../features/User/UserSlice";
 import traCuuReducer from "../features/TraCuu/TraCuuSlice";
+import demoReducer from "../features/Demo/TT/TTSlice";
 
 const reducer = combineReducers({
     cvden: cvDenReducer,
@@ -20,6 +21,7 @@ const reducer = combineReducers({
     cvdi: cvDiReducer,
     user: userReducer,
     tracuu: traCuuReducer,
+    demo: demoReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();

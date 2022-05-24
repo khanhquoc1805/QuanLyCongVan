@@ -6,6 +6,9 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
+    FormControl,
+    InputLabel,
+    OutlinedInput,
     Stack,
 } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -29,7 +32,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import cvDiApi from "../../API/CVdi";
@@ -163,15 +166,19 @@ function Row(props: {
 
         setChecked(newChecked);
     };
-    console.log(checked);
+    //console.log(checked);
     const handleSubmitForm = async (formValues: AddCVVaoSo) => {
         formValues.mavbdi = mavbdi;
         const response: ResponseStatus = await cvDiApi.addCVDiVaoSo(formValues);
         console.log(response);
+
         if (response.status === "successfully") setOpenDialog(false);
         setOpen(false);
         dispatch(
-            cvDiActions.fetchData({ ...filter, status: "daduyet,davaoso,daphathanh,hoanthanhxuly" })
+            cvDiActions.fetchData({
+                ...filter,
+                status: "daduyet,davaoso,daphathanh,hoanthanhxuly",
+            })
         );
     };
 
@@ -577,6 +584,7 @@ export default function PhatHanhVanBanDi() {
     const [open, setOpen] = useState<boolean>(false);
     const dssocv = useAppSelector(selectDsSoCV);
     const [mavbdi, setMavbdi] = useState<number>(0);
+    const searchRef = useRef<HTMLInputElement>();
 
     useEffect(() => {
         (async () => {
@@ -589,9 +597,12 @@ export default function PhatHanhVanBanDi() {
             dispatch(soCVActions.fetchData({}));
         })();
     }, [dispatch, filter]);
-    console.log(mavbdi);
+    const newDsSoCV = dssocv.filter((x) => {
+        if (x.donvi === undefined) return false;
+        return x.donvi.madv === getDonViFromToken();
+    });
 
-    const soCVOptions: RadioOption[] = dssocv?.map((scv) => ({
+    const soCVOptions: RadioOption[] = newDsSoCV?.map((scv) => ({
         label: `${scv.tensocv} - ${scv.nhomsocv} - ${scv.donvi?.tendv}`,
         value: scv.masocv,
     }));
@@ -599,6 +610,7 @@ export default function PhatHanhVanBanDi() {
     const dscvdiFilterByDV = dscvdi.filter(
         (x) => x.donvi.madv === getDonViFromToken()
     );
+    //console.log(dscvdiFilterByDV);
 
     const handleChange = (e: any, page: number) => {
         dispatch(
@@ -610,7 +622,24 @@ export default function PhatHanhVanBanDi() {
     };
     return (
         <div>
-            <TableContainer component={Paper} sx={{ marginTop: "80px" }}>
+            <Stack mt={4} mb={4} direction="row-reverse" spacing={2}>
+                <FormControl
+                    fullWidth
+                    variant="outlined"
+                    size="small"
+                    sx={{ width: "500px" }}
+                >
+                    <InputLabel htmlFor="timkiem">Tìm kiếm</InputLabel>
+                    <OutlinedInput
+                        label="Tìm kiếm"
+                        id="timkiem"
+                        //   endAdornment={<SearchIcon />}
+                        //onChange={handleSearchChange}
+                        inputRef={searchRef}
+                    />
+                </FormControl>
+            </Stack>
+            <TableContainer component={Paper}>
                 <Table aria-label="collapsible table">
                     <TableHead sx={{ backgroundColor: "red" }}>
                         <TableRow>
@@ -655,17 +684,20 @@ export default function PhatHanhVanBanDi() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {dscvdiFilterByDV.map((row, index) => (
-                            <Row
-                                key={index}
-                                row={row}
-                                openDialog={open}
-                                setOpenDialog={setOpen}
-                                soCVOptions={soCVOptions}
-                                mavbdi={row.cvdi.mavbdi}
-                                setMavbdi={setMavbdi}
-                            />
-                        ))}
+                        {dscvdiFilterByDV.map((row, index) => {
+                            //console.log(row.cvdi.mavbdi);
+                            return (
+                                <Row
+                                    key={index}
+                                    row={row}
+                                    openDialog={open}
+                                    setOpenDialog={setOpen}
+                                    soCVOptions={soCVOptions}
+                                    mavbdi={row.cvdi.mavbdi}
+                                    setMavbdi={setMavbdi}
+                                />
+                            );
+                        })}
                     </TableBody>
                 </Table>
             </TableContainer>

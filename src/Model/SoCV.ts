@@ -5,5 +5,5 @@ export interface ISoCV {
     tensocv: string;
     nhomsocv: string;
     madv: string;
-    donvi? : IDonVi;
+    donvi : IDonVi;
 }
